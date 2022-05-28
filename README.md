@@ -37,6 +37,7 @@ Figma: ​​https://www.figma.com/file/jXiy6tmnOk2jeyhyI6hED0/CPSC-455---Design
 * Ranking of manually festival list, headliner - has more 10x more weight, secondary headliner?? -  hax 5x more weight, others etc.. Maybe even how many times they’ve listened to the artists 
 * Filter festivals by geographic region (store GPS coordinates of festival) and genres, etc.
 * Display a feed of the artist’s social media such as Instagram or Twitter
+* Display a Google Map with tacks connected to each festival
 
 
 ## Break down 2 minimal requirements into ~2-5 smaller tasks!
