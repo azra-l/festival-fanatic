@@ -1,0 +1,40 @@
+{
+    "name": "TypeScript Node.js & MongoDB",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "shutdownAction": "stopCompose",
+    "workspaceFolder": "/workspace",
+
+    // Set *default* container specific settings.json values on container create.
+    "settings": { 
+      "terminal.integrated.profiles.linux": {
+        "bash": {
+          "path": "/bin/bash"
+        },
+        "zsh": {
+          "path": "/usr/bin/zsh"
+        }
+      }
+    },
+
+    // Add the IDs of extensions you want installed when the container is created.
+    "extensions": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "rvest.vs-code-prettier-eslint",
+      "ryanluker.vscode-coverage-gutters"
+    ],
+    // "forwardPorts": [
+    //   3000, 9099, 4000, 4400, 9005, 9199, 8008, 8009, 8448 
+    // ],
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    // "forwardPorts": [],
+    // Uncomment the next line to run commands after the container is created - for example installing curl.
+    // Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+    // "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+    // Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
+    // "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
+    // Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
+    "remoteUser": "node"
+  }
+  
