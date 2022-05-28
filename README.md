@@ -56,3 +56,10 @@ Figma: ​​https://www.figma.com/file/jXiy6tmnOk2jeyhyI6hED0/CPSC-455---Design
 
 ## Prototype sketches of the app
 * *see prototypes*
+
+<img width="776" alt="Screen Shot 2022-05-26 at 9 34 52 PM" src="https://user-images.githubusercontent.com/96637812/170834120-6403e3bd-4d91-44cf-8082-ce4aeb51417e.png">
+<img width="776" alt="Screen Shot 2022-05-26 at 9 36 15 PM" src="https://user-images.githubusercontent.com/96637812/170834134-33d10c9f-8989-4dd4-92ef-2bd910bbe53d.png">
+<img width="776" alt="Screen Shot 2022-05-26 at 9 36 24 PM" src="https://user-images.githubusercontent.com/96637812/170834140-75216990-0e92-4864-a12e-e9c4d2e8fdbd.png">
+
+
+
