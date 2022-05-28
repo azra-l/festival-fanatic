@@ -1,6 +1,6 @@
 # Festival Fanatic
 
-Figma: ​​https://www.figma.com/file/jXiy6tmnOk2jeyhyI6hED0/CPSC-455---Design---Spontaneous-4?node-id=0%3A1
+Figma: ​​https://www.figma.com/file/jXiy6tmnOk2jeyhyI6hED0/CPSC-455---Design---Spontaneous-4?node-id=8%3A2
 
 ## Who is it for?
 * Spotify Users that attend music festivals or concerts with multiple artists attending
