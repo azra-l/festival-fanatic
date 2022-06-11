@@ -26,7 +26,7 @@ export default function FestivalCard({ festival }) {
         {/**
          * TODO: Update this link later to view full details component
          */}
-        <Link to="/" className="festival-link">
+        <Link to="detailed-results" className="festival-link" state={festival}>
           See details
         </Link>
       </div>
