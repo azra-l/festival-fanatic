@@ -1,0 +1,37 @@
+.festival-card {
+  margin: 2rem auto;
+  background-color: #6b6b69;
+  height: 150px;
+  width: 330px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  row-gap: 2rem;
+  column-gap: 2rem;
+  color: white;
+}
+
+.date-container {
+  text-align: center;
+}
+
+.festival-day {
+  font-size: larger;
+}
+
+.festival-info {
+  text-align: center;
+}
+
+.festival-img {
+  width: 75px;
+  height: 75px;
+  border-radius: 0.25rem;
+}
+
+.festival-link {
+  display: inline-block;
+  margin: 0.5rem 0;
+  color: white;
+}
