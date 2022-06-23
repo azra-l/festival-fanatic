@@ -11,7 +11,15 @@ const INITIAL_STATE = {
 const festivalsSlice = createSlice({
     name: 'festivals',
     initialState: INITIAL_STATE,
+    reducers: {
+        saveFestival: (state, action) => {
+            const id = action.payload;
+            const festival = state.festivals.find(festival => festival.id === id);
+            festival.saved = !festival.saved;
+        }
+    }
 
 });
 
+export const {saveFestival} = festivalsSlice.actions;
 export default festivalsSlice.reducer;

@@ -3,6 +3,9 @@
   background-color: #6b6b69;
   height: 150px;
   width: 330px;
+}
+
+.festival-information {
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -10,6 +13,7 @@
   row-gap: 2rem;
   column-gap: 2rem;
   color: white;
+  padding-top: 1rem;
 }
 
 .date-container {
@@ -34,4 +38,8 @@
   display: inline-block;
   margin: 0.5rem 0;
   color: white;
+}
+
+.save-btn {
+  cursor: pointer;
 }
