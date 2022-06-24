@@ -1,4 +1,5 @@
 // https://developer.spotify.com/documentation/web-api/reference/#/operations/get-users-top-artists-and-tracks
+// https://developer.spotify.com/console/get-current-user-top-artists-and-tracks/
 
 export const spotifyUserTopItems = {
     "items": [

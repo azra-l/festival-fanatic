@@ -2,9 +2,13 @@
 const getUpcomingArtistEvents = async (artistName) => {
 
     const response = await fetch(`http://localhost:3001/bandsintown/all-events`, {
+        // TODO: Investigate best way to store JWT token for security 
+        // https://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf?rq=1
         method: 'GET',
+        // Need credentials to pass cookie data into request
+        credentials: "include",
         headers: {
-            'Content-Type': 'application/json'
+            'Access-Control-Allow-Origin': "http://localhost:3000",
         },
     });
 
