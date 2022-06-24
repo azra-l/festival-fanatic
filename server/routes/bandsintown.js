@@ -27,7 +27,7 @@ router.get('/all-events', function (req, res, next) {
 
             let artistNameToQuery = artist.name
 
-            // This is for requests that bandsintown has a problem with...
+            // This is for edge cases where bandsintown results are weird...
             if (artist.name == "Justin Bieber") {
                 artistNameToQuery = "JustinBieber"
             }
@@ -48,7 +48,6 @@ router.get('/all-events', function (req, res, next) {
                     return data;
                 });
             }));
-            console.log(result.map(promise => promise.status));
 
             let failedToFindArtistList = []
             let eventsList = []
@@ -66,7 +65,9 @@ router.get('/all-events', function (req, res, next) {
 
                         // Event is already in event list
                         if (foundEvent) {
-                            foundEvent.lineup.push(listOfArtists[index])
+                            // Foundevent doesn't include the artist already
+                            if (!foundEvent.lineup.find(element => { return element.toLowerCase() === listOfArtists[index].toLowerCase() }))
+                                foundEvent.lineup.push(listOfArtists[index])
                         } else {
                             eventsList.push(eventValue)
                         }
@@ -81,7 +82,6 @@ router.get('/all-events', function (req, res, next) {
                 "eventsList": eventsList,
                 "failedToFindArtistList": failedToFindArtistList
             }
-            res.set('Access-Control-Allow-Origin', '*');
             res.send(finalObject)
 
         }
