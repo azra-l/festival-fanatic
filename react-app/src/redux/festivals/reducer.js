@@ -16,10 +16,14 @@ const festivalsSlice = createSlice({
             const id = action.payload;
             const festival = state.festivals.find(festival => festival.id === id);
             festival.saved = !festival.saved;
+        },
+        deleteFestival: (state, action) => {
+            const id = action.payload;
+            state.festivals = state.festivals.filter(festival => festival.id !== id);
         }
     }
 
 });
 
-export const {saveFestival} = festivalsSlice.actions;
+export const {saveFestival, deleteFestival} = festivalsSlice.actions;
 export default festivalsSlice.reducer;

@@ -2,13 +2,13 @@ import React from "react";
 import "./FestivalCard.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {FaRegHeart, FaHeart } from 'react-icons/fa';
-import { saveFestival } from "../../redux/festivals/reducer";
+import {FaRegHeart, FaHeart, FaTimes} from 'react-icons/fa';
+import {deleteFestival, saveFestival} from "../../redux/festivals/reducer";
 
 export default function FestivalCard({ festival }) {
   const dispatch = useDispatch();
 
-  const { date, name, city, state, img, saved, id } = festival;
+  const { date, name, city, state, img, userDeleted, saved, id } = festival;
   const dateParsed = new Date(date);
 
   // from: https://stackoverflow.com/questions/12246394/how-to-get-month-from-string-in-javascript
@@ -23,11 +23,21 @@ export default function FestivalCard({ festival }) {
     dispatch(saveFestival(id));
   }
 
+  const handleDeleteButtonClick = (e) => {
+    e.preventDefault();
+    dispatch(deleteFestival(id));
+  }
+
   return (
     <div className="festival-card">
-      <button className="save-btn" onClick={handleSaveButtonClick}>
-        { saved ? (<FaHeart color="red" size={20}/>) : <FaRegHeart size={20}/>}
-      </button>
+      <div className="btn">
+        <button className="save-btn" onClick={handleSaveButtonClick}>
+          { saved ? (<FaHeart color="red" size={20}/>) : <FaRegHeart size={20}/>}
+        </button>
+        <button className="delete-btn" onClick={handleDeleteButtonClick}>
+          <FaTimes color="red" size={20}/>
+        </button>
+      </div>
       <div className="festival-information">
         <div className="date-container">
           <div className="festival-day">{day}</div>

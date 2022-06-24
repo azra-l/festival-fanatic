@@ -40,6 +40,15 @@
   color: white;
 }
 
+.btn {
+  display: flex;
+  justify-content: space-between;
+}
+
 .save-btn {
+  cursor: pointer;
+}
+
+.delete-btn {
   cursor: pointer;
 }
