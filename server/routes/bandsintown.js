@@ -67,11 +67,11 @@ router.get('/all-events', function (req, res, next) {
 
                     promise.value.forEach(eventValue => {
 
-                        const foundEvent = eventsList.find(event => event.title === eventValue.title);
+                        const foundEvent = eventsList.find(eventInCurrentList => eventInCurrentList.title === eventValue.title);
 
                         // Event is already in event list
                         if (foundEvent) {
-                            // Foundevent doesn't include the artist already
+                            // Existing event found in current event list, just include it in the lineup
                             if (!foundEvent.lineup.find(element => { return element.name.toLowerCase() === listOfArtists[index].name.toLowerCase() }))
                                 foundEvent.lineup.push(listOfArtists[index])
                         } else {
@@ -84,6 +84,11 @@ router.get('/all-events', function (req, res, next) {
                             //     }
                             // ]
                             eventValue.lineup = [listOfArtists[index]]
+
+
+                            // Remove weird artist object from bandsintown API where it is always shown on first event found
+                            delete eventValue.artist
+
                             eventsList.push(eventValue)
                         }
                     })
