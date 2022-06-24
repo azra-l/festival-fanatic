@@ -34,7 +34,12 @@ router.get('/all-events', function (req, res, next) {
 
             return `https://rest.bandsintown.com/artists/${artistNameToQuery}/events?app_id=${process.env.BIT_API_KEY}&date=upcoming`
         })
-        let listOfArtists = spotifyData.map(artist => artist.name)
+        let listOfArtists = spotifyData.map(artist => ({
+            "name": artist.name,
+            "spotify_id": artist.id,
+            "spotify_url": artist.external_urls.spotify,
+            "image": artist.images[0].url
+        }))
 
 
 
@@ -55,7 +60,8 @@ router.get('/all-events', function (req, res, next) {
             result.forEach((promise, index) => {
 
                 if (promise.status == "rejected") {
-                    console.log(`Failed to find artist ${listOfArtists[index]}`)
+                    // have a list of failed to find artist b/c bandsintown doesn't have all artists
+                    console.log(`Failed to find artist ${listOfArtists[index].name}`)
                     failedToFindArtistList.push(listOfArtists[index])
                 } else if (promise.status == "fulfilled") {
 
@@ -66,9 +72,18 @@ router.get('/all-events', function (req, res, next) {
                         // Event is already in event list
                         if (foundEvent) {
                             // Foundevent doesn't include the artist already
-                            if (!foundEvent.lineup.find(element => { return element.toLowerCase() === listOfArtists[index].toLowerCase() }))
+                            if (!foundEvent.lineup.find(element => { return element.name.toLowerCase() === listOfArtists[index].name.toLowerCase() }))
                                 foundEvent.lineup.push(listOfArtists[index])
                         } else {
+                            // Overwite the lineup:["Dabin"] to lineup:[
+                            //     {
+                            //         "spotify_url": "https://open.spotify.com/artist/7lZauDnRoAC3kmaYae2opv",
+                            //         "id": "7lZauDnRoAC3kmaYae2opv",
+                            //         "image" : "https://i.scdn.co/image/ab6761610000e5ebdb691c4e0aff20504f6b6033",
+                            //         "name": "Dabin",
+                            //     }
+                            // ]
+                            eventValue.lineup = [listOfArtists[index]]
                             eventsList.push(eventValue)
                         }
                     })
