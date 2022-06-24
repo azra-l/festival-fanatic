@@ -2,8 +2,8 @@ import React from "react";
 import "./FestivalCard.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {FaRegHeart, FaHeart, FaTimes} from 'react-icons/fa';
-import {deleteFestival, saveFestival} from "../../redux/festivals/reducer";
+import { FaRegHeart, FaHeart, FaTimes } from "react-icons/fa";
+import { deleteFestival, saveFestival } from "../../redux/festivals/reducer";
 
 export default function FestivalCard({ festival }) {
   const dispatch = useDispatch();
@@ -21,22 +21,28 @@ export default function FestivalCard({ festival }) {
   const handleSaveButtonClick = (e) => {
     e.preventDefault();
     dispatch(saveFestival(id));
-  }
+  };
 
   const handleDeleteButtonClick = (e) => {
     e.preventDefault();
     dispatch(deleteFestival(id));
-  }
+  };
 
   return (
     <div className="festival-card">
       <div className="btn">
         <button className="save-btn" onClick={handleSaveButtonClick}>
-          { saved ? (<FaHeart color="red" size={20}/>) : <FaRegHeart size={20}/>}
+          {saved ? (
+            <FaHeart color="red" size={24} />
+          ) : (
+            <FaRegHeart size={24} color="white" />
+          )}
         </button>
-        <button className="delete-btn" onClick={handleDeleteButtonClick}>
-          <FaTimes color="red" size={20}/>
-        </button>
+        {!saved && (
+          <button className="delete-btn" onClick={handleDeleteButtonClick}>
+            <FaTimes color="white" size={20} />
+          </button>
+        )}
       </div>
       <div className="festival-information">
         <div className="date-container">

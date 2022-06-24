@@ -218,4 +218,516 @@ export const dummyFestivals = [
     },],
     link: "https://www.contact-festival.com/",
   },
+  {
+    id: 3,
+    saved: false,
+    date: "2022-07-12",
+    name: "Tomorrowland",
+    city: "Boom",
+    state: "Belgium",
+    img: "https://musictech.com/wp-content/uploads/2022/02/Tomorrowland-Concert-2018@2000x1500.jpg",
+    headliners: [
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/45eNHdiiabvmbp4erw26rg",
+        },
+        followers: {
+          href: null,
+          total: 1259989,
+        },
+        genres: [
+          "edm",
+          "melodic dubstep",
+          "pop",
+          "pop dance",
+          "tropical house",
+        ],
+        href: "https://api.spotify.com/v1/artists/45eNHdiiabvmbp4erw26rg",
+        id: "45eNHdiiabvmbp4erw26rg",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5eb6b5fbf615ada187ce5e425c8",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab676161000051746b5fbf615ada187ce5e425c8",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f1786b5fbf615ada187ce5e425c8",
+            width: 160,
+          },
+        ],
+        name: "ILLENIUM",
+        popularity: 72,
+        type: "artist",
+        uri: "spotify:artist:45eNHdiiabvmbp4erw26rg",
+      },
+    ],
+    artists: [
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/2ZRQcIgzPCVaT9XKhXZIzh",
+        },
+        followers: {
+          href: null,
+          total: 819705,
+        },
+        genres: ["dance pop", "edm", "pop", "pop dance", "tropical house"],
+        href: "https://api.spotify.com/v1/artists/2ZRQcIgzPCVaT9XKhXZIzh",
+        id: "2ZRQcIgzPCVaT9XKhXZIzh",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5eb3438d570442b657621abc703",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab676161000051743438d570442b657621abc703",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f1783438d570442b657621abc703",
+            width: 160,
+          },
+        ],
+        name: "Gryffin",
+        popularity: 71,
+        type: "artist",
+        uri: "spotify:artist:2ZRQcIgzPCVaT9XKhXZIzh",
+      },
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/0jNDKefhfSbLR9sFvcPLHo",
+        },
+        followers: {
+          href: null,
+          total: 661924,
+        },
+        genres: [
+          "edm",
+          "electro house",
+          "electronic trap",
+          "electropop",
+          "future bass",
+          "pop dance",
+          "pop edm",
+          "vapor twitch",
+        ],
+        href: "https://api.spotify.com/v1/artists/0jNDKefhfSbLR9sFvcPLHo",
+        id: "0jNDKefhfSbLR9sFvcPLHo",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5ebbea280428d4ffabf1d7b0095",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab67616100005174bea280428d4ffabf1d7b0095",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f178bea280428d4ffabf1d7b0095",
+            width: 160,
+          },
+        ],
+        name: "San Holo",
+        popularity: 59,
+        type: "artist",
+        uri: "spotify:artist:0jNDKefhfSbLR9sFvcPLHo",
+      },
+    ],
+    link: "https://fvdedinthepark.frontgatetickets.com/",
+  },
+  {
+    id: 4,
+    saved: false,
+    date: "2023-10-10",
+    name: "Coachella",
+    city: "Coachella",
+    state: "CA",
+    img: "https://consequence.net/wp-content/uploads/2022/06/how-to-buy-tickets-to-coachella.jpeg?quality=80",
+    headliners: [
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/45eNHdiiabvmbp4erw26rg",
+        },
+        followers: {
+          href: null,
+          total: 1259989,
+        },
+        genres: [
+          "edm",
+          "melodic dubstep",
+          "pop",
+          "pop dance",
+          "tropical house",
+        ],
+        href: "https://api.spotify.com/v1/artists/45eNHdiiabvmbp4erw26rg",
+        id: "45eNHdiiabvmbp4erw26rg",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5eb6b5fbf615ada187ce5e425c8",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab676161000051746b5fbf615ada187ce5e425c8",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f1786b5fbf615ada187ce5e425c8",
+            width: 160,
+          },
+        ],
+        name: "ILLENIUM",
+        popularity: 72,
+        type: "artist",
+        uri: "spotify:artist:45eNHdiiabvmbp4erw26rg",
+      },
+    ],
+    artists: [
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/2ZRQcIgzPCVaT9XKhXZIzh",
+        },
+        followers: {
+          href: null,
+          total: 819705,
+        },
+        genres: ["dance pop", "edm", "pop", "pop dance", "tropical house"],
+        href: "https://api.spotify.com/v1/artists/2ZRQcIgzPCVaT9XKhXZIzh",
+        id: "2ZRQcIgzPCVaT9XKhXZIzh",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5eb3438d570442b657621abc703",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab676161000051743438d570442b657621abc703",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f1783438d570442b657621abc703",
+            width: 160,
+          },
+        ],
+        name: "Gryffin",
+        popularity: 71,
+        type: "artist",
+        uri: "spotify:artist:2ZRQcIgzPCVaT9XKhXZIzh",
+      },
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/0jNDKefhfSbLR9sFvcPLHo",
+        },
+        followers: {
+          href: null,
+          total: 661924,
+        },
+        genres: [
+          "edm",
+          "electro house",
+          "electronic trap",
+          "electropop",
+          "future bass",
+          "pop dance",
+          "pop edm",
+          "vapor twitch",
+        ],
+        href: "https://api.spotify.com/v1/artists/0jNDKefhfSbLR9sFvcPLHo",
+        id: "0jNDKefhfSbLR9sFvcPLHo",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5ebbea280428d4ffabf1d7b0095",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab67616100005174bea280428d4ffabf1d7b0095",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f178bea280428d4ffabf1d7b0095",
+            width: 160,
+          },
+        ],
+        name: "San Holo",
+        popularity: 59,
+        type: "artist",
+        uri: "spotify:artist:0jNDKefhfSbLR9sFvcPLHo",
+      },
+    ],
+    link: "https://fvdedinthepark.frontgatetickets.com/",
+  },
+  {
+    id: 5,
+    saved: false,
+    date: "2022-03-10",
+    name: "Ultra",
+    city: "Miami",
+    state: "FL",
+    img: "https://cdn.happeningnext.com/events7/banners/7e1e61b3719854a4a5fa021cbddadbc3902dc613d209599d239f46b0e8eefebe-rimg-w960-h356-gmir.jpg?v=1654308104",
+    headliners: [
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/45eNHdiiabvmbp4erw26rg",
+        },
+        followers: {
+          href: null,
+          total: 1259989,
+        },
+        genres: [
+          "edm",
+          "melodic dubstep",
+          "pop",
+          "pop dance",
+          "tropical house",
+        ],
+        href: "https://api.spotify.com/v1/artists/45eNHdiiabvmbp4erw26rg",
+        id: "45eNHdiiabvmbp4erw26rg",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5eb6b5fbf615ada187ce5e425c8",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab676161000051746b5fbf615ada187ce5e425c8",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f1786b5fbf615ada187ce5e425c8",
+            width: 160,
+          },
+        ],
+        name: "ILLENIUM",
+        popularity: 72,
+        type: "artist",
+        uri: "spotify:artist:45eNHdiiabvmbp4erw26rg",
+      },
+    ],
+    artists: [
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/2ZRQcIgzPCVaT9XKhXZIzh",
+        },
+        followers: {
+          href: null,
+          total: 819705,
+        },
+        genres: ["dance pop", "edm", "pop", "pop dance", "tropical house"],
+        href: "https://api.spotify.com/v1/artists/2ZRQcIgzPCVaT9XKhXZIzh",
+        id: "2ZRQcIgzPCVaT9XKhXZIzh",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5eb3438d570442b657621abc703",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab676161000051743438d570442b657621abc703",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f1783438d570442b657621abc703",
+            width: 160,
+          },
+        ],
+        name: "Gryffin",
+        popularity: 71,
+        type: "artist",
+        uri: "spotify:artist:2ZRQcIgzPCVaT9XKhXZIzh",
+      },
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/0jNDKefhfSbLR9sFvcPLHo",
+        },
+        followers: {
+          href: null,
+          total: 661924,
+        },
+        genres: [
+          "edm",
+          "electro house",
+          "electronic trap",
+          "electropop",
+          "future bass",
+          "pop dance",
+          "pop edm",
+          "vapor twitch",
+        ],
+        href: "https://api.spotify.com/v1/artists/0jNDKefhfSbLR9sFvcPLHo",
+        id: "0jNDKefhfSbLR9sFvcPLHo",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5ebbea280428d4ffabf1d7b0095",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab67616100005174bea280428d4ffabf1d7b0095",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f178bea280428d4ffabf1d7b0095",
+            width: 160,
+          },
+        ],
+        name: "San Holo",
+        popularity: 59,
+        type: "artist",
+        uri: "spotify:artist:0jNDKefhfSbLR9sFvcPLHo",
+      },
+    ],
+    link: "https://fvdedinthepark.frontgatetickets.com/",
+  },
+  {
+    id: 6,
+    saved: false,
+    date: "2022-05-09",
+    name: "EDC Las Vegas",
+    city: "Las Vegas",
+    state: "NV",
+    img: "https://d3vhc53cl8e8km.cloudfront.net/hello-staging/wp-content/uploads/2017/12/13120224/EDC-hero-image-972x486.jpg",
+    headliners: [
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/45eNHdiiabvmbp4erw26rg",
+        },
+        followers: {
+          href: null,
+          total: 1259989,
+        },
+        genres: [
+          "edm",
+          "melodic dubstep",
+          "pop",
+          "pop dance",
+          "tropical house",
+        ],
+        href: "https://api.spotify.com/v1/artists/45eNHdiiabvmbp4erw26rg",
+        id: "45eNHdiiabvmbp4erw26rg",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5eb6b5fbf615ada187ce5e425c8",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab676161000051746b5fbf615ada187ce5e425c8",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f1786b5fbf615ada187ce5e425c8",
+            width: 160,
+          },
+        ],
+        name: "ILLENIUM",
+        popularity: 72,
+        type: "artist",
+        uri: "spotify:artist:45eNHdiiabvmbp4erw26rg",
+      },
+    ],
+    artists: [
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/2ZRQcIgzPCVaT9XKhXZIzh",
+        },
+        followers: {
+          href: null,
+          total: 819705,
+        },
+        genres: ["dance pop", "edm", "pop", "pop dance", "tropical house"],
+        href: "https://api.spotify.com/v1/artists/2ZRQcIgzPCVaT9XKhXZIzh",
+        id: "2ZRQcIgzPCVaT9XKhXZIzh",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5eb3438d570442b657621abc703",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab676161000051743438d570442b657621abc703",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f1783438d570442b657621abc703",
+            width: 160,
+          },
+        ],
+        name: "Gryffin",
+        popularity: 71,
+        type: "artist",
+        uri: "spotify:artist:2ZRQcIgzPCVaT9XKhXZIzh",
+      },
+      {
+        external_urls: {
+          spotify: "https://open.spotify.com/artist/0jNDKefhfSbLR9sFvcPLHo",
+        },
+        followers: {
+          href: null,
+          total: 661924,
+        },
+        genres: [
+          "edm",
+          "electro house",
+          "electronic trap",
+          "electropop",
+          "future bass",
+          "pop dance",
+          "pop edm",
+          "vapor twitch",
+        ],
+        href: "https://api.spotify.com/v1/artists/0jNDKefhfSbLR9sFvcPLHo",
+        id: "0jNDKefhfSbLR9sFvcPLHo",
+        images: [
+          {
+            height: 640,
+            url: "https://i.scdn.co/image/ab6761610000e5ebbea280428d4ffabf1d7b0095",
+            width: 640,
+          },
+          {
+            height: 320,
+            url: "https://i.scdn.co/image/ab67616100005174bea280428d4ffabf1d7b0095",
+            width: 320,
+          },
+          {
+            height: 160,
+            url: "https://i.scdn.co/image/ab6761610000f178bea280428d4ffabf1d7b0095",
+            width: 160,
+          },
+        ],
+        name: "San Holo",
+        popularity: 59,
+        type: "artist",
+        uri: "spotify:artist:0jNDKefhfSbLR9sFvcPLHo",
+      },
+    ],
+    link: "https://fvdedinthepark.frontgatetickets.com/",
+  },
 ];
