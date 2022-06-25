@@ -2,13 +2,21 @@ import React from "react";
 import "./FestivalCard.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {FaRegHeart, FaHeart } from 'react-icons/fa';
-import { saveFestival } from "../../redux/festivals/reducer";
+import { FaRegHeart, FaHeart, FaTimes } from "react-icons/fa";
+import { deleteFestival, saveFestival } from "../../redux/festivals/reducer";
 
 export default function FestivalCard({ festival }) {
   const dispatch = useDispatch();
 
-  const { date, name, city, state, img, saved, id } = festival;
+  const {
+    date,
+    name,
+    city,
+    state,
+    img = "https://cdn1.matadornetwork.com/blogs/1/2021/08/Music-festivals-2021-North-Coast-Festival-Chicago-1200x854.jpeg",
+    saved,
+    id,
+  } = festival;
   const dateParsed = new Date(date);
 
   // from: https://stackoverflow.com/questions/12246394/how-to-get-month-from-string-in-javascript
@@ -21,13 +29,29 @@ export default function FestivalCard({ festival }) {
   const handleSaveButtonClick = (e) => {
     e.preventDefault();
     dispatch(saveFestival(id));
-  }
+  };
+
+  const handleDeleteButtonClick = (e) => {
+    e.preventDefault();
+    dispatch(deleteFestival(id));
+  };
 
   return (
     <div className="festival-card">
-      <button className="save-btn" onClick={handleSaveButtonClick}>
-        { saved ? (<FaHeart color="red" size={20}/>) : <FaRegHeart size={20}/>}
-      </button>
+      <div className="btn">
+        <button className="save-btn" onClick={handleSaveButtonClick}>
+          {saved ? (
+            <FaHeart color="red" size={24} />
+          ) : (
+            <FaRegHeart size={24} color="white" />
+          )}
+        </button>
+        {!saved && (
+          <button className="delete-btn" onClick={handleDeleteButtonClick}>
+            <FaTimes color="white" size={20} />
+          </button>
+        )}
+      </div>
       <div className="festival-information">
         <div className="date-container">
           <div className="festival-day">{day}</div>
