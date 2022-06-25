@@ -3,7 +3,6 @@ import { REQUEST_STATE } from "../utils";
 import { getUpcomingArtistEventsAsync } from "./thunks";
 
 const INITIAL_STATE = {
-  // TODO: festivals should be blank in the beginning
   festivals: [],
   getEventsStatus: null,
   error: null,
