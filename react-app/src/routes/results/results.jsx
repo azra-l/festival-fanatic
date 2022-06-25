@@ -28,6 +28,8 @@ export default function Results() {
     (festival) => festival.saved === true
   );
 
+
+  // TODO: Need make festival cards responsive for mobile
   return (
     <>
       <Navbar />

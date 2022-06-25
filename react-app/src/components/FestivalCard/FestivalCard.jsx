@@ -8,6 +8,8 @@ import { deleteFestival, saveFestival } from "../../redux/festivals/reducer";
 export default function FestivalCard({ festival }) {
   const dispatch = useDispatch();
 
+// TODO: Use a non-hard-coded image
+
   const {
     date,
     name,
