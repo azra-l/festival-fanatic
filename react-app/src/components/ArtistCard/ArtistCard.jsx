@@ -11,10 +11,12 @@ export default function ArtistCard({ artist }) {
 
             <div className="artist-info">
                 <div>{name}</div>
-                <a target="_blank" rel="noreferrer" href={external_urls.spotify} className="artist-link">
+                {/* TODO: update external urls to use "safe" urls */}
+                <a target="_blank" rel="noreferrer" href={external_urls} className="artist-link">
                     Spotify URL
                 </a>
             </div>
         </div>
     );
 }
+

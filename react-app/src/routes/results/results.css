@@ -3,3 +3,9 @@ h2 {
   margin: 0.5rem 1rem;
   text-align: center;
 }
+
+.festival-results-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
