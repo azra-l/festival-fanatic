@@ -22,6 +22,17 @@ const getUpcomingArtistEvents = async (artistName) => {
   const parsedResults = [];
 
   res.forEach((result) => {
+    const {lineup} = result;
+    const artists = [];
+    lineup.forEach((player) => {
+      const artist = {
+        name: player.name,
+        external_urls: `https://open.spotify.com/artist/${player.spotify_id}`,
+        id: player.spotify_id,
+      }
+      artists.push(artist);
+    });
+    
     const festival = {
       id: result.id,
       date: result.datetime,
@@ -29,6 +40,8 @@ const getUpcomingArtistEvents = async (artistName) => {
       city: result.venue.city,
       state: result.venue.region,
       saved: false,
+      artists,
+      link: result.url,
     };
     parsedResults.push(festival);
   });
