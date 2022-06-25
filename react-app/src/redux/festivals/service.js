@@ -36,7 +36,7 @@ const getUpcomingArtistEvents = async (artistName) => {
     const festival = {
       id: result.id,
       date: result.datetime,
-      name: result.name,
+      name: result.venue.name,
       city: result.venue.city,
       state: result.venue.region,
       saved: false,
