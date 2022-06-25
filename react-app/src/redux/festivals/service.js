@@ -17,8 +17,8 @@ const getUpcomingArtistEvents = async (artistName) => {
     const errorMsg = data?.message;
     throw new Error(errorMsg);
   }
-
-  const res = fest[0].eventsList;
+ 
+  const res = data.eventsList;
   const parsedResults = [];
 
   res.forEach((result) => {
