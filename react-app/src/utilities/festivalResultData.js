@@ -1,6 +1,7 @@
 export const dummyFestivals = [
   {
     id: 1,
+    saved: false,
     date: "2022-10-10",
     name: "Fvded in the Park",
     city: "Vancouver",
@@ -128,6 +129,7 @@ export const dummyFestivals = [
   },
   {
     id: 2,
+    saved: true,
     date: "2022-12-10",
     name: "Contact",
     city: "Vancouver",
