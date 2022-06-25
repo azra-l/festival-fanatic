@@ -64,3 +64,14 @@ Figma: ​​https://www.figma.com/file/jXiy6tmnOk2jeyhyI6hED0/CPSC-455---Design
 
 
 
+## How to run
+# Frontend, download docker desktop, run it, then open visual studio code
+1. `cd react-app`
+2. `npm i`
+3. `npm start`
+
+# Backend
+1. Make sure you have .env file
+2. `cd server`
+3. `npm i`
+4. `npm run watch`
