@@ -27,6 +27,7 @@ const getUpcomingArtistEvents = async (artistName) => {
     lineup.forEach((player) => {
       const artist = {
         name: player.name,
+        // TODO: Have to modify to account for various external urls
         external_urls: `https://open.spotify.com/artist/${player.spotify_id}`,
         id: player.spotify_id,
       }
