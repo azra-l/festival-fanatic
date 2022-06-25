@@ -1,34 +1,46 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { REQUEST_STATE } from '../utils';
-import { getUpcomingArtistEventsAsync } from './thunks';
+import { createSlice } from "@reduxjs/toolkit";
+import { REQUEST_STATE } from "../utils";
+import { getUpcomingArtistEventsAsync } from "./thunks";
 
 const INITIAL_STATE = {
-    // TODO: festivals should be blank in the beginning
-    festivals: [],
-    getEventsStatus: null,
-    error: null
-}
+  // TODO: festivals should be blank in the beginning
+  festivals: [],
+  getEventsStatus: null,
+  error: null,
+};
 
 const festivalsSlice = createSlice({
-    name: 'festivals',
-    initialState: INITIAL_STATE,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(getUpcomingArtistEventsAsync.pending, (state) => {
-                state.getEventsStatus = REQUEST_STATE.PENDING;
-                state.error = null;
-            })
-            .addCase(getUpcomingArtistEventsAsync.fulfilled, (state, action) => {
-                state.getEventsStatus = REQUEST_STATE.FULFILLED;
-                state.festivals = action.payload;
-            })
-            .addCase(getUpcomingArtistEventsAsync.rejected, (state, action) => {
-                state.getEventsStatus = REQUEST_STATE.REJECTED;
-                state.error = action.error;
-            })
-    }
-
+  name: "festivals",
+  initialState: INITIAL_STATE,
+  reducers: {
+    saveFestival: (state, action) => {
+      const id = action.payload;
+      const festival = state.festivals.find((festival) => festival.id === id);
+      festival.saved = !festival.saved;
+    },
+    deleteFestival: (state, action) => {
+      const id = action.payload;
+      state.festivals = state.festivals.filter(
+        (festival) => festival.id !== id
+      );
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUpcomingArtistEventsAsync.pending, (state) => {
+        state.getEventsStatus = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(getUpcomingArtistEventsAsync.fulfilled, (state, action) => {
+        state.getEventsStatus = REQUEST_STATE.FULFILLED;
+        state.festivals = action.payload;
+      })
+      .addCase(getUpcomingArtistEventsAsync.rejected, (state, action) => {
+        state.getEventsStatus = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      });
+  },
 });
 
+export const { saveFestival, deleteFestival } = festivalsSlice.actions;
 export default festivalsSlice.reducer;
