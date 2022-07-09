@@ -2,7 +2,7 @@
   margin: 2rem auto;
   background-color: #6b6b69;
   height: 200px;
-  width: 350px;
+  width: 400px;
   box-shadow: 0.05rem 0.1rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45);
   border-radius: 0.25rem;
 }
@@ -19,6 +19,7 @@
 }
 
 .date-container {
+  flex-direction: column;
   text-align: center;
 }
 

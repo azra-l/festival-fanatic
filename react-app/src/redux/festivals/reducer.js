@@ -23,6 +23,11 @@ const festivalsSlice = createSlice({
         (festival) => festival.id !== id
       );
     },
+    archiveFestival: (state, action) => {
+      const id = action.payload;
+      const festival = state.festivals.find((festival) => festival.id === id);
+      festival.archived = !festival.archived;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -41,5 +46,5 @@ const festivalsSlice = createSlice({
   },
 });
 
-export const { saveFestival, deleteFestival } = festivalsSlice.actions;
+export const { saveFestival, deleteFestival, archiveFestival } = festivalsSlice.actions;
 export default festivalsSlice.reducer;

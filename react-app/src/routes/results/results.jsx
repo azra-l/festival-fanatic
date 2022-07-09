@@ -16,18 +16,25 @@ export default function Results() {
 
   useEffect(() => {
     dispatch(getUpcomingArtistEventsAsync("Illenium"));
-  }, []);
+  }, [dispatch]);
 
-  const dummyFestivals = useSelector((state) => state.festivals.festivals);
+  const festivals = useSelector((state) => state.festivals.festivals);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const savedFestivals = dummyFestivals.filter(
+  const savedFestivals = festivals.filter(
     (festival) => festival.saved === true
   );
 
+  const festivalsToDisplay = festivals.filter(
+    (festival) => festival.archived === false
+  );
+
+  const archivedFestivals = festivals.filter(
+    (festival) => festival.archived === true
+  );
 
   // TODO: Need make festival cards responsive for mobile
   return (
@@ -38,16 +45,17 @@ export default function Results() {
           <TabList onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Festivals for you" value="1" sx={{ color: "white" }} />
             <Tab label="Saved Festivals" value="2" sx={{ color: "white" }} />
+            <Tab label="Archived Festivals" value="3" sx={{ color: "white" }} />
           </TabList>
         </Box>
         <TabPanel value="1">
           <div className="festival-results-container">
-            {dummyFestivals ? (
-              dummyFestivals.map((festival) => (
+            {festivalsToDisplay ? (
+              festivalsToDisplay.map((festival) => (
                 <FestivalCard festival={festival} key={festival.id} />
               ))
             ) : (
-              <p>Loading or Error, No data {JSON.stringify(dummyFestivals)}</p>
+              <p>Loading or Error, No data {JSON.stringify(festivals)}</p>
             )}
           </div>
         </TabPanel>
@@ -59,6 +67,17 @@ export default function Results() {
               ))
             ) : (
               <p>You have no saved festivals</p>
+            )}
+          </div>
+        </TabPanel>
+        <TabPanel value="3">
+          <div className="festival-results-container">
+            {archivedFestivals ? (
+              archivedFestivals.map((festival) => (
+                <FestivalCard festival={festival} key={festival.id} />
+              ))
+            ) : (
+              <p>You have no archived festivals</p>
             )}
           </div>
         </TabPanel>
