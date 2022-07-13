@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request'); // "Request" library
+var md5 = require('md5');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -88,10 +89,12 @@ router.get('/callback', function (req, res, next) {
         // https://blog.logrocket.com/how-to-secure-react-app-login-authentication/
         // https://dev.to/franciscomendes10866/using-cookies-with-jwt-in-node-js-8fn
 
-
+        let hashedId;
         // use the access token to access the Spotify Web API
         request.get(options, function (error, response, body) {
           console.log(body);
+          hashedId = md5(body.id);
+          
         });
 
         console.log(access_token)
@@ -109,7 +112,7 @@ router.get('/callback', function (req, res, next) {
           refresh_token: refresh_token
         }, cookieOptions)
 
-
+        
         // we can also pass the token to the browser to make requests from there
         res.redirect('http://localhost:3000/'
 
