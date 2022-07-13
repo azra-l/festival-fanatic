@@ -5,7 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
+
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -18,6 +20,11 @@ liveReloadServer.server.once("connection", () => {
   }, 100);
 });
 
+mongoose
+	.connect(process.env.MONGO_DB_CLUSTER, { useNewUrlParser: true })
+	.then(() => {
+		console.log('connected to db');
+	})
 
 var app = express();
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
@@ -33,5 +40,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/bandsintown', bandsInTownRouter);
+
 
 module.exports = app;
