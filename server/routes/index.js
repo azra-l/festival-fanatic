@@ -119,20 +119,23 @@ router.get("/callback", async function (req, res, next) {
 
             request.get(options, async function (error, response, body) {
               hashedId = md5(body.id);
-            });
+              const user = {
+                userId: hashedId,
+                festivals: [],
+              };
 
-            const user = new User({ userId: hashedId, festivals: [] });
-            await user.save();
-
-            if(userUpdate){
               festivalResults.eventsList.forEach(async (event) => {
                 const festival = await parseFestivalResults(event);
                 console.log(festival);
                 user.festivals.push(festival);
-                await user.save();
               });
-            }
-           
+              console.log(`hashed ID is: ${hashedId}`);
+
+              await User.findOneAndUpdate({ userId: hashedId }, user, {
+                new: true,
+                upsert: true,
+              });
+            });
           } catch (e) {}
         } catch (e) {
           console.log(e);
