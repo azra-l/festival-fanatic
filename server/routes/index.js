@@ -5,8 +5,6 @@ var md5 = require("md5");
 var axios = require("axios");
 
 const User = require("../models/User");
-const Artist = require("../models/Artist");
-const Festival = require("../models/Festival");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -117,25 +115,48 @@ router.get("/callback", async function (req, res, next) {
               listOfArtists
             );
 
-            request.get(options, async function (error, response, body) {
-              hashedId = md5(body.id);
-              const user = {
-                userId: hashedId,
-              };
-              await User.findOneAndUpdate({ userId: hashedId }, user, {
-                new: true,
-                upsert: true,
-              });
+            try {
+              const userDetailsResponse = await axios.get(
+                "https://api.spotify.com/v1/me",
+                {
+                  headers: {
+                    Authorization: "Bearer " + access_token,
+                  },
+                }
+              );
 
-              const festivals = parseFestivalResults(festivalResults.eventsList);
-              let userToUpdate = await User.findOne({userId: hashedId});
-              if(userToUpdate){
-                for(const festival of festivals){
-                  userToUpdate.festivals.push(festival);
-                  await userToUpdate.save();
+              if (userDetailsResponse.status === 200) {
+                hashedId = md5(userDetailsResponse.data.id);
+                const user = {
+                  userId: hashedId,
+                };
+                await User.findOneAndUpdate({ userId: hashedId }, user, {
+                  new: true,
+                  upsert: true,
+                });
+
+                const festivals = parseFestivalResults(
+                  festivalResults.eventsList
+                );
+                let userToUpdate = await User.findOne({ userId: hashedId });
+
+                if (userToUpdate) {
+                  for (const festival of festivals) {
+                    await User.updateOne(
+                      {
+                        userId: hashedId,
+                        "festivals.id": { $ne: festival.id },
+                      },
+                      {
+                        $push: { festivals: festival },
+                      }
+                    );
+                  }
                 }
               }
-            });
+            } catch (e) {
+              throw new Error(e);
+            }
           } catch (e) {}
         } catch (e) {
           console.log(e);
@@ -143,11 +164,11 @@ router.get("/callback", async function (req, res, next) {
 
         const cookieOptions = {
           // TODO: Enable it in production
-          httpOnly: true,
+          httpOnly: false,
           secure: true,
           // secure: process.env.NODE_ENV === "production",
         };
-
+        console.log(`hashedId is: ${hashedId}`);
         res.cookie(
           "festivalFanatic",
           {

@@ -12,7 +12,7 @@ const User = new mongoose.Schema({
       country: String,
       venue: String,
       latitude: String,
-      longituse: String,
+      longitude: String,
       saved: Boolean,
       archived: Boolean,
       tickets: String,

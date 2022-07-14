@@ -5,11 +5,11 @@ import { useDispatch } from "react-redux";
 import { FaRegHeart, FaHeart  } from "react-icons/fa";
 import { BsArchive, BsArchiveFill } from "react-icons/bs";
 import {
-  saveFestival,
   archiveFestival,
 } from "../../redux/festivals/reducer";
+import { updateFestivalAsync } from "../../redux/festivals/thunks";
 
-export default function FestivalCard({ festival }) {
+export default function FestivalCard({ festival, user }) {
   const dispatch = useDispatch();
 
   // TODO: Use a non-hard-coded image
@@ -35,12 +35,20 @@ export default function FestivalCard({ festival }) {
 
   const handleSaveButtonClick = (e) => {
     e.preventDefault();
-    dispatch(saveFestival(id));
+    const userObj = {
+      user,
+      festival: {...festival, saved: !saved}
+    }
+    dispatch(updateFestivalAsync(userObj));
   };
 
   const handleArchiveButtonClick = (e) => {
     e.preventDefault();
-    dispatch(archiveFestival(id));
+    const userObj = {
+      user,
+      festival: {...festival, archived: !archived}
+    }
+    dispatch(updateFestivalAsync(userObj));
   };
 
   return (
