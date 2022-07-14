@@ -2,22 +2,27 @@ import React from "react";
 import "./FestivalCard.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { FaRegHeart, FaHeart, FaTimes } from "react-icons/fa";
-import { deleteFestival, saveFestival } from "../../redux/festivals/reducer";
+import { FaRegHeart, FaHeart  } from "react-icons/fa";
+import { BsArchive, BsArchiveFill } from "react-icons/bs";
+import {
+  saveFestival,
+  archiveFestival,
+} from "../../redux/festivals/reducer";
 
 export default function FestivalCard({ festival }) {
   const dispatch = useDispatch();
 
-// TODO: Use a non-hard-coded image
+  // TODO: Use a non-hard-coded image
 
   const {
     date,
     name,
     city,
-    state,
+    region,
     img = "https://cdn1.matadornetwork.com/blogs/1/2021/08/Music-festivals-2021-North-Coast-Festival-Chicago-1200x854.jpeg",
     saved,
     id,
+    archived,
   } = festival;
   const dateParsed = new Date(date);
 
@@ -33,9 +38,9 @@ export default function FestivalCard({ festival }) {
     dispatch(saveFestival(id));
   };
 
-  const handleDeleteButtonClick = (e) => {
+  const handleArchiveButtonClick = (e) => {
     e.preventDefault();
-    dispatch(deleteFestival(id));
+    dispatch(archiveFestival(id));
   };
 
   return (
@@ -48,11 +53,13 @@ export default function FestivalCard({ festival }) {
             <FaRegHeart size={24} color="white" />
           )}
         </button>
-        {!saved && (
-          <button className="delete-btn" onClick={handleDeleteButtonClick}>
-            <FaTimes color="white" size={20} />
-          </button>
-        )}
+        <button className="delete-btn" onClick={handleArchiveButtonClick}>
+          {archived ? (
+            <BsArchiveFill color="white" size={24} />
+          ) : (
+            <BsArchive color="white" size={20} />
+          )}
+        </button>
       </div>
       <div className="festival-information">
         <div className="date-container">
@@ -62,7 +69,7 @@ export default function FestivalCard({ festival }) {
         </div>
         <div className="festival-info">
           <div>{name}</div>
-          <div>{`${city}, ${state}`}</div>
+          <div>{`${city}, ${region}`}</div>
           {/**
            * TODO: Update this link later to view full details component
            */}
