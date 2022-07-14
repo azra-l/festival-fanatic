@@ -1,14 +1,90 @@
 body {
-    color: white;
+  color: white;
 }
 
-.official-page {
-    color: white;
-    display: inline-block;
-    margin: 0 700px;
+.detailed-results-container {
+  width: 75%;
+  margin: 0 auto;
 }
 
-h3 , h4 {
-    text-align: center;
-    margin-top: 50px;
+.logistics-container {
+  background-image: url("https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80");
+  background-color: #a251c4;
+  height: 250px;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  border-radius: 0.5rem;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0.5rem;
+}
+
+.logistics {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.date-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 2rem 1rem;
+}
+
+.date-time p,
+.location p {
+  margin: 0.25rem 0.5rem;
+}
+
+.location-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info {
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.links a {
+  margin: 0 1rem;
+  color: white;
+  text-decoration: none;
+  background-color: #a32ab0;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+}
+
+.lineup {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 1rem 0.5rem 0.5rem 1rem;
+}
+.artist-container {
+  background-color: #69445f;
+  border-radius: 0.5rem;
+}
+
+.artists {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.map {
+    margin: 3rem 15%;
 }
