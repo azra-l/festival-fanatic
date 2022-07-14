@@ -13,5 +13,16 @@ router.delete('/', async function(req, res, next) {
   res.status(204).send();
 });
 
+/* GET  specific user */
+router.get('/:id', async function(req, res, next) {
+  const user = await User.findOne({userId: req.params.id});
+
+  if(!user){
+    res.status(404).send('That user does not exist');
+  } else {
+    res.send(user);
+  }
+});
+
 
 module.exports = router;

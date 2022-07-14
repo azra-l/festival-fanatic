@@ -121,20 +121,20 @@ router.get("/callback", async function (req, res, next) {
               hashedId = md5(body.id);
               const user = {
                 userId: hashedId,
-                festivals: [],
               };
-
-              festivalResults.eventsList.forEach(async (event) => {
-                const festival = await parseFestivalResults(event);
-                console.log(festival);
-                user.festivals.push(festival);
-              });
-              console.log(`hashed ID is: ${hashedId}`);
-
               await User.findOneAndUpdate({ userId: hashedId }, user, {
                 new: true,
                 upsert: true,
               });
+
+              const festivals = parseFestivalResults(festivalResults.eventsList);
+              let userToUpdate = await User.findOne({userId: hashedId});
+              if(userToUpdate){
+                for(const festival of festivals){
+                  userToUpdate.festivals.push(festival);
+                  await userToUpdate.save();
+                }
+              }
             });
           } catch (e) {}
         } catch (e) {
@@ -267,35 +267,36 @@ const getBandsInTownEvents = async (artistEventRequestArray, listOfArtists) => {
   }
 };
 
-const parseFestivalResults = async (result) => {
-  const festival = new Festival({
-    id: result.id,
-    date: result.datetime,
-    name: result.title === "" ? result.venue.name : result.title,
-    city: result.venue.city,
-    region: result.venue.region,
-    country: result.venue.country,
-    venue: result.venue.name,
-    latitude: result.venue.latitude,
-    longitude: result.venue.longitude,
-    saved: false,
-    archived: false,
-    tickets: result.offers[0] ? result.offers[0].url : "",
-    link: result.url,
+const parseFestivalResults = (results) => {
+  const festivals = results.map((result) => {
+    const { lineup } = result;
+
+    const artists = lineup.map((artist) => ({
+      id: artist.id,
+      name: artist.name,
+      external_urls: artist.external_urls,
+    }));
+
+    const festival = {
+      id: result.id,
+      date: result.datetime,
+      name: result.title === "" ? result.venue.name : result.title,
+      city: result.venue.city,
+      region: result.venue.region,
+      country: result.venue.country,
+      venue: result.venue.name,
+      latitude: result.venue.latitude,
+      longitude: result.venue.longitude,
+      saved: false,
+      archived: false,
+      tickets: result.offers[0] ? result.offers[0].url : "",
+      link: result.url,
+      artists: artists,
+    };
+    return festival;
   });
 
-  const { lineup } = result;
-  lineup.forEach(async (player) => {
-    const artist = new Artist({
-      id: player.id,
-      name: player.name,
-      external_urls: player.external_urls,
-    });
-    await artist.save();
-    festival.artists.push(artist);
-  });
-  await festival.save();
-  return festival;
+  return festivals;
 };
 
 router.get("/checkcookie", function (req, res, next) {
