@@ -15,7 +15,7 @@ export default function Results() {
   const [value, setValue] = useState("1");
 
   useEffect(() => {
-    dispatch(getUpcomingArtistEventsAsync("Illenium"));
+    dispatch(getUpcomingArtistEventsAsync());
   }, [dispatch]);
 
   const festivals = useSelector((state) => state.festivals.festivals);
