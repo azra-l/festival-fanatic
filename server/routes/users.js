@@ -13,9 +13,16 @@ router.delete("/", async function (req, res, next) {
   res.status(204).send();
 });
 
+router.get("/test-session", async function (req, res, next) {
+
+  res.status(200).json({ message: req.session })
+
+});
+
 /* GET  specific user */
-router.get("/:id", async function (req, res, next) {
-  const user = await User.findOne({ userId: req.params.id });
+router.get("/self", async function (req, res, next) {
+  const userIdFromSession = req.session.user.userId
+  const user = await User.findOne({ userId: userIdFromSession });
 
   if (!user) {
     res.status(404).send("That user does not exist");
@@ -25,21 +32,23 @@ router.get("/:id", async function (req, res, next) {
 });
 
 /* PATCH Festival */
-router.patch("/:id", async function (req, res, next) {
+router.patch("/self", async function (req, res, next) {
   const festivalId = req.body.id;
   const dataToUpdate = req.body;
+  const userIdFromSession = req.session.user.userId
+
   // https://www.mongodb.com/community/forums/t/updating-a-nested-object-in-a-document-using-mongoose/141865
   try {
     const updated = await User.findOneAndUpdate(
-      { userId: req.params.id, "festivals.id": festivalId },
+      { userId: userIdFromSession, "festivals.id": festivalId },
       { $set: { "festivals.$": dataToUpdate } },
-      {new: true},
+      { new: true },
     );
-      if(!updated){
-        res.status(404).send();
-      } else {
-        res.send(updated);
-      }
+    if (!updated) {
+      res.status(404).send();
+    } else {
+      res.send(updated);
+    }
   } catch (e) {
     res.status(500).send();
   }

@@ -9,19 +9,16 @@ import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
-import {useCookies} from "react-cookie";
 
 export default function Results() {
   const dispatch = useDispatch();
   const [value, setValue] = useState("1");
-  const [cookies, setCookie, removeCookie] = useCookies(['festivalFanatic']);
 
-  const user = cookies.festivalFanatic.user;
 
 
 
   useEffect(() => {
-    dispatch(getUpcomingArtistEventsAsync(user));
+    dispatch(getUpcomingArtistEventsAsync());
   }, [dispatch]);
 
   const festivals = useSelector((state) => state.festivals.festivals);
@@ -58,7 +55,7 @@ export default function Results() {
           <div className="festival-results-container">
             {festivalsToDisplay ? (
               festivalsToDisplay.map((festival) => (
-                <FestivalCard festival={festival} key={festival.id} user = {user}/>
+                <FestivalCard festival={festival} key={festival.id} />
               ))
             ) : (
               <p>Loading or Error, No data {JSON.stringify(festivals)}</p>
@@ -69,7 +66,7 @@ export default function Results() {
           <div className="festival-results-container">
             {savedFestivals ? (
               savedFestivals.map((festival) => (
-                <FestivalCard festival={festival} key={festival.id} user = {user}/>
+                <FestivalCard festival={festival} key={festival.id} />
               ))
             ) : (
               <p>You have no saved festivals</p>
@@ -80,7 +77,7 @@ export default function Results() {
           <div className="festival-results-container">
             {archivedFestivals ? (
               archivedFestivals.map((festival) => (
-                <FestivalCard festival={festival} key={festival.id} user = {user}/>
+                <FestivalCard festival={festival} key={festival.id} />
               ))
             ) : (
               <p>You have no archived festivals</p>
