@@ -11,7 +11,7 @@ export default function Navbar() {
         Log in
       </Link>
       {/* Logout of spotify AKA invalidate the tokens: https://stackoverflow.com/questions/24408444/how-to-logout-user-from-spotify-after-authorization-and-web-api-call-is-over */}
-      <a href="https://accounts.spotify.com/en/logout" target="_blank" className="nav-link" rel="noreferrer">
+      <a href="http://localhost:3001/logout" className="nav-link" rel="noreferrer">
         Log out
       </a>
     </nav>
