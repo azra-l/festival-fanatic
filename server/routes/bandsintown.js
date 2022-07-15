@@ -21,7 +21,6 @@ router.get('/artistevent', function (req, res, next) {
 
 router.get('/all-events', function (req, res, next) {
 
-    console.log("If this is blank, you need to login. The cookies from all events is ", JSON.stringify(req.cookies.festivalFanatic.access_token))
     let artistEventRequestArray = []
     let listOfArtists = []
 
@@ -29,7 +28,7 @@ router.get('/all-events', function (req, res, next) {
 
         axios.get('https://api.spotify.com/v1/me/top/artists', {
             headers: {
-                Authorization: 'Bearer ' + req.cookies.festivalFanatic.access_token //the token is a variable which holds the token
+                Authorization: 'Bearer ' + req.session.user.access_token //the token is a variable which holds the token
             }
         }).then(spotifyResponse => {
             // console.log("spotifyResponse.statusCode", spotifyResponse)

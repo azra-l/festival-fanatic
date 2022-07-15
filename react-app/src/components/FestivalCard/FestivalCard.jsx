@@ -4,9 +4,6 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaRegHeart, FaHeart  } from "react-icons/fa";
 import { BsArchive, BsArchiveFill } from "react-icons/bs";
-import {
-  archiveFestival,
-} from "../../redux/festivals/reducer";
 import { updateFestivalAsync } from "../../redux/festivals/thunks";
 
 export default function FestivalCard({ festival, user }) {
@@ -21,7 +18,6 @@ export default function FestivalCard({ festival, user }) {
     region,
     img = "https://cdn1.matadornetwork.com/blogs/1/2021/08/Music-festivals-2021-North-Coast-Festival-Chicago-1200x854.jpeg",
     saved,
-    id,
     archived,
   } = festival;
   const dateParsed = new Date(date);

@@ -41,13 +41,13 @@ router.get("/login", function (req, res, next) {
   var scope = "user-read-private user-top-read";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
-      new URLSearchParams({
-        response_type: "code",
-        client_id: client_id,
-        scope: scope,
-        redirect_uri: redirect_uri,
-        state: state,
-      }).toString()
+    new URLSearchParams({
+      response_type: "code",
+      client_id: client_id,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state,
+    }).toString()
   );
 });
 
@@ -62,9 +62,9 @@ router.get("/callback", async function (req, res, next) {
   if (state === null || state !== storedState) {
     res.redirect(
       "/#" +
-        new URLSearchParams({
-          error: "state_mismatch",
-        }).toString()
+      new URLSearchParams({
+        error: "state_mismatch",
+      }).toString()
     );
   } else {
     res.clearCookie(stateKey);
@@ -99,7 +99,6 @@ router.get("/callback", async function (req, res, next) {
         let hashedId;
         // use the access token to access the Spotify Web API
 
-        console.log(access_token);
 
         // get user's top artists
 
@@ -126,10 +125,21 @@ router.get("/callback", async function (req, res, next) {
               );
 
               if (userDetailsResponse.status === 200) {
+
+                // Successfully logged in
                 hashedId = md5(userDetailsResponse.data.id);
                 const user = {
                   userId: hashedId,
                 };
+
+                // Set user's session
+                req.session.user = {
+                  access_token: access_token,
+                  refresh_token: refresh_token,
+                  userId: hashedId,
+                }
+                console.log("successfully logged in")
+
                 await User.findOneAndUpdate({ userId: hashedId }, user, {
                   new: true,
                   upsert: true,
@@ -157,7 +167,9 @@ router.get("/callback", async function (req, res, next) {
             } catch (e) {
               throw new Error(e);
             }
-          } catch (e) {}
+          } catch (e) {
+            throw new Error(e);
+          }
         } catch (e) {
           console.log(e);
         }
@@ -180,13 +192,13 @@ router.get("/callback", async function (req, res, next) {
         );
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect("http://localhost:3000/");
+        res.redirect("http://localhost:3000/results");
       } else {
         res.redirect(
           "/#" +
-            new URLSearchParams({
-              error: "invalid_token",
-            }).toString()
+          new URLSearchParams({
+            error: "invalid_token",
+          }).toString()
         );
       }
     });
@@ -324,15 +336,15 @@ router.get("/checkcookie", function (req, res, next) {
   try {
     // const data = jwt.verify(token, "YOUR_SECRET_KEY");
 
-    const token = req.cookies.festivalFanatic.access_token;
-    console.log("The req cookie", req.cookies.festivalFanatic.access_token);
+    const token = req.session.user;
+    console.log("The req session", req.session.user);
     if (!token) {
       return res.sendStatus(403);
     }
-    console.log("The cookies are ", req.cookies.festivalFanatic);
+    console.log("The session is ", req.session);
     return res.status(200).json({
       message: "Your token is valid",
-      cookie: req.cookies.festivalFanatic,
+      cookie: req.session,
     });
     // Almost done
   } catch {
@@ -340,8 +352,24 @@ router.get("/checkcookie", function (req, res, next) {
   }
 });
 
-router.get("/logout", function (req, res, next) {
-  res.clearCookie("festivalFanatic");
+router.get('/logout', function (req, res, next) {
+
+  if (req.session) {
+    req.session.destroy(error => {
+      if (error) {
+        res.status(500).json({ message: "You can check out anytime you like but you can never leave" })
+      } else {
+        res.status(200).json({ message: "Successfully logged out" })
+      }
+    })
+
+  } else {
+    res.status(200).json({ message: "Not logged in, no session to DESTROYY" })
+  }
+
+
+  res.clearCookie("festivalFanatic")
+
 
   // const token = req.cookies.access_token;
   res.redirect("https://accounts.spotify.com/en/logout");
