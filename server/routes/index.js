@@ -174,23 +174,6 @@ router.get("/callback", async function (req, res, next) {
           console.log(e);
         }
 
-        const cookieOptions = {
-          // TODO: Enable it in production
-          httpOnly: false,
-          secure: true,
-          // secure: process.env.NODE_ENV === "production",
-        };
-        console.log(`hashedId is: ${hashedId}`);
-        res.cookie(
-          "festivalFanatic",
-          {
-            access_token: access_token,
-            refresh_token: refresh_token,
-            user: hashedId,
-          },
-          cookieOptions
-        );
-
         // we can also pass the token to the browser to make requests from there
         res.redirect("http://localhost:3000/results");
       } else {
@@ -359,20 +342,20 @@ router.get('/logout', function (req, res, next) {
       if (error) {
         res.status(500).json({ message: "You can check out anytime you like but you can never leave" })
       } else {
-        res.status(200).json({ message: "Successfully logged out" })
+        // res.status(200).json({ message: "Successfully logged out" })
+        res.redirect("http://localhost:3000");
+
       }
     })
 
   } else {
     res.status(200).json({ message: "Not logged in, no session to DESTROYY" })
+
+    // const token = req.cookies.access_token;
+    res.redirect("http://localhost:3000");
   }
 
 
-  res.clearCookie("festivalFanatic")
-
-
-  // const token = req.cookies.access_token;
-  res.redirect("https://accounts.spotify.com/en/logout");
 });
 
 module.exports = router;
