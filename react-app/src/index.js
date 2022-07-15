@@ -9,24 +9,21 @@ import LogIn from "./routes/login/login";
 import DetailedResults from "./routes/detailed-results/detailed-results";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-import { CookiesProvider } from "react-cookie";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <CookiesProvider>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="login" element={<LogIn />} />
-          <Route path="results" element={<Results />} />
-          <Route path="top-artists" element={<TopArtists />} />
-          <Route
-            path="results/detailed-results"
-            element={<DetailedResults />}
-          />
-        </Routes>
-      </BrowserRouter>
-    </Provider>
-  </CookiesProvider>
+  <Provider store={store}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="login" element={<LogIn />} />
+        <Route path="results" element={<Results />} />
+        <Route path="top-artists" element={<TopArtists />} />
+        <Route
+          path="results/detailed-results"
+          element={<DetailedResults />}
+        />
+      </Routes>
+    </BrowserRouter>
+  </Provider>
 );
