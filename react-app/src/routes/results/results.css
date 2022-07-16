@@ -10,7 +10,7 @@ h2 {
 @media (min-width: 0px) {
   .festival-results-container { grid-template-columns: repeat(1, 1fr); }
 }
-@media (min-width: 700px) {
+@media (min-width: 1000px) {
   .festival-results-container { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 1400px) {
