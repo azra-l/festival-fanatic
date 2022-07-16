@@ -31,5 +31,5 @@ services:
     restart: unless-stopped
     ports:
       - 27017:27017
-      - 3000:3000
+      - 3001:3001
 
