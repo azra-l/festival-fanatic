@@ -13,7 +13,7 @@ router.delete("/", async function (req, res, next) {
   res.status(204).send();
 });
 
-router.get("/test-session", async function (req, res, next) {
+router.get("/check-auth", async function (req, res, next) {
 
   res.status(200).json({ message: req.session })
 
