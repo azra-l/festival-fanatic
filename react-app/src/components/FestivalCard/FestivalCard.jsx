@@ -4,12 +4,9 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaRegHeart, FaHeart  } from "react-icons/fa";
 import { BsArchive, BsArchiveFill } from "react-icons/bs";
-import {
-  saveFestival,
-  archiveFestival,
-} from "../../redux/festivals/reducer";
+import { updateFestivalAsync } from "../../redux/festivals/thunks";
 
-export default function FestivalCard({ festival }) {
+export default function FestivalCard({ festival, user }) {
   const dispatch = useDispatch();
 
   // TODO: Use a non-hard-coded image
@@ -21,8 +18,8 @@ export default function FestivalCard({ festival }) {
     region,
     img = "https://cdn1.matadornetwork.com/blogs/1/2021/08/Music-festivals-2021-North-Coast-Festival-Chicago-1200x854.jpeg",
     saved,
-    id,
     archived,
+    artists,
   } = festival;
   const dateParsed = new Date(date);
 
@@ -35,12 +32,20 @@ export default function FestivalCard({ festival }) {
 
   const handleSaveButtonClick = (e) => {
     e.preventDefault();
-    dispatch(saveFestival(id));
+    const userObj = {
+      user,
+      festival: {...festival, saved: !saved}
+    }
+    dispatch(updateFestivalAsync(userObj));
   };
 
   const handleArchiveButtonClick = (e) => {
     e.preventDefault();
-    dispatch(archiveFestival(id));
+    const userObj = {
+      user,
+      festival: {...festival, archived: !archived}
+    }
+    dispatch(updateFestivalAsync(userObj));
   };
 
   return (
@@ -80,6 +85,7 @@ export default function FestivalCard({ festival }) {
           >
             See details
           </Link>
+          <div>{`Artists Matched: ${artists.length}`}</div>
         </div>
         <img src={img} className="festival-img" alt="festival-img" />
       </div>

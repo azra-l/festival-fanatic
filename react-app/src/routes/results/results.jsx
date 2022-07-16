@@ -14,8 +14,11 @@ export default function Results() {
   const dispatch = useDispatch();
   const [value, setValue] = useState("1");
 
+
+
+
   useEffect(() => {
-    dispatch(getUpcomingArtistEventsAsync("Illenium"));
+    dispatch(getUpcomingArtistEventsAsync());
   }, [dispatch]);
 
   const festivals = useSelector((state) => state.festivals.festivals);
@@ -51,8 +54,8 @@ export default function Results() {
         <TabPanel value="1">
           <div className="festival-results-container">
             {festivalsToDisplay ? (
-              festivalsToDisplay.map((festival) => (
-                <FestivalCard festival={festival} key={festival.id} />
+              festivalsToDisplay.sort((a, b) => b.artists.length - a.artists.length).map((festival) => (
+                  <FestivalCard festival={festival} key={festival.id} />
               ))
             ) : (
               <p>Loading or Error, No data {JSON.stringify(festivals)}</p>
