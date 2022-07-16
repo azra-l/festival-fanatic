@@ -17,19 +17,18 @@ const ProtectedRoute = ({ redirectTo, children }) => {
 
     useEffect(() => {
         (async () => {
-            if (!isAuth) {
 
-                await dispatch(checkAuthAsync())
-                setTryAuth(true);
-            }
+            await dispatch(checkAuthAsync())
+            setTryAuth(isAuth);
+
         })();
-    }, [dispatch, isAuth]);
+    });
     // if (tryAuth) return <p>Checking...</p>;
     // else
     if (tryAuth === null) {
         return <h1>Loading...</h1>
-    }
-    return isAuth ? <Outlet /> : <Navigate to={redirectTo} />;
+    } else
+        return isAuth ? <Outlet /> : <Navigate to={redirectTo} />;
 };
 
 export default ProtectedRoute;
