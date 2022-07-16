@@ -19,6 +19,7 @@ export default function FestivalCard({ festival, user }) {
     img = "https://cdn1.matadornetwork.com/blogs/1/2021/08/Music-festivals-2021-North-Coast-Festival-Chicago-1200x854.jpeg",
     saved,
     archived,
+    artists,
   } = festival;
   const dateParsed = new Date(date);
 
@@ -84,6 +85,7 @@ export default function FestivalCard({ festival, user }) {
           >
             See details
           </Link>
+          <div>{`Artists Matched: ${artists.length}`}</div>
         </div>
         <img src={img} className="festival-img" alt="festival-img" />
       </div>
