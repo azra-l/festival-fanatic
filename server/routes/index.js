@@ -6,6 +6,8 @@ var axios = require("axios");
 
 const User = require("../models/User");
 const Festival = require("../models/Festival");
+const SpotifyImports = require("../models/SpotifyImports");
+const Artist = require("../models/Artist");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -142,33 +144,50 @@ router.get("/callback", async function (req, res, next) {
               new: true,
               upsert: true,
             });
+            
+            const currentSpotifyImports = new SpotifyImports({
+              userId: user.userId,
+              timeOfImport: new Date(),
+              spotifyImports: listOfArtists
+            });
 
-            user.spotifyImports.set((new Date()).getTime().toString(), listOfArtists);
+            await currentSpotifyImports.save();
+            
+            const artistPromises = [];
+            for (const artist of listOfArtists) {
+              artistPromises.push(Artist.findOneAndUpdate({ 
+                spotify_id: artist.id
+               }, { 
+                spotify_id: artist.id,
+                name: artist.name,
+                href: artist.href
+               }, {
+                upsert: true,
+                new: true
+               }));
+            }
+            
+            const artists = await Promise.all(artistPromises);
 
-            await user.save();
+            const festivalResults = await getBandsInTownEvents(
+              artistEventRequestArray,
+              artists
+            );
 
-            // const festivalResults = await getBandsInTownEvents(
-            //   artistEventRequestArray,
-            //   listOfArtists.map((artist) => ({
-            //     name: artist.name,
-            //     spotify_id: artist.id,
-            //   }))
-            // );
-
-            // const festivals = parseFestivalResults(
-            //   festivalResults.eventsList
-            // );
+            const festivals = parseFestivalResults(
+              festivalResults.eventsList
+            );
 
 
-            // for (const festival of festivals) {
-            //   await Festival.findOneAndUpdate({
-            //       id: festival.id,
-            //     },
-            //     festival, {
-            //       upsert: true
-            //     }
-            //   );
-            // }
+            for (const festival of festivals) {
+              await Festival.findOneAndUpdate({
+                  id: festival.id,
+                },
+                festival, {
+                  upsert: true
+                }
+              );
+            }
           }
         } catch (e) {
           console.log(e);
@@ -300,11 +319,7 @@ const parseFestivalResults = (results) => {
   const festivals = results.map((result) => {
     const { lineup } = result;
 
-    const artists = lineup.map((artist) => ({
-      id: artist.id,
-      name: artist.name,
-      external_urls: artist.external_urls,
-    }));
+    const artists = lineup.map((artist) => artist._id);
 
     const festival = {
       id: result.id,
