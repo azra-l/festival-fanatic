@@ -65,13 +65,18 @@ Figma: ​​https://www.figma.com/file/jXiy6tmnOk2jeyhyI6hED0/CPSC-455---Design
 
 
 ## How to run
-# Frontend, download docker desktop, run it, then open visual studio code
+To apply any changes to the dev container setup, run the `clean-dev-container-for-fresh-build.sh` script on your system terminal (not inside the container), then reopen the project folder in the container.
+### Frontend, download docker desktop, run it, then open visual studio code
 1. `cd react-app`
-2. `npm i`
+2. `npm ci`
 3. `npm start`
 
-# Backend
+### Backend
 1. Make sure you have .env file
-2. `cd server`
-3. `npm i`
-4. `npm run watch`
+2. Set `MOCK_API_DATA=true` in the `.env` file to fetch mock data from Spotify and Bandintown (useful for circumventing rate-limiting and insufficient data)
+3. To connect to the local mongodb instance running in the container, set `MONGO_DB_CLUSTER=mongodb://festival-fanatic:password@localhost:27017/festival-fanatic` in the .env file.
+4. You can view the contents of the db in the mongo extension that is automatically installed with the dev container. All app data is in the `festival-fanatic` database.
+5. `cd server`
+6. `npm ci`
+7. `npm start`
+8. To clean all of the data stored in the db and start fresh, run `npm run start:clean`
