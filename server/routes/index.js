@@ -8,6 +8,7 @@ const User = require("../models/User");
 const Festival = require("../models/Festival");
 const SpotifyImports = require("../models/SpotifyImports");
 const Artist = require("../models/Artist");
+const fs = require('fs');
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -134,7 +135,7 @@ router.get("/callback", async function (req, res, next) {
             
 
             topArtists = await getSpotifyTopArtists(access_token);
-            const { artistEventRequestArray, listOfArtists } = topArtists;
+            const listOfArtists = topArtists;
             
             const artistPromises = [];
             for (const artist of listOfArtists) {
@@ -174,10 +175,7 @@ router.get("/callback", async function (req, res, next) {
             user.selectedArtists = artists.map((e) => e._id);
             await user.save();
             
-            const festivalResults = await getBandsInTownEvents(
-              artistEventRequestArray,
-              artists
-            );
+            const festivalResults = await getBandsInTownEvents(artists);
 
             const festivals = parseFestivalResults(
               festivalResults.eventsList
@@ -213,20 +211,8 @@ router.get("/callback", async function (req, res, next) {
 });
 
 const getSpotifyTopArtists = async (access_token) => {
-  let artistEventRequestArray = [];
-  let listOfArtists = [];
-
-  if (process.env.MOCK_SPOTIFY_DATA === 'true') {
-    const spotifyResponse = require('../mock-spotify-top-artists-data.json');
-
-    artistEventRequestArray = spotifyResponse.map(
-      (artist) =>
-        `https://rest.bandsintown.com/artists/${artist.name}/events?app_id=${process.env.BIT_API_KEY}&date=upcoming`
-    );
-
-    listOfArtists = spotifyResponse;
-
-    return { artistEventRequestArray, listOfArtists };
+  if (process.env.MOCK_API_DATA === 'true') {
+    return require('../mock-spotify-top-artists-data.json');
   }
 
   try {
@@ -240,37 +226,37 @@ const getSpotifyTopArtists = async (access_token) => {
     );
 
     if (spotifyResponse.status === 200) {
-      artistEventRequestArray = spotifyResponse.data.items.map(
-        (artist) =>
-          `https://rest.bandsintown.com/artists/${artist.name}/events?app_id=${process.env.BIT_API_KEY}&date=upcoming`
-      );
-
-      listOfArtists = spotifyResponse.data.items.map((artist) => ({
+      return spotifyResponse.data.items.map((artist) => ({
         name: artist.name,
         spotify_id: artist.id,
       }));
-
-      return { artistEventRequestArray, listOfArtists };
     }
   } catch (e) {
     throw new Error(e);
   }
 };
 
-const getBandsInTownEvents = async (artistEventRequestArray, listOfArtists) => {
+const getBandsInTownEvents = async (listOfArtists) => {
   try {
-    const result = await Promise.allSettled(
-      artistEventRequestArray.map((request) => {
-        return axios
-          .get(request)
-          .then((response) => {
-            return response.data;
-          })
-          .then((data) => {
-            return data;
-          });
-      })
-    );
+    let result;
+    if (process.env.MOCK_API_DATA === 'true') {
+          const mockData = require('../mock-bandintown-festival-data.json');
+          result = await Promise.allSettled(listOfArtists.map(async(artist) => {
+            const data = mockData[artist.name];
+            if (data) return data;
+            throw new Error('no events found for artist');
+          }));
+    } else {
+      result = await Promise.allSettled(
+        listOfArtists.map(async (artist) => {
+          const request = `https://rest.bandsintown.com/artists/${artist.name}/events?app_id=${process.env.BIT_API_KEY}&date=upcoming`;
+          const response = await axios
+            .get(request);
+          return response.data;
+        })
+      );
+    }
+    
 
     let failedToFindArtistList = [];
     let eventsList = [];
