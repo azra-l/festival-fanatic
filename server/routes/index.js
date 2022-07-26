@@ -135,23 +135,6 @@ router.get("/callback", async function (req, res, next) {
 
             topArtists = await getSpotifyTopArtists(access_token);
             const { artistEventRequestArray, listOfArtists } = topArtists;
-          
-
-            const user = await User.findOneAndUpdate({ userId: hashedId }, 
-              {
-                userId: hashedId
-              }, {
-              new: true,
-              upsert: true,
-            });
-            
-            const currentSpotifyImports = new SpotifyImports({
-              userId: user.userId,
-              timeOfImport: new Date(),
-              spotifyImports: listOfArtists
-            });
-
-            await currentSpotifyImports.save();
             
             const artistPromises = [];
             for (const artist of listOfArtists) {
@@ -169,6 +152,28 @@ router.get("/callback", async function (req, res, next) {
             
             const artists = await Promise.all(artistPromises);
 
+            const user = await User.findOneAndUpdate({ userId: hashedId }, 
+              {
+                userId: hashedId
+              }, {
+              new: true,
+              upsert: true,
+            });
+            
+            const currentSpotifyImports = new SpotifyImports({
+              userId: user.userId,
+              timeOfImport: new Date(),
+              spotifyImports: listOfArtists.map((e) => ({
+                artistRef: artists.find((artist) => artist.spotify_id === e.id)?._id,
+                ...e
+              })),
+            });
+
+            await currentSpotifyImports.save();
+            
+            user.selectedArtists = artists.map((e) => e._id);
+            await user.save();
+            
             const festivalResults = await getBandsInTownEvents(
               artistEventRequestArray,
               artists

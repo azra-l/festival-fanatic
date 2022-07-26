@@ -12,6 +12,7 @@ const SpotifyArtistImageSchema = new mongoose.Schema({
 });
 
 const SpotifyArtistSchema = new mongoose.Schema({
+  artistRef: { type: mongoose.Schema.Types.ObjectId, ref: "Artist" },
   followers: {
     type: SpotifyArtistFollowersSchema
   },
