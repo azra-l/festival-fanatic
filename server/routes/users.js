@@ -31,26 +31,43 @@ router.get("/self", async function (req, res, next) {
   }
 });
 
-/* PATCH Festival */
-router.patch("/self", async function (req, res, next) {
-  const festivalId = req.body.id;
-  const dataToUpdate = req.body;
-  const userIdFromSession = req.session.user.userId
-
-  // https://www.mongodb.com/community/forums/t/updating-a-nested-object-in-a-document-using-mongoose/141865
+/**
+ * PATCH Idempotent endpoint on updated the userlist for a specific festival
+ * Body expected:
+ * {
+ *    festivalId: string,
+ *    listCategory: 'archived' | 'removed',
+ *    action: 'add' | 'remove'
+ * }
+ **/
+ router.patch("/userlist", async function (req, res, next) {
   try {
-    const updated = await User.findOneAndUpdate(
-      { userId: userIdFromSession, "festivals.id": festivalId },
-      { $set: { "festivals.$": dataToUpdate } },
-      { new: true },
-    );
-    if (!updated) {
-      res.status(404).send();
-    } else {
-      res.send(updated);
+    const userId = req.session.user.userId
+    const festivalId = req.body.festivalId;
+    const listCategory = req.body.listCategory;
+    const action = req.body.action;
+    let user;
+    switch (action) {
+      case 'remove':
+        user = await User.findOneAndUpdate({ userId: userId }, { 
+            $pull: { [listCategory]: festivalId }
+        }, {
+          new: true
+        });
+        break;
+      case 'add':
+      default:
+        user = await User.findOneAndUpdate({ userId: userId }, { 
+            $addToSet: { [listCategory]: festivalId }
+        }, {
+          new: true
+        });
+        break;
     }
-  } catch (e) {
-    res.status(500).send();
+    res.send(user);
+  } catch (error) {
+    res.statusCode = 500;
+    res.send({ error: `unable to perform update: ${error}`})
   }
 });
 
