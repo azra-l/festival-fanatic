@@ -5,6 +5,7 @@ var md5 = require("md5");
 var axios = require("axios");
 
 const User = require("../models/User");
+const Festival = require("../models/Festival");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -105,70 +106,69 @@ router.get("/callback", async function (req, res, next) {
         let topArtists;
 
         try {
-          topArtists = await getSpotifyTopArtists(access_token);
-          const { artistEventRequestArray, listOfArtists } = topArtists;
-
-          try {
-            const festivalResults = await getBandsInTownEvents(
-              artistEventRequestArray,
-              listOfArtists
-            );
-
-            try {
-              const userDetailsResponse = await axios.get(
-                "https://api.spotify.com/v1/me",
-                {
-                  headers: {
-                    Authorization: "Bearer " + access_token,
-                  },
-                }
-              );
-
-              if (userDetailsResponse.status === 200) {
-
-                // Successfully logged in
-                hashedId = md5(userDetailsResponse.data.id);
-                const user = {
-                  userId: hashedId,
-                };
-
-                // Set user's session
-                req.session.user = {
-                  access_token: access_token,
-                  refresh_token: refresh_token,
-                  userId: hashedId,
-                }
-                console.log("successfully logged in")
-
-                await User.findOneAndUpdate({ userId: hashedId }, user, {
-                  new: true,
-                  upsert: true,
-                });
-
-                const festivals = parseFestivalResults(
-                  festivalResults.eventsList
-                );
-                let userToUpdate = await User.findOne({ userId: hashedId });
-
-                if (userToUpdate) {
-                  for (const festival of festivals) {
-                    await User.updateOne(
-                      {
-                        userId: hashedId,
-                        "festivals.id": { $ne: festival.id },
-                      },
-                      {
-                        $push: { festivals: festival },
-                      }
-                    );
-                  }
-                }
-              }
-            } catch (e) {
-              throw new Error(e);
+          const userDetailsResponse = await axios.get(
+            "https://api.spotify.com/v1/me",
+            {
+              headers: {
+                Authorization: "Bearer " + access_token,
+              },
             }
-          } catch (e) {
-            throw new Error(e);
+          );
+
+          if (userDetailsResponse.status === 200) {
+
+            // Successfully logged in
+            hashedId = md5(userDetailsResponse.data.id);
+            
+
+            // Set user's session
+            req.session.user = {
+              access_token: access_token,
+              refresh_token: refresh_token,
+              userId: hashedId,
+            }
+            console.log("successfully logged in")
+
+            
+
+            topArtists = await getSpotifyTopArtists(access_token);
+            const { artistEventRequestArray, listOfArtists } = topArtists;
+          
+
+            const user = await User.findOneAndUpdate({ userId: hashedId }, 
+              {
+                userId: hashedId
+              }, {
+              new: true,
+              upsert: true,
+            });
+
+            user.spotifyImports.set((new Date()).getTime().toString(), listOfArtists);
+
+            await user.save();
+
+            // const festivalResults = await getBandsInTownEvents(
+            //   artistEventRequestArray,
+            //   listOfArtists.map((artist) => ({
+            //     name: artist.name,
+            //     spotify_id: artist.id,
+            //   }))
+            // );
+
+            // const festivals = parseFestivalResults(
+            //   festivalResults.eventsList
+            // );
+
+
+            // for (const festival of festivals) {
+            //   await Festival.findOneAndUpdate({
+            //       id: festival.id,
+            //     },
+            //     festival, {
+            //       upsert: true
+            //     }
+            //   );
+            // }
           }
         } catch (e) {
           console.log(e);
@@ -191,6 +191,19 @@ router.get("/callback", async function (req, res, next) {
 const getSpotifyTopArtists = async (access_token) => {
   let artistEventRequestArray = [];
   let listOfArtists = [];
+
+  if (process.env.MOCK_SPOTIFY_DATA === 'true') {
+    const spotifyResponse = require('../mock-spotify-top-artists-data.json');
+
+    artistEventRequestArray = spotifyResponse.map(
+      (artist) =>
+        `https://rest.bandsintown.com/artists/${artist.name}/events?app_id=${process.env.BIT_API_KEY}&date=upcoming`
+    );
+
+    listOfArtists = spotifyResponse;
+
+    return { artistEventRequestArray, listOfArtists };
+  }
 
   try {
     const spotifyResponse = await axios.get(

@@ -33,7 +33,8 @@ const User = new mongoose.Schema({
   archived: [String],
   spotifyImports: {
     type: Map,
-    of: [SpotifyArtistSchema]
+    of: [SpotifyArtistSchema],
+    default: {}
   }
 });
 
