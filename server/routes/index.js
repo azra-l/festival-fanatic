@@ -132,7 +132,18 @@ router.get("/callback", async function (req, res, next) {
             }
             console.log("successfully logged in")
 
-            
+            const user = await User.findOneAndUpdate({ userId: hashedId }, 
+              {
+                userId: hashedId
+              }, {
+              new: true,
+              upsert: true,
+            });
+
+            const currentSpotifyImports = await SpotifyImports.find({ userId: user.userId }).sort({ timeOfImport: -1 }).limit(1);
+            if (currentSpotifyImports.length > 0 && (new Date()).getTime() - currentSpotifyImports[0].timeOfImport.getTime() < 24 * 60 * 60 * 1000) {
+              throw new Error('no need to update imports, last import was done less than a day ago');
+            }
 
             topArtists = await getSpotifyTopArtists(access_token);
             const listOfArtists = topArtists;
@@ -153,15 +164,8 @@ router.get("/callback", async function (req, res, next) {
             
             const artists = await Promise.all(artistPromises);
 
-            const user = await User.findOneAndUpdate({ userId: hashedId }, 
-              {
-                userId: hashedId
-              }, {
-              new: true,
-              upsert: true,
-            });
             
-            const currentSpotifyImports = new SpotifyImports({
+            const newSpotifyImports = new SpotifyImports({
               userId: user.userId,
               timeOfImport: new Date(),
               spotifyImports: listOfArtists.map((e) => ({
@@ -170,7 +174,7 @@ router.get("/callback", async function (req, res, next) {
               })),
             });
 
-            await currentSpotifyImports.save();
+            await newSpotifyImports.save();
             
             user.selectedArtists = artists.map((e) => e._id);
             await user.save();
