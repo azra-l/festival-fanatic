@@ -322,11 +322,9 @@ const parseFestivalResults = (results) => {
       venue: result.venue.name,
       latitude: result.venue.latitude,
       longitude: result.venue.longitude,
-      saved: false,
-      archived: false,
       tickets: result.offers[0] ? result.offers[0].url : "",
       link: result.url,
-      artists: artists,
+      $addToSet: { artists: { $each: artists } },
     };
     return festival;
   });
