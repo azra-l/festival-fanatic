@@ -150,12 +150,14 @@ router.get("/callback", async function (req, res, next) {
             
             const artistPromises = [];
             for (const artist of listOfArtists) {
+              console.log(artist);
               artistPromises.push(Artist.findOneAndUpdate({ 
-                spotify_id: artist.id
+                spotify_id: artist.spotify_id,
                }, { 
-                spotify_id: artist.id,
+                spotify_id: artist.spotify_id,
                 name: artist.name,
-                href: artist.href
+                href: artist.href,
+                image: artist.image,
                }, {
                 upsert: true,
                 new: true
@@ -233,6 +235,8 @@ const getSpotifyTopArtists = async (access_token) => {
       return spotifyResponse.data.items.map((artist) => ({
         name: artist.name,
         spotify_id: artist.id,
+        image: artist.images ? artist.images[0].url : null,
+        href: artist.external_urls?.spotify,
       }));
     }
   } catch (e) {
