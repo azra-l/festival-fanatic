@@ -1,8 +1,8 @@
 .artist-card {
-  margin: 2rem auto;
+  margin: 2rem 1rem;
   background-color: #6b6b69;
-  height: 80px;
-  width: 200px;
+  height: 150px;
+  width: 300px;
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -17,8 +17,8 @@
 }
 
 .artist-img {
-  width: 75px;
-  height: 75px;
+  width: 150px;
+  height: 150px;
   border-radius: 0.25rem;
 }
 
