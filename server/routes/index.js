@@ -142,7 +142,8 @@ router.get("/callback", async function (req, res, next) {
 
             const currentSpotifyImports = await SpotifyImports.find({ userId: user.userId }).sort({ timeOfImport: -1 }).limit(1);
             if (currentSpotifyImports.length > 0 && (new Date()).getTime() - currentSpotifyImports[0].timeOfImport.getTime() < 24 * 60 * 60 * 1000) {
-              throw new Error('no need to update imports, last import was done less than a day ago');
+              console.log("no need to update imports, last import was done less than a day ago")
+              // throw new Error('no need to update imports, last import was done less than a day ago');
             }
 
             topArtists = await getSpotifyTopArtists(access_token);
@@ -230,10 +231,7 @@ const getSpotifyTopArtists = async (access_token) => {
     );
 
     if (spotifyResponse.status === 200) {
-      return spotifyResponse.data.items.map((artist) => ({
-        name: artist.name,
-        spotify_id: artist.id,
-      }));
+      return spotifyResponse.data.items
     }
   } catch (e) {
     throw new Error(e);
