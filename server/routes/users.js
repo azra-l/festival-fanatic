@@ -71,4 +71,9 @@ router.get("/self", async function (req, res, next) {
   }
 });
 
+router.delete("/", async function (req, res, next) {
+  await User.collection.drop();
+  res.status(204).send();
+});
+
 module.exports = router;
