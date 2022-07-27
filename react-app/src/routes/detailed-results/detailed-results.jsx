@@ -33,7 +33,6 @@ export default function DetailedResults() {
   const baseURL = "http://localhost:3001/artists/";
 
   const artistURLs = artists.map((artist) => `${baseURL}/${artist}`);
-  console.log(artistURLs);
 
   const getArtists = useCallback(async () => {
     setIsLoading(true);
