@@ -18,7 +18,7 @@ export default function DetailedResults() {
     name,
     city,
     region,
-    artists,
+   // artists,
     link,
     venue,
     tickets,
@@ -81,9 +81,9 @@ export default function DetailedResults() {
         <div className="artist-container">
           <p className="lineup">Lineup</p>
           <div className="artists">
-            {artists.map((artist) => (
+            {/* {artists.map((artist) => (
               <ArtistCard artist={artist} />
-            ))}
+            ))} */}
           </div>
         </div>
         {latitude && longitude && (

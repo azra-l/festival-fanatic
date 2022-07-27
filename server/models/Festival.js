@@ -9,7 +9,7 @@ const Festival = new mongoose.Schema({
   country: String,
   venue: String,
   latitude: String,
-  longituse: String,
+  longitude: String,
   tickets: String,
   link: String,
   artists: [{ type: mongoose.Schema.Types.ObjectId, ref: "Artist" }],
