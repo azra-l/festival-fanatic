@@ -51,13 +51,17 @@ export default function Results() {
           </TabList>
         </Box>
         <TabPanel value="1">
+          <div className="sort-container">
+          </div>
           <div className="festival-results-container">
-            {festivalsToDisplay ? (
-              festivalsToDisplay
-                .sort((a, b) => b.artists.length - a.artists.length)
-                .map((festival) => (
-                  <FestivalCard festival={festival} key={festival.id} />
-                ))
+            {festivalsToDisplay? (
+              festivalsToDisplay.map((festival, i) => (
+                <FestivalCard
+                  festival={festival}
+                  key={festival.id}
+                  position={i % 5}
+                />
+              ))
             ) : (
               <p>Loading or Error, No data {JSON.stringify(festivals)}</p>
             )}
