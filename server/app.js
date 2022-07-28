@@ -3,25 +3,30 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var livereload = require("livereload");
-var connectLiveReload = require("connect-livereload");
+
 
 const cors = require('cors');
 const mongoose = require('mongoose');
 const session = require('express-session')
 
+let isProd = process.env.NODE_ENV === 'production';
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var festivalsRouter = require('./routes/festivals');
 var bandsInTownRouter = require('./routes/bandsintown');
 var artistRouter = require('./routes/artists');
 
-const liveReloadServer = livereload.createServer();
-liveReloadServer.server.once("connection", () => {
-	setTimeout(() => {
-		liveReloadServer.refresh("/");
-	}, 100);
-});
+if (!isProd) {
+  var livereload = require("livereload");
+  var connectLiveReload = require("connect-livereload");
+  const liveReloadServer = livereload.createServer();
+  liveReloadServer.server.once("connection", () => {
+    setTimeout(() => {
+      liveReloadServer.refresh("/");
+    }, 100);
+  });
+}
+
 
 const restricted = require('./restricted-middleware')
 
@@ -34,7 +39,9 @@ mongoose
 var app = express();
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
-app.use(connectLiveReload());
+if (!isProd) {
+  app.use(connectLiveReload());
+}
 
 app.use(logger('dev'));
 app.use(express.json());
