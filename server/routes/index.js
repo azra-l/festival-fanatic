@@ -166,10 +166,10 @@ router.get("/callback", async function (req, res, next) {
               artistPromises.push(
                 Artist.findOneAndUpdate(
                   {
-                    spotify_id: artist.spotify_id,
+                    spotify_id: artist.id,
                   },
                   {
-                    spotify_id: artist.spotify_id,
+                    spotify_id: artist.id,
                     name: artist.name,
                     href: artist.external_urls.spotify,
                     image: artist.images ? artist.images[0].url : null,
