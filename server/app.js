@@ -34,6 +34,7 @@ app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
 app.use(connectLiveReload());
 
+app.set('trust proxy', 1)
 app.use(logger('dev'));
 app.use(express.json());
 
