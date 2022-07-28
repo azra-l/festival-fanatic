@@ -12,7 +12,9 @@ const session = require('express-session')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var festivalsRouter = require('./routes/festivals');
 var bandsInTownRouter = require('./routes/bandsintown');
+var artistRouter = require('./routes/artists');
 
 const liveReloadServer = livereload.createServer();
 liveReloadServer.server.once("connection", () => {
@@ -58,6 +60,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', restricted, usersRouter);
 app.use('/bandsintown', restricted, bandsInTownRouter);
+app.use('/festivals', restricted, festivalsRouter);
+app.use('/artists', restricted, artistRouter);
 
 
 module.exports = app;

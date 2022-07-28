@@ -22,7 +22,8 @@
       "dbaeumer.vscode-eslint",
       "esbenp.prettier-vscode",
       "rvest.vs-code-prettier-eslint",
-      "ryanluker.vscode-coverage-gutters"
+      "ryanluker.vscode-coverage-gutters",
+      "mongodb.mongodb-vscode"
     ],
     // "forwardPorts": [
     //   3000, 9099, 4000, 4400, 9005, 9199, 8008, 8009, 8448 

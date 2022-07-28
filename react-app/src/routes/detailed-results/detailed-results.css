@@ -78,26 +78,25 @@ body {
 .artist-container {
   background-color: #69445f;
   border-radius: 0.5rem;
+  text-align: center;
 }
 
 .artists {
   display: grid;
+  justify-items: center;
 }
 
 @media (min-width: 0px) {
   .artists { grid-template-columns: repeat(1, 1fr); }
 }
-@media (min-width: 600px) {
+@media (min-width: 1000px) {
   .artists { grid-template-columns: repeat(2, 1fr); }
 }
-@media (min-width: 900px) {
+@media (min-width: 1400px) {
   .artists { grid-template-columns: repeat(3, 1fr); }
 }
-@media (min-width: 1200px) {
+@media (min-width: 1800px) {
   .artists { grid-template-columns: repeat(4, 1fr); }
-}
-@media (min-width: 1500px) {
-  .artists { grid-template-columns: repeat(5, 1fr); }
 }
 
 .map {
