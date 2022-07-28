@@ -1,5 +1,6 @@
+
 const getUpcomingArtistEvents = async () => {
-  const response = await fetch(`http://localhost:3001/festivals/`, {
+  const response = await fetch(`http://localhost:3001/festivals`, {
     // TODO: Investigate best way to store JWT token for security
     // https://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf?rq=1
     method: "GET",
