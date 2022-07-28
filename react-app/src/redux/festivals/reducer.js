@@ -4,6 +4,8 @@ import { getUpcomingArtistEventsAsync, updateFestivalAsync } from "./thunks";
 
 const INITIAL_STATE = {
   festivals: [],
+  savedFestivals: [],
+  archivedFestivals: [],
   getEventsStatus: null,
   updateFestival: REQUEST_STATE.IDLE,
   error: null,
@@ -45,7 +47,16 @@ const festivalsSlice = createSlice({
       })
       .addCase(updateFestivalAsync.fulfilled, (state, action) => {
         state.updateFestival = REQUEST_STATE.FULFILLED;
-        state.festivals = action.payload.festivals;
+        const {_id, userAction} = action.payload;
+        if(userAction === 'save' || userAction === 'unsave'){
+          const festival = state.festivals.find((festival) => festival._id === _id);
+          festival.saved = !festival.saved;
+        };
+        if(userAction === 'archive' || userAction === 'unarchive'){
+          const festival = state.festivals.find((festival) => festival._id === _id);
+          festival.archived = !festival.archived;
+        };
+
       })
       .addCase(updateFestivalAsync.rejected, (state, action) => {
         state.updateFestival = REQUEST_STATE.REJECTED;

@@ -8,7 +8,7 @@ const User = require("../models/User");
 const Festival = require("../models/Festival");
 const SpotifyImports = require("../models/SpotifyImports");
 const Artist = require("../models/Artist");
-const fs = require('fs');
+const fs = require("fs");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -45,13 +45,13 @@ router.get("/login", function (req, res, next) {
   var scope = "user-read-private user-top-read";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
-    new URLSearchParams({
-      response_type: "code",
-      client_id: client_id,
-      scope: scope,
-      redirect_uri: redirect_uri,
-      state: state,
-    }).toString()
+      new URLSearchParams({
+        response_type: "code",
+        client_id: client_id,
+        scope: scope,
+        redirect_uri: redirect_uri,
+        state: state,
+      }).toString()
   );
 });
 
@@ -66,9 +66,9 @@ router.get("/callback", async function (req, res, next) {
   if (state === null || state !== storedState) {
     res.redirect(
       "/#" +
-      new URLSearchParams({
-        error: "state_mismatch",
-      }).toString()
+        new URLSearchParams({
+          error: "state_mismatch",
+        }).toString()
     );
   } else {
     res.clearCookie(stateKey);
@@ -103,7 +103,6 @@ router.get("/callback", async function (req, res, next) {
         let hashedId;
         // use the access token to access the Spotify Web API
 
-
         // get user's top artists
 
         let topArtists;
@@ -119,79 +118,99 @@ router.get("/callback", async function (req, res, next) {
           );
 
           if (userDetailsResponse.status === 200) {
-
             // Successfully logged in
             hashedId = md5(userDetailsResponse.data.id);
-            
 
             // Set user's session
             req.session.user = {
               access_token: access_token,
               refresh_token: refresh_token,
               userId: hashedId,
-            }
-            console.log("successfully logged in")
+            };
+            console.log("successfully logged in");
 
-            const user = await User.findOneAndUpdate({ userId: hashedId }, 
+            const user = await User.findOneAndUpdate(
+              { userId: hashedId },
               {
-                userId: hashedId
-              }, {
-              new: true,
-              upsert: true,
-            });
+                userId: hashedId,
+              },
+              {
+                new: true,
+                upsert: true,
+              }
+            );
 
-            const currentSpotifyImports = await SpotifyImports.find({ userId: user.userId }).sort({ timeOfImport: -1 }).limit(1);
-            if (currentSpotifyImports.length > 0 && (new Date()).getTime() - currentSpotifyImports[0].timeOfImport.getTime() < 24 * 60 * 60 * 1000) {
-              throw new Error('no need to update imports, last import was done less than a day ago');
+            const currentSpotifyImports = await SpotifyImports.find({
+              userId: user.userId,
+            })
+              .sort({ timeOfImport: -1 })
+              .limit(1);
+            if (
+              currentSpotifyImports.length > 0 &&
+              new Date().getTime() -
+                currentSpotifyImports[0].timeOfImport.getTime() <
+                24 * 60 * 60 * 1000
+            ) {
+              //console.log("no need to update imports, last import was done less than a day ago")
+              throw new Error(
+                "no need to update imports, last import was done less than a day ago"
+              );
             }
 
             topArtists = await getSpotifyTopArtists(access_token);
             const listOfArtists = topArtists;
-            
+
             const artistPromises = [];
             for (const artist of listOfArtists) {
-              artistPromises.push(Artist.findOneAndUpdate({ 
-                spotify_id: artist.id
-               }, { 
-                spotify_id: artist.id,
-                name: artist.name,
-                href: artist.href
-               }, {
-                upsert: true,
-                new: true
-               }));
+              console.log(artist);
+              artistPromises.push(
+                Artist.findOneAndUpdate(
+                  {
+                    spotify_id: artist.id,
+                  },
+                  {
+                    spotify_id: artist.id,
+                    name: artist.name,
+                    href: artist.external_urls.spotify,
+                    image: artist.images ? artist.images[0].url : null,
+                  },
+                  {
+                    upsert: true,
+                    new: true,
+                  }
+                )
+              );
             }
-            
+
             const artists = await Promise.all(artistPromises);
 
-            
             const newSpotifyImports = new SpotifyImports({
               userId: user.userId,
               timeOfImport: new Date(),
               spotifyImports: listOfArtists.map((e) => ({
-                artistRef: artists.find((artist) => artist.spotify_id === e.id)?._id,
-                ...e
+                artistRef: artists.find((artist) => artist.spotify_id === e.id)
+                  ?._id,
+                ...e,
               })),
             });
 
             await newSpotifyImports.save();
-            
+
             user.selectedArtists = artists.map((e) => e._id);
             await user.save();
-            
+
             const festivalResults = await getBandsInTownEvents(artists);
 
-            const festivals = parseFestivalResults(
-              festivalResults.eventsList
-            );
-
+            const festivals = parseFestivalResults(festivalResults.eventsList);
 
             for (const festival of festivals) {
-              await Festival.findOneAndUpdate({
+              await Festival.findOneAndUpdate(
+                {
                   id: festival.id,
                 },
-                festival, {
-                  upsert: true
+                festival,
+                {
+                  upsert: true,
                 }
               );
             }
@@ -205,9 +224,9 @@ router.get("/callback", async function (req, res, next) {
       } else {
         res.redirect(
           "/#" +
-          new URLSearchParams({
-            error: "invalid_token",
-          }).toString()
+            new URLSearchParams({
+              error: "invalid_token",
+            }).toString()
         );
       }
     });
@@ -215,8 +234,8 @@ router.get("/callback", async function (req, res, next) {
 });
 
 const getSpotifyTopArtists = async (access_token) => {
-  if (process.env.MOCK_API_DATA === 'true') {
-    return require('../mock-spotify-top-artists-data.json');
+  if (process.env.MOCK_API_DATA === "true") {
+    return require("../mock-spotify-top-artists-data.json");
   }
 
   try {
@@ -230,10 +249,7 @@ const getSpotifyTopArtists = async (access_token) => {
     );
 
     if (spotifyResponse.status === 200) {
-      return spotifyResponse.data.items.map((artist) => ({
-        name: artist.name,
-        spotify_id: artist.id,
-      }));
+      return spotifyResponse.data.items;
     }
   } catch (e) {
     throw new Error(e);
@@ -243,24 +259,24 @@ const getSpotifyTopArtists = async (access_token) => {
 const getBandsInTownEvents = async (listOfArtists) => {
   try {
     let result;
-    if (process.env.MOCK_API_DATA === 'true') {
-          const mockData = require('../mock-bandintown-festival-data.json');
-          result = await Promise.allSettled(listOfArtists.map(async(artist) => {
-            const data = mockData[artist.name];
-            if (data) return data;
-            throw new Error('no events found for artist');
-          }));
+    if (process.env.MOCK_API_DATA === "true") {
+      const mockData = require("../mock-bandintown-festival-data.json");
+      result = await Promise.allSettled(
+        listOfArtists.map(async (artist) => {
+          const data = mockData[artist.name];
+          if (data) return data;
+          throw new Error("no events found for artist");
+        })
+      );
     } else {
       result = await Promise.allSettled(
         listOfArtists.map(async (artist) => {
           const request = `https://rest.bandsintown.com/artists/${artist.name}/events?app_id=${process.env.BIT_API_KEY}&date=upcoming`;
-          const response = await axios
-            .get(request);
+          const response = await axios.get(request);
           return response.data;
         })
       );
     }
-    
 
     let failedToFindArtistList = [];
     let eventsList = [];
@@ -356,27 +372,27 @@ router.get("/checkcookie", function (req, res, next) {
   }
 });
 
-router.get('/logout', function (req, res, next) {
-
+router.get("/logout", function (req, res, next) {
   if (req.session) {
-    req.session.destroy(error => {
+    req.session.destroy((error) => {
       if (error) {
-        res.status(500).json({ message: "You can check out anytime you like but you can never leave" })
+        res
+          .status(500)
+          .json({
+            message:
+              "You can check out anytime you like but you can never leave",
+          });
       } else {
         // res.status(200).json({ message: "Successfully logged out" })
         res.redirect("http://localhost:3000");
-
       }
-    })
-
+    });
   } else {
-    res.status(200).json({ message: "Not logged in, no session to DESTROYY" })
+    res.status(200).json({ message: "Not logged in, no session to DESTROYY" });
 
     // const token = req.cookies.access_token;
     res.redirect("http://localhost:3000");
   }
-
-
 });
 
 module.exports = router;

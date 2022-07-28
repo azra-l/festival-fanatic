@@ -15,7 +15,7 @@ export const getUpcomingArtistEventsAsync = createAsyncThunk(
 
 export const updateFestivalAsync = createAsyncThunk(
   actionTypes.UPDATE_FESTIVAL,
-  async ({ user, festival }) => {
-    return await FestivalsService.updateFestival({ user, festival });
+  async ({ _id, action }) => {
+    return await FestivalsService.updateFestival({ _id, action });
   }
 );

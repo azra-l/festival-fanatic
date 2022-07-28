@@ -1,6 +1,5 @@
-const getUpcomingArtistEvents = async (id) => {
-  // TODO: replace this hardcoded ID once we figure out how to get this on the frontend
-  const response = await fetch(`http://localhost:3001/users/self`, {
+const getUpcomingArtistEvents = async () => {
+  const response = await fetch(`http://localhost:3001/festivals/`, {
     // TODO: Investigate best way to store JWT token for security
     // https://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf?rq=1
     method: "GET",
@@ -16,15 +15,24 @@ const getUpcomingArtistEvents = async (id) => {
     const errorMsg = data?.message;
     throw new Error(errorMsg);
   }
-
-  const festivals = data.festivals;
-  return festivals;
+  return data;
 };
 
-const updateFestival = async ({ user, festival }) => {
-  const response = await fetch(`http://localhost:3001/users/self`, {
+const updateFestival = async ({ _id, action }) => {
+  let reqBody = {
+    festivalId: _id,
+    listCategory: action === 'saved' || action === 'unsaved' ? 'saved' : 'archived'
+  };
+
+  if (action === "save" || action === "archive") {
+    reqBody.action = "add";
+  } else {
+    reqBody.action = "remove";
+  }
+
+  const response = await fetch(`http://localhost:3001/users/userlist`, {
     method: "PATCH",
-    body: JSON.stringify(festival),
+    body: JSON.stringify(reqBody),
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
@@ -40,7 +48,7 @@ const updateFestival = async ({ user, festival }) => {
     throw new Error(errorMsg);
   }
 
-  return data;
+  return {_id, userAction: action};
 };
 
 const festivalService = {
