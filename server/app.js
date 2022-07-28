@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const clientUrl = process.env.CLIENT_URL;
 
 
 const cors = require('cors');
@@ -37,7 +38,7 @@ mongoose
 	})
 
 var app = express();
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: clientUrl }));
 
 if (!isProd) {
   app.use(connectLiveReload());

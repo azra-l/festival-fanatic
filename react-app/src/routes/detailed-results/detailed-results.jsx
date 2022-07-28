@@ -8,6 +8,7 @@ import { MdLocationPin } from "react-icons/md";
 import { GoLinkExternal } from "react-icons/go";
 import ReactMapboxGl, { Marker } from "react-mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { apiBaseUrl } from "../../utilities/base-url";
 
 export default function DetailedResults() {
   const location = useLocation();
@@ -30,9 +31,8 @@ export default function DetailedResults() {
     longitude,
   } = festival;
 
-  const baseURL = "http://localhost:3001/artists/";
 
-  const artistURLs = artists.map((artist) => `${baseURL}/${artist}`);
+  const artistURLs = artists.map((artist) => `${apiBaseUrl}/artists/${artist}`);
 
   const getArtists = useCallback(async () => {
     setIsLoading(true);
@@ -40,10 +40,7 @@ export default function DetailedResults() {
       artistURLs.map((url) =>
         fetch(url, {
           method: "GET",
-          credentials: "include",
-          headers: {
-            "Access-Control-Allow-Origin": "http://localhost:3000",
-          },
+          credentials: "include"
         }).then((res) => res.json())
       )
     );
@@ -54,6 +51,7 @@ export default function DetailedResults() {
 
   useEffect(() => {
     getArtists();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // from: https://stackoverflow.com/questions/12246394/how-to-get-month-from-string-in-javascript
