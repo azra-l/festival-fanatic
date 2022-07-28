@@ -6,7 +6,7 @@ import "./detailed-results.css";
 import { BsCalendarFill } from "react-icons/bs";
 import { MdLocationPin } from "react-icons/md";
 import { GoLinkExternal } from "react-icons/go";
-import ReactMapboxGl, { Marker } from "react-mapbox-gl";
+import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { apiBaseUrl } from "../../utilities/base-url";
 
@@ -66,11 +66,6 @@ export default function DetailedResults() {
   const long = parseFloat(longitude);
   const lat = parseFloat(latitude);
 
-  // Map adapted from: https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md
-  const Map = ReactMapboxGl({
-    accessToken: process.env.REACT_APP_MAP_BOX_TOKEN,
-  });
-
   return (
     <>
       {isLoading ? (
@@ -120,16 +115,19 @@ export default function DetailedResults() {
             {latitude && longitude && (
               <div className="map">
                 <Map
-                  // eslint-disable-next-line react/style-prop-object
-                  style="mapbox://styles/mapbox/light-v10"
-                  containerStyle={{
+                  initialViewState={{
+                    longitude: long,
+                    latitude: lat,
+                    zoom: 10
+                  }}
+                  style={{
                     height: "50vh",
                     width: "50vw",
                   }}
-                  center={[long, lat]}
+                  mapStyle="mapbox://styles/mapbox/light-v10"
+                  mapboxAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN}
                 >
-                  {/*Adapted from: https://www.tabnine.com/code/javascript/classes/react-map-gl/Marker */}
-                  <Marker coordinates={[long, lat]} anchor="bottom">
+                  <Marker longitude={long} latitude={lat} anchor="bottom">
                     <div
                       style={{
                         height: 15,
