@@ -14,29 +14,28 @@ export default function Results() {
   const dispatch = useDispatch();
   const [value, setValue] = useState("1");
 
-
-
-
   useEffect(() => {
     dispatch(getUpcomingArtistEventsAsync());
   }, [dispatch]);
 
   const festivals = useSelector((state) => state.festivals.festivals);
 
+  const festivalArr = Object.keys(festivals).map((key) => festivals[key]);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const savedFestivals = festivals.filter(
-    (festival) => festival.saved === true
+  const savedFestivals = festivalArr.filter(
+    (festival) => festival.saved !== undefined && festival.saved === true
   );
 
-  const festivalsToDisplay = festivals.filter(
-    (festival) => festival.archived === false
+  const festivalsToDisplay = festivalArr.filter(
+    (festival) => festival.archived === undefined || festival.archived === false
   );
 
-  const archivedFestivals = festivals.filter(
-    (festival) => festival.archived === true
+  const archivedFestivals = festivalArr.filter(
+    (festival) => festival.archived !== undefined && festival.archived === true
   );
 
   // TODO: Need make festival cards responsive for mobile
@@ -54,9 +53,11 @@ export default function Results() {
         <TabPanel value="1">
           <div className="festival-results-container">
             {festivalsToDisplay ? (
-              festivalsToDisplay.sort((a, b) => b.artists.length - a.artists.length).map((festival) => (
+              festivalsToDisplay
+                .sort((a, b) => b.artists.length - a.artists.length)
+                .map((festival) => (
                   <FestivalCard festival={festival} key={festival.id} />
-              ))
+                ))
             ) : (
               <p>Loading or Error, No data {JSON.stringify(festivals)}</p>
             )}

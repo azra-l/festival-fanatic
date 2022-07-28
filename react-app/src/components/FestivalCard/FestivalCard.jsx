@@ -20,6 +20,7 @@ export default function FestivalCard({ festival, user }) {
     saved,
     archived,
     artists,
+    _id,
   } = festival;
   const dateParsed = new Date(date);
 
@@ -32,11 +33,8 @@ export default function FestivalCard({ festival, user }) {
 
   const handleSaveButtonClick = (e) => {
     e.preventDefault();
-    const userObj = {
-      user,
-      festival: {...festival, saved: !saved}
-    }
-    dispatch(updateFestivalAsync(userObj));
+    const action = saved ? 'unsave' : 'save';
+    dispatch(updateFestivalAsync({ _id, action}));
   };
 
   const handleArchiveButtonClick = (e) => {

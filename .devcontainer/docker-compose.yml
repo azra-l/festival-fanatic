@@ -26,8 +26,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
-    # volumes:
-    #   - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     restart: unless-stopped
     ports:
       - 27017:27017
