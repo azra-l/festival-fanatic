@@ -2,21 +2,18 @@ import React from "react";
 import "./FestivalCard.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { FaRegHeart, FaHeart  } from "react-icons/fa";
+import { FaRegHeart, FaHeart, FaCalendar  } from "react-icons/fa";
 import { BsArchive, BsArchiveFill } from "react-icons/bs";
 import { updateFestivalAsync } from "../../redux/festivals/thunks";
 
-export default function FestivalCard({ festival, user }) {
+export default function FestivalCard({ festival, position }) {
   const dispatch = useDispatch();
-
-  // TODO: Use a non-hard-coded image
 
   const {
     date,
     name,
     city,
     region,
-    img = "https://cdn1.matadornetwork.com/blogs/1/2021/08/Music-festivals-2021-North-Coast-Festival-Chicago-1200x854.jpeg",
     saved,
     archived,
     artists,
@@ -39,43 +36,38 @@ export default function FestivalCard({ festival, user }) {
 
   const handleArchiveButtonClick = (e) => {
     e.preventDefault();
-    const userObj = {
-      user,
-      festival: {...festival, archived: !archived}
-    }
-    dispatch(updateFestivalAsync(userObj));
+    const action = archived ? 'unarchive' : 'archive';
+    dispatch(updateFestivalAsync({ _id, action}));
   };
 
   return (
-    <div className="festival-card">
+    <div className={`festival-card card-${position}`}>
       <div className="btn">
         <button className="save-btn" onClick={handleSaveButtonClick}>
           {saved ? (
-            <FaHeart color="red" size={24} />
+            <FaHeart color="white" size={35} />
           ) : (
-            <FaRegHeart size={24} color="white" />
+            <FaRegHeart size={35} color="white" />
           )}
         </button>
         <button className="delete-btn" onClick={handleArchiveButtonClick}>
           {archived ? (
-            <BsArchiveFill color="white" size={24} />
+            <BsArchiveFill color="white" size={35} />
           ) : (
-            <BsArchive color="white" size={20} />
+            <BsArchive color="white" size={35} />
           )}
         </button>
       </div>
       <div className="festival-information">
         <div className="date-container">
+          <FaCalendar color="white" size={30}/>
           <div className="festival-day">{day}</div>
-          <div>{month}</div>
-          <div>{year}</div>
+          <div className="festival-month">{month}</div>
+          <div className="festival-year">{year}</div>
         </div>
         <div className="festival-info">
-          <div>{name}</div>
-          <div>{`${city}, ${region}`}</div>
-          {/**
-           * TODO: Update this link later to view full details component
-           */}
+          <div className="festival-name">{name}</div>
+          <div className="festival-location">{`${city}, ${region}`}</div>
           <Link
             to="detailed-results"
             className="festival-link"
@@ -83,9 +75,11 @@ export default function FestivalCard({ festival, user }) {
           >
             See details
           </Link>
-          <div>{`Artists Matched: ${artists.length}`}</div>
         </div>
-        <img src={img} className="festival-img" alt="festival-img" />
+        <div className="matched-artists">
+            <div className="num">{artists.length}</div>
+            <div className="text">{artists.length > 1 ? "ARTISTS MATCHED": "ARTIST MATCHED"}</div>
+        </div>
       </div>
     </div>
   );
