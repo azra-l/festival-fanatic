@@ -11,12 +11,20 @@ const FestivalList = ({ festivals }) => {
       const types = {
         name: "name",
         date: "date",
+        artists: "artists",
       };
       const sortProperty = types[type];
-      const sorted = [...festivals].sort((a, b) =>
-        a[sortProperty].localeCompare(b[sortProperty])
-      );
-      setResults(sorted);
+      if (sortProperty !== "artists") {
+        const sorted = [...festivals].sort((a, b) =>
+          a[sortProperty].localeCompare(b[sortProperty])
+        );
+        setResults(sorted);
+      } else {
+        const sorted = [...festivals].sort(
+          (a, b) => b.artists.length - a.artists.length
+        );
+        setResults(sorted);
+      }
     };
     sortArray(sortBy);
   }, [festivals, sortBy]);
@@ -28,7 +36,7 @@ const FestivalList = ({ festivals }) => {
         <select onChange={(e) => setSortBy(e.target.value)}>
           <option value="name">Festival name (A - Z)</option>
           <option value="date">Date (newest - oldest)</option>
-          <option value="artist"> Artist name (A - Z)</option>
+          <option value="artists">Matched artists (high - low)</option>
         </select>
       </div>
 
