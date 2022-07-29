@@ -1,6 +1,5 @@
 .festival-results-container {
     display: grid;
-    grid-template-columns: auto auto auto;
   }
 
 .sort-container label {
