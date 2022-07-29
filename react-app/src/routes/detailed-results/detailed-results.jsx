@@ -6,8 +6,9 @@ import "./detailed-results.css";
 import { BsCalendarFill } from "react-icons/bs";
 import { MdLocationPin } from "react-icons/md";
 import { GoLinkExternal } from "react-icons/go";
-import ReactMapboxGl, { Marker } from "react-mapbox-gl";
+import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { apiBaseUrl, appBaseUrl } from "../../utilities/base-url";
 
 export default function DetailedResults() {
   const location = useLocation();
@@ -30,9 +31,8 @@ export default function DetailedResults() {
     longitude,
   } = festival;
 
-  const baseURL = "http://localhost:3001/artists/";
 
-  const artistURLs = artists.map((artist) => `${baseURL}/${artist}`);
+  const artistURLs = artists.map((artist) => `${apiBaseUrl}/artists/${artist}`);
 
   const getArtists = useCallback(async () => {
     setIsLoading(true);
@@ -42,7 +42,7 @@ export default function DetailedResults() {
           method: "GET",
           credentials: "include",
           headers: {
-            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Access-Control-Allow-Origin": appBaseUrl,
           },
         }).then((res) => res.json())
       )
@@ -54,6 +54,7 @@ export default function DetailedResults() {
 
   useEffect(() => {
     getArtists();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // from: https://stackoverflow.com/questions/12246394/how-to-get-month-from-string-in-javascript
@@ -67,11 +68,6 @@ export default function DetailedResults() {
 
   const long = parseFloat(longitude);
   const lat = parseFloat(latitude);
-
-  // Map adapted from: https://github.com/alex3165/react-mapbox-gl/blob/master/docs/API.md
-  const Map = ReactMapboxGl({
-    accessToken: process.env.REACT_APP_MAP_BOX_TOKEN,
-  });
 
   return (
     <>
@@ -122,16 +118,19 @@ export default function DetailedResults() {
             {latitude && longitude && (
               <div className="map">
                 <Map
-                  // eslint-disable-next-line react/style-prop-object
-                  style="mapbox://styles/mapbox/light-v10"
-                  containerStyle={{
+                  initialViewState={{
+                    longitude: long,
+                    latitude: lat,
+                    zoom: 10
+                  }}
+                  style={{
                     height: "50vh",
                     width: "50vw",
                   }}
-                  center={[long, lat]}
+                  mapStyle="mapbox://styles/mapbox/light-v10"
+                  mapboxAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN}
                 >
-                  {/*Adapted from: https://www.tabnine.com/code/javascript/classes/react-map-gl/Marker */}
-                  <Marker coordinates={[long, lat]} anchor="bottom">
+                  <Marker longitude={long} latitude={lat} anchor="bottom">
                     <div
                       style={{
                         height: 15,

@@ -3,25 +3,31 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var livereload = require("livereload");
-var connectLiveReload = require("connect-livereload");
+const clientUrl = process.env.CLIENT_URL;
+
 
 const cors = require('cors');
 const mongoose = require('mongoose');
 const session = require('express-session')
 
+let isProd = process.env.NODE_ENV === 'production';
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var festivalsRouter = require('./routes/festivals');
 var bandsInTownRouter = require('./routes/bandsintown');
 var artistRouter = require('./routes/artists');
 
-const liveReloadServer = livereload.createServer();
-liveReloadServer.server.once("connection", () => {
-	setTimeout(() => {
-		liveReloadServer.refresh("/");
-	}, 100);
-});
+if (!isProd) {
+  var livereload = require("livereload");
+  var connectLiveReload = require("connect-livereload");
+  const liveReloadServer = livereload.createServer();
+  liveReloadServer.server.once("connection", () => {
+    setTimeout(() => {
+      liveReloadServer.refresh("/");
+    }, 100);
+  });
+}
+
 
 const restricted = require('./restricted-middleware')
 
@@ -32,20 +38,27 @@ mongoose
 	})
 
 var app = express();
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: [clientUrl] }));
 
-app.use(connectLiveReload());
+if (!isProd) {
+  app.use(connectLiveReload());
+}
 
 app.use(logger('dev'));
 app.use(express.json());
+app.set('trust proxy', 1);
 
+// https://stackoverflow.com/questions/66503751/cross-domain-session-cookie-express-api-on-heroku-react-app-on-netlify
 const sessionConfig = {
 	name: "festivalFanaticSession",
 	secret: process.env.SESSION_SECRET,
 	cookie: {
 		maxAge: 1000 * 60 * 60, // 1 hour maxage of a cookie (in milliseconds)
-		secure: false, // for production, set true for https only
-		httpOnly: true, // true means no access from javascript
+		// secure: true, // for production, set true for https only
+		secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
+		// httpOnly: true, // true means no access from javascript
+		sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
+
 	},
 	resave: false,
 	saveUninitialized: true // GDPR laws user has to give consent, needs to be false in production

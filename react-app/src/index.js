@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Results from "./routes/results/results";
 import TopArtists from "./routes/top-artists/top-artists";
-import LogIn from "./routes/login/login";
 import DetailedResults from "./routes/detailed-results/detailed-results";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import ProtectedRoute from "./utilities/ProtectedRoute";
-// import RequireAuth from "./utilities/auth";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

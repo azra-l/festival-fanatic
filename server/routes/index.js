@@ -9,6 +9,7 @@ const Festival = require("../models/Festival");
 const SpotifyImports = require("../models/SpotifyImports");
 const Artist = require("../models/Artist");
 const fs = require("fs");
+const clientUrl = process.env.CLIENT_URL;
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -220,7 +221,7 @@ router.get("/callback", async function (req, res, next) {
         }
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect("http://localhost:3000/results");
+        res.redirect(`${clientUrl}/results`);
       } else {
         res.redirect(
           "/#" +
@@ -384,14 +385,14 @@ router.get("/logout", function (req, res, next) {
           });
       } else {
         // res.status(200).json({ message: "Successfully logged out" })
-        res.redirect("http://localhost:3000");
+        res.redirect(clientUrl);
       }
     });
   } else {
     res.status(200).json({ message: "Not logged in, no session to DESTROYY" });
 
     // const token = req.cookies.access_token;
-    res.redirect("http://localhost:3000");
+    res.redirect(clientUrl);
   }
 });
 
