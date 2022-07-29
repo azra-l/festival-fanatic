@@ -46,13 +46,13 @@ if (!isProd) {
 
 app.use(logger('dev'));
 app.use(express.json());
-
+app.set('trust proxy', 1);
 const sessionConfig = {
 	name: "festivalFanaticSession",
 	secret: process.env.SESSION_SECRET,
 	cookie: {
 		maxAge: 1000 * 60 * 60, // 1 hour maxage of a cookie (in milliseconds)
-		secure: false, // for production, set true for https only
+		secure: isProd, // for production, set true for https only
 		httpOnly: true, // true means no access from javascript
 	},
 	resave: false,
