@@ -7,8 +7,15 @@ import { BsCalendarFill } from "react-icons/bs";
 import { MdLocationPin } from "react-icons/md";
 import { GoLinkExternal } from "react-icons/go";
 import Map, { Marker } from "react-map-gl";
+import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+
 import { apiBaseUrl, appBaseUrl } from "../../utilities/base-url";
+
+// Temp bug fix: https://github.com/visgl/react-map-gl/issues/1266#issuecomment-753686953
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+
 
 export default function DetailedResults() {
   const location = useLocation();
