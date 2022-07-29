@@ -4,7 +4,7 @@ import "./FestivalList.css";
 
 const FestivalList = ({ festivals }) => {
   const [results, setResults] = useState([]);
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState("artists");
 
   useEffect(() => {
     const sortArray = (type) => {
@@ -34,9 +34,9 @@ const FestivalList = ({ festivals }) => {
       <div className="sort-container">
         <label>Sort By</label>
         <select onChange={(e) => setSortBy(e.target.value)}>
+          <option value="artists">Matched artists (high - low)</option>
           <option value="name">Festival name (A - Z)</option>
           <option value="date">Date (newest - oldest)</option>
-          <option value="artists">Matched artists (high - low)</option>
         </select>
       </div>
 
