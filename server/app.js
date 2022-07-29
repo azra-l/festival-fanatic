@@ -57,7 +57,6 @@ const sessionConfig = {
 		secure: isProd, // for production, set true for https only
 		// httpOnly: true, // true means no access from javascript
 		sameSite: 'none'
-
 	},
 	resave: false,
 	saveUninitialized: true // GDPR laws user has to give consent, needs to be false in production
