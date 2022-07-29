@@ -2,8 +2,8 @@ import React from "react";
 import "./FestivalCard.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { FaRegHeart, FaHeart, FaCalendar } from "react-icons/fa";
-import { BsArchive, BsArchiveFill } from "react-icons/bs";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { BsArchive, BsArchiveFill, BsCircle } from "react-icons/bs";
 import { updateFestivalAsync } from "../../redux/festivals/thunks";
 
 export default function FestivalCard({ festival, position }) {
@@ -33,28 +33,37 @@ export default function FestivalCard({ festival, position }) {
 
   return (
     <div className={`festival-card card-${position}`}>
-      <div className="btn">
-        <button className="save-btn" onClick={handleSaveButtonClick}>
-          {saved ? (
-            <FaHeart color="white" size={35} />
-          ) : (
-            <FaRegHeart size={35} color="white" />
-          )}
-        </button>
-        <button className="delete-btn" onClick={handleArchiveButtonClick}>
-          {archived ? (
-            <BsArchiveFill color="white" size={35} />
-          ) : (
-            <BsArchive color="white" size={35} />
-          )}
-        </button>
-      </div>
+
       <div className="festival-information">
         <div className="date-container">
-          <FaCalendar color="white" size={30} />
           <div className="festival-day">{day}</div>
           <div className="festival-month">{month}</div>
           <div className="festival-year">{year}</div>
+          <button className="save-btn" onClick={handleSaveButtonClick}>
+
+            {/* React icon stacking https://github.com/react-icons/react-icons/issues/79 */}
+            {saved ? (
+              // <FaBookmark color="white" size={25} />
+              <span className="animated" style={{ display: 'inline-block', position: 'relative' }}>
+                <BsCircle textAnchor="middle" alignmentBaseline="middle" style={{ fontSize: '3em', color: 'white' }} />
+                <FaHeart
+                  textAnchor="middle"
+                  alignmentBaseline="middle"
+                  style={{ fontSize: '1.5em', position: 'absolute', right: '.5em', top: '.5em', color: 'white' }}
+                />
+              </span>
+            ) : (
+              <span className="animated" style={{ display: 'inline-block', position: 'relative' }}>
+                <BsCircle textAnchor="middle" alignmentBaseline="middle" style={{ fontSize: '3em', color: 'white' }} />
+                <FaRegHeart
+                  textAnchor="middle"
+                  alignmentBaseline="middle"
+                  style={{ fontSize: '1.5em', position: 'absolute', right: '.5em', top: '.5em', color: 'white' }}
+                />
+              </span>
+              // <FaRegBookmark size={25} color="white" />
+            )}
+          </button>
         </div>
         <div className="festival-info">
           <div className="festival-name">{name}</div>
@@ -66,12 +75,46 @@ export default function FestivalCard({ festival, position }) {
           >
             See details
           </Link>
-        </div>
-        <div className="matched-artists">
-          <div className="num">{artists.length}</div>
-          <div className="text">
-            {artists.length > 1 ? "ARTISTS MATCHED" : "ARTIST MATCHED"}
+          <div className="date-container">
+
           </div>
+        </div>
+        <div className="wrapper">
+          <div className="matched-artists">
+            <div className="num">{artists.length}</div>
+            <div className="text">
+              {artists.length > 1 ? "ARTISTS" : "ARTIST"}
+
+            </div>
+
+
+          </div>
+
+          <button className="delete-btn" onClick={handleArchiveButtonClick}>
+
+            {archived ? (
+              // <FaBookmark color="white" size={25} />
+              <span className="animated" style={{ display: 'inline-block', position: 'relative' }}>
+                <BsCircle textAnchor="middle" alignmentBaseline="middle" style={{ fontSize: '3em', color: 'white' }} />
+                <BsArchiveFill
+                  textAnchor="middle"
+                  alignmentBaseline="middle"
+                  style={{ fontSize: '1.5em', position: 'absolute', right: '.5em', top: '.5em', color: 'white' }}
+                />
+              </span>
+            ) : (
+              <span className="animated" style={{ display: 'inline-block', position: 'relative' }}>
+                <BsCircle textAnchor="middle" alignmentBaseline="middle" style={{ fontSize: '3em', color: 'white' }} />
+                <BsArchive
+                  textAnchor="middle"
+                  alignmentBaseline="middle"
+                  style={{ fontSize: '1.5em', position: 'absolute', right: '.5em', top: '.5em', color: 'white' }}
+                />
+              </span>
+            )}
+          </button>
+
+
         </div>
       </div>
     </div>
