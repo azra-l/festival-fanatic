@@ -13,6 +13,7 @@ import TabContext from "@mui/lab/TabContext";
 export default function Results() {
   const dispatch = useDispatch();
   const [value, setValue] = useState("1");
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     dispatch(getUpcomingArtistEventsAsync());
@@ -20,21 +21,25 @@ export default function Results() {
 
   const festivals = useSelector((state) => state.festivals.festivals);
 
-  const festivalArr = Object.keys(festivals).map((key) => festivals[key]);
+  useEffect(() => {
+    const festivalArr = Object.keys(festivals).map((key) => festivals[key]);
+    const festivalsToDisplay = festivalArr.filter(
+      (festival) => festival.archived === undefined || festival.archived === false
+    );
+    setResults(festivalsToDisplay)
+  }, [festivals]);
+
+  
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const savedFestivals = festivalArr.filter(
+  const savedFestivals = results.filter(
     (festival) => festival.saved !== undefined && festival.saved === true
   );
 
-  const festivalsToDisplay = festivalArr.filter(
-    (festival) => festival.archived === undefined || festival.archived === false
-  );
-
-  const archivedFestivals = festivalArr.filter(
+  const archivedFestivals = results.filter(
     (festival) => festival.archived !== undefined && festival.archived === true
   );
 
@@ -54,8 +59,8 @@ export default function Results() {
           <div className="sort-container">
           </div>
           <div className="festival-results-container">
-            {festivalsToDisplay? (
-              festivalsToDisplay.map((festival, i) => (
+            {results? (
+              results.map((festival, i) => (
                 <FestivalCard
                   festival={festival}
                   key={festival.id}
