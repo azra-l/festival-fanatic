@@ -46,13 +46,13 @@ router.get("/login", function (req, res, next) {
   var scope = "user-read-private user-top-read";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
-      new URLSearchParams({
-        response_type: "code",
-        client_id: client_id,
-        scope: scope,
-        redirect_uri: redirect_uri,
-        state: state,
-      }).toString()
+    new URLSearchParams({
+      response_type: "code",
+      client_id: client_id,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state,
+    }).toString()
   );
 });
 
@@ -67,9 +67,9 @@ router.get("/callback", async function (req, res, next) {
   if (state === null || state !== storedState) {
     res.redirect(
       "/#" +
-        new URLSearchParams({
-          error: "state_mismatch",
-        }).toString()
+      new URLSearchParams({
+        error: "state_mismatch",
+      }).toString()
     );
   } else {
     res.clearCookie(stateKey);
@@ -149,8 +149,8 @@ router.get("/callback", async function (req, res, next) {
             if (
               currentSpotifyImports.length > 0 &&
               new Date().getTime() -
-                currentSpotifyImports[0].timeOfImport.getTime() <
-                24 * 60 * 60 * 1000
+              currentSpotifyImports[0].timeOfImport.getTime() <
+              24 * 60 * 60 * 1000
             ) {
               //console.log("no need to update imports, last import was done less than a day ago")
               throw new Error(
@@ -163,7 +163,7 @@ router.get("/callback", async function (req, res, next) {
 
             const artistPromises = [];
             for (const artist of listOfArtists) {
-              console.log(artist);
+              // console.log(artist);
               artistPromises.push(
                 Artist.findOneAndUpdate(
                   {
@@ -225,9 +225,9 @@ router.get("/callback", async function (req, res, next) {
       } else {
         res.redirect(
           "/#" +
-            new URLSearchParams({
-              error: "invalid_token",
-            }).toString()
+          new URLSearchParams({
+            error: "invalid_token",
+          }).toString()
         );
       }
     });
@@ -241,6 +241,8 @@ const getSpotifyTopArtists = async (access_token) => {
 
   try {
     const spotifyResponse = await axios.get(
+      // TODO: STANFORD LIMIT TO 50 BABYY
+      //       "https://api.spotify.com/v1/me/top/artists?limit=50",
       "https://api.spotify.com/v1/me/top/artists",
       {
         headers: {
@@ -286,25 +288,45 @@ const getBandsInTownEvents = async (listOfArtists) => {
       if (promise.status == "rejected") {
         failedToFindArtistList.push(listOfArtists[index]);
       } else if (promise.status == "fulfilled") {
-        promise.value.forEach((eventValue) => {
-          const foundEvent = eventsList.find(
-            (eventInCurrentList) =>
-              eventInCurrentList.title === eventValue.title
-          );
-          if (foundEvent) {
-            if (
-              !foundEvent.lineup.find((element) => {
-                return (
-                  element.name.toLowerCase() ===
-                  listOfArtists[index].name.toLowerCase()
-                );
-              })
-            )
-              foundEvent.lineup.push(listOfArtists[index]);
+        promise.value.forEach((bandsInTownEvent, index2) => {
+
+          // Find any events that are already present based on the event name and datetime
+          // If it exists, the artist to it's lineup, otherwise create a new event
+          // Some event "title"'s are blank, so need to error handle for that and replace with "venue.name"
+          const existingEvent = eventsList.find(
+            (eventInCurrentList) => {
+
+              const eventInCurrentListTitle = eventInCurrentList.title === "" ? eventInCurrentList.venue.name : eventInCurrentList.title
+
+              const queryEventTitle = bandsInTownEvent.title === "" ? bandsInTownEvent.venue.name : bandsInTownEvent.title
+
+              return eventInCurrentListTitle === queryEventTitle && eventInCurrentList.datetime === bandsInTownEvent.datetime
+
+            });
+
+          if (typeof existingEvent !== "undefined") {
+            // For debugging
+            // console.log("The index is", index)
+            // console.log("The running total index2", index2)
+            // console.log("The listOfArtists[index].name", listOfArtists[index].name)
+            // console.log("The existingEvent.title is", existingEvent.title)
+            // console.log("The bandsInTownEvent.title", bandsInTownEvent.title)
+
+            // Event that's found has same name and datetime, just add artist to lineup
+
+            const existingLineup = existingEvent.lineup.find((element) => {
+              return (
+                element.name.toLowerCase() ===
+                listOfArtists[index].name.toLowerCase()
+              );
+            })
+
+            if (typeof existingLineup === "undefined")
+              existingEvent.lineup.push(listOfArtists[index]);
           } else {
-            eventValue.lineup = [listOfArtists[index]];
-            delete eventValue.artist;
-            eventsList.push(eventValue);
+            bandsInTownEvent.lineup = [listOfArtists[index]];
+            delete bandsInTownEvent.artist;
+            eventsList.push(bandsInTownEvent);
           }
         });
       }
