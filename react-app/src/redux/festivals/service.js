@@ -1,4 +1,4 @@
-import { apiBaseUrl } from '../../utilities/base-url';
+import { apiBaseUrl, appBaseUrl } from '../../utilities/base-url';
 
 const getUpcomingArtistEvents = async () => {
   const response = await fetch(`${apiBaseUrl}/festivals`, {
@@ -6,7 +6,10 @@ const getUpcomingArtistEvents = async () => {
     // https://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf?rq=1
     method: "GET",
     // Need credentials to pass cookie data into request
-    credentials: "include"
+    credentials: "include",
+    headers: {
+        "Access-Control-Allow-Origin": appBaseUrl,
+    },
   });
 
   const data = await response.json();
@@ -35,6 +38,7 @@ const updateFestival = async ({ _id, action }) => {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": appBaseUrl,
     },
 
   });
