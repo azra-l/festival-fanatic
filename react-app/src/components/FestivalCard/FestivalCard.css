@@ -8,19 +8,19 @@
 }
 
 .card-0 {
-  background-color: #de633a;
+  background-color: #69445F;
 }
 .card-1 {
-  background-color: #3a60de;
+  background-color: #9729A6;
 }
 .card-2 {
-  background-color: #3ade6b;
+  background-color: #6206BF;
 }
 .card-3 {
-  background-color: #e65782;
+  background-color: #180559;
 }
 .card-4 {
-  background-color: #e3b829;
+  background-color: #6D6B68;
 }
 
 .festival-information {
@@ -40,17 +40,25 @@
 
 /*https://stackoverflow.com/questions/45576170/text-and-label-centered-in-css-circle*/
 
-.matched-artists {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+.wrapper {
   display: flex;
   flex-direction: column;
+  /* flex-wrap: wrap; */
+
+}
+
+.matched-artists {
+  display: flex;
+  flex-direction: column;
+
   align-items: center;
   justify-content: center;
   color: inherit;
   background-color: white;
   color: #141436;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
 }
 
 .text {
@@ -59,8 +67,9 @@
 }
 
 .num {
-  font-size: 25px;
+  font-size: 2rem;
   font-weight: bold;
+
 
 }
 
@@ -99,7 +108,15 @@
   justify-content: space-between;
 }
 
-.save-btn, .delete-btn {
+.save-btn {
+  cursor: pointer;
+  background-color: inherit;
+  outline: #6b6b69;
+  border: #6b6b69;
+}
+
+.delete-btn {
+  padding-top: 1.5rem;
   cursor: pointer;
   background-color: inherit;
   outline: #6b6b69;
