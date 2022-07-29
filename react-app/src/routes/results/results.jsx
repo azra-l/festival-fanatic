@@ -1,5 +1,4 @@
 import Navbar from "../../components/Navbar/Navbar";
-import FestivalCard from "../../components/FestivalCard/FestivalCard";
 import "./results.css";
 import { useSelector, useDispatch } from "react-redux";
 import { getUpcomingArtistEventsAsync } from "../../redux/festivals/thunks";
@@ -9,11 +8,11 @@ import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
+import FestivalList from "../../components/FestivalList/FestivalList";
 
 export default function Results() {
   const dispatch = useDispatch();
   const [value, setValue] = useState("1");
-  const [results, setResults] = useState([]);
 
   useEffect(() => {
     dispatch(getUpcomingArtistEventsAsync());
@@ -21,26 +20,22 @@ export default function Results() {
 
   const festivals = useSelector((state) => state.festivals.festivals);
 
-  useEffect(() => {
-    const festivalArr = Object.keys(festivals).map((key) => festivals[key]);
-    const festivalsToDisplay = festivalArr.filter(
-      (festival) => festival.archived === undefined || festival.archived === false
-    );
-    setResults(festivalsToDisplay)
-  }, [festivals]);
-
-  
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const savedFestivals = results.filter(
+  const savedFestivals = festivals.filter(
     (festival) => festival.saved !== undefined && festival.saved === true
   );
 
-  const archivedFestivals = results.filter(
+  const archivedFestivals = festivals.filter(
     (festival) => festival.archived !== undefined && festival.archived === true
+  );
+
+  const festivalArr = Object.keys(festivals).map((key) => festivals[key]);
+
+  const festivalsToDisplay = festivalArr.filter(
+    (festival) => festival.archived === undefined || festival.archived === false
   );
 
   // TODO: Need make festival cards responsive for mobile
@@ -56,39 +51,21 @@ export default function Results() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <div className="sort-container">
-          </div>
-          <div className="festival-results-container">
-            {results? (
-              results.map((festival, i) => (
-                <FestivalCard
-                  festival={festival}
-                  key={festival.id}
-                  position={i % 5}
-                />
-              ))
-            ) : (
-              <p>Loading or Error, No data {JSON.stringify(festivals)}</p>
-            )}
-          </div>
+          <FestivalList festivals={festivalsToDisplay} />
         </TabPanel>
         <TabPanel value="2">
-          <div className="festival-results-container">
+          <div>
             {savedFestivals ? (
-              savedFestivals.map((festival) => (
-                <FestivalCard festival={festival} key={festival.id} />
-              ))
+              <FestivalList festivals={savedFestivals}/>
             ) : (
               <p>You have no saved festivals</p>
             )}
           </div>
         </TabPanel>
         <TabPanel value="3">
-          <div className="festival-results-container">
+          <div>
             {archivedFestivals ? (
-              archivedFestivals.map((festival) => (
-                <FestivalCard festival={festival} key={festival.id} />
-              ))
+              <FestivalList festivals={archivedFestivals}/>
             ) : (
               <p>You have no archived festivals</p>
             )}

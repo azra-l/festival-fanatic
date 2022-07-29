@@ -1,6 +1,5 @@
 .festival-card {
-  margin: 2rem auto;
-  background-color: #6b6b69;
+  margin: 1rem auto;
   height: 200px;
   width: 400px;
   box-shadow: 0.05rem 0.1rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45);
@@ -21,26 +20,43 @@
 .date-container {
   flex-direction: column;
   text-align: center;
+  font-size: 12px;
+}
+
+.num {
+  font-size: 20px;
+  font-weight: bold;
+
 }
 
 .festival-day {
-  font-size: larger;
+  font-size: 20px;
+  margin-top: 0.5rem;
+}
+
+.festival-month, .festival-year {
+  font-size: 17px;
 }
 
 .festival-info {
   text-align: center;
 }
 
-.festival-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 0.25rem;
+.festival-name {
+  font-size: 17px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.festival-location {
+  font-size: 15px;
 }
 
 .festival-link {
   display: inline-block;
   margin: 0.5rem 0;
   color: white;
+  font-size: 13px;
 }
 
 .btn {
