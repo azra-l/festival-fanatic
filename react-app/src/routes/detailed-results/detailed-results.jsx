@@ -8,7 +8,7 @@ import { MdLocationPin } from "react-icons/md";
 import { GoLinkExternal } from "react-icons/go";
 import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { apiBaseUrl } from "../../utilities/base-url";
+import { apiBaseUrl, appBaseUrl } from "../../utilities/base-url";
 
 export default function DetailedResults() {
   const location = useLocation();
@@ -40,7 +40,10 @@ export default function DetailedResults() {
       artistURLs.map((url) =>
         fetch(url, {
           method: "GET",
-          credentials: "include"
+          credentials: "include",
+          headers: {
+            "Access-Control-Allow-Origin": appBaseUrl,
+          },
         }).then((res) => res.json())
       )
     );

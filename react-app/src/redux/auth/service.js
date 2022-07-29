@@ -1,10 +1,13 @@
-import { apiBaseUrl } from '../../utilities/base-url';
+import { apiBaseUrl, appBaseUrl } from '../../utilities/base-url';
 
 const checkAuth = async () => {
     const response = await fetch(`${apiBaseUrl}/users/check-auth`, {
         method: "GET",
         // Need credentials to pass cookie data into request
-        credentials: "include"
+        credentials: "include",
+        headers: {
+            "Access-Control-Allow-Origin": appBaseUrl,
+        },
     });
 
     console.log("The checkAuth response.status", response.status)
