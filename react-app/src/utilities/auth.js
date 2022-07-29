@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import { apiBaseUrl } from "./base-url";
 
 
 const RequireAuth = (Component) => {
@@ -32,13 +33,10 @@ const RequireAuth = (Component) => {
 }
 
 const getAuth = async () => {
-    const response = await fetch(`http://localhost:3001/users/check-auth`, {
+    const response = await fetch(`${apiBaseUrl}/users/check-auth`, {
         method: "GET",
         // Need credentials to pass cookie data into request
         credentials: "include",
-        headers: {
-            "Access-Control-Allow-Origin": "http://localhost:3000",
-        },
     });
 
     const data = await response.json();

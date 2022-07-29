@@ -1,6 +1,7 @@
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import { useSelector } from "react-redux";
+import { apiBaseUrl, appBaseUrl } from './utilities/base-url';
 
 function App() {
 
@@ -15,7 +16,7 @@ function App() {
           <h2>Your results are in!! See your matched festivals</h2>
           <button className="get-started-btn" onClick={(e) => {
             e.preventDefault();
-            window.location.href = 'http://localhost:3000/results';
+            window.location.href = `${appBaseUrl}/results`;
           }}>Results</button>
 
         </div> : <div>
@@ -23,11 +24,7 @@ function App() {
 
           <button className="get-started-btn" onClick={(e) => {
             e.preventDefault();
-            window.location.href = 'http://localhost:3001/login';
-
-            // fetch("http://localhost:3001/login", {
-            //   method: 'GET', credentials: 'same-origin', 'Access-Control-Allow-Origin': "*",
-            // })
+            window.location.href = `${apiBaseUrl}/login`;
           }}
           >Log in with Spotify</button>
         </div>}

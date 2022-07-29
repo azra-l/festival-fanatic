@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { useSelector } from "react-redux";
+import { apiBaseUrl } from "../../utilities/base-url";
 
+const logoutURL = apiBaseUrl + '/logout';
 export default function Navbar() {
 
   const isAuth = useSelector((store) => store.auth.isAuthenticated);
@@ -15,7 +17,7 @@ export default function Navbar() {
         Results
       </Link> : <div></div>}
       {/* Logout of spotify AKA invalidate the tokens: https://stackoverflow.com/questions/24408444/how-to-logout-user-from-spotify-after-authorization-and-web-api-call-is-over */}
-      {isAuth ? <a href="http://localhost:3001/logout" className="nav-link" rel="noreferrer">
+      {isAuth ? <a href={logoutURL} className="nav-link" rel="noreferrer">
         Log out
       </a> : <div></div>}
     </nav>
