@@ -38,7 +38,7 @@ mongoose
 	})
 
 var app = express();
-app.use(cors({ credentials: true, origin: clientUrl }));
+app.use(cors({ credentials: true, origin: [clientUrl] }));
 
 if (!isProd) {
   app.use(connectLiveReload());
@@ -46,17 +46,19 @@ if (!isProd) {
 
 app.use(logger('dev'));
 app.use(express.json());
-// app.set('trust proxy', 1);
-app.enable('trust proxy')
+app.set('trust proxy', 1);
 
+// https://stackoverflow.com/questions/66503751/cross-domain-session-cookie-express-api-on-heroku-react-app-on-netlify
 const sessionConfig = {
 	name: "festivalFanaticSession",
 	secret: process.env.SESSION_SECRET,
 	cookie: {
 		maxAge: 1000 * 60 * 60, // 1 hour maxage of a cookie (in milliseconds)
-		secure: true, // for production, set true for https only
+		// secure: true, // for production, set true for https only
+		secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
 		// httpOnly: true, // true means no access from javascript
-		// sameSite: 'none'
+		sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
+
 	},
 	resave: false,
 	saveUninitialized: true // GDPR laws user has to give consent, needs to be false in production
