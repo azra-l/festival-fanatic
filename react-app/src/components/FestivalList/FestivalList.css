@@ -1,0 +1,8 @@
+.festival-results-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+
+.sort-container label {
+    margin: 0 0.5rem 0 1rem;
+}

@@ -1,46 +1,97 @@
 .festival-card {
-  margin: 2rem auto;
-  background-color: #6b6b69;
+  margin: 1rem auto;
   height: 200px;
   width: 400px;
   box-shadow: 0.05rem 0.1rem 0.3rem -0.03rem rgba(0, 0, 0, 0.45);
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem 0rem 0rem;
+}
+
+.card-0 {
+  background-color: #de633a;
+}
+.card-1 {
+  background-color: #3a60de;
+}
+.card-2 {
+  background-color: #3ade6b;
+}
+.card-3 {
+  background-color: #e65782;
+}
+.card-4 {
+  background-color: #e3b829;
 }
 
 .festival-information {
   border-radius: 1rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  row-gap: 2rem;
-  column-gap: 2rem;
-  color: white;
-  padding-top: 1rem;
+  align-items:baseline;
+  justify-content: space-evenly;
+  row-gap: 5rem;
+  column-gap: 0rem;
 }
 
 .date-container {
   flex-direction: column;
+  column-gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/*https://stackoverflow.com/questions/45576170/text-and-label-centered-in-css-circle*/
+
+.matched-artists {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  background-color: white;
+  color: #141436;
+}
+
+.text {
   text-align: center;
+  font-size: 12px;
+}
+
+.num {
+  font-size: 25px;
+  font-weight: bold;
+
 }
 
 .festival-day {
-  font-size: larger;
+  font-size: 23px;
+  margin-top: 0.5rem;
+}
+
+.festival-month, .festival-year {
+  font-size: 17px;
 }
 
 .festival-info {
   text-align: center;
 }
 
-.festival-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 0.25rem;
+.festival-name {
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.festival-location {
+  font-size: 17px;
 }
 
 .festival-link {
   display: inline-block;
   margin: 0.5rem 0;
   color: white;
+  font-size: 18px;
 }
 
 .btn {
@@ -50,7 +101,7 @@
 
 .save-btn, .delete-btn {
   cursor: pointer;
-  background-color: #6b6b69;
+  background-color: inherit;
   outline: #6b6b69;
   border: #6b6b69;
 }
