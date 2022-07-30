@@ -18,6 +18,7 @@ const FestivalList = ({ festivals }) => {
   const [results, setResults] = useState([]);
   const [sortBy, setSortBy] = useState("artists");
   const [searchBy, setSearchBy] = useState("Artist");
+  const [searchQuery, setSearchQuery] = useState("");
 
 
   useEffect(() => {
@@ -46,13 +47,19 @@ const FestivalList = ({ festivals }) => {
   useEffect(() => {
     const searchArray = (type) => {
       if (type === "artist") {
-
+        const filter = festivals.filter(function(i,n){
+          return i.artists.filter(s => s.toLowerCase().startsWith(searchQuery.toLowerCase()));
+        });
+        setResults(filter);
       } else {
-
+        const filter = festivals.filter(function(i,n){
+          return i.city.toLowerCase().startsWith(searchQuery.toLowerCase());
+        });
+        setResults(filter);
       }
     }
     searchArray(searchBy)
-  }, [festivals, searchBy]);
+  }, [festivals, searchBy, searchQuery]);
 
   return (
     <>
@@ -78,7 +85,7 @@ const FestivalList = ({ festivals }) => {
             </TextField>
           </Grid>
           <Grid item justifyContent="flex-end">
-            <TextField className="search-text-field" label="Search" variant="standard" focused color="secondary">Enter search parameter</TextField>
+            <TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => {if(e.target.value !== "") {setSearchQuery(e.target.value)}}} focused color="secondary">Enter search parameter</TextField>
           </Grid>
         </Grid>
       </div>
