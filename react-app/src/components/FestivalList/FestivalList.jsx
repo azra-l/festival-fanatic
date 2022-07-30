@@ -19,7 +19,7 @@ const FestivalList = ({ festivals }) => {
   const [sortBy, setSortBy] = useState("artists");
   const [searchBy, setSearchBy] = useState("artist");
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event) => {
     setSearchBy(event.target.value);
   };
 
