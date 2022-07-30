@@ -1,9 +1,15 @@
-import { Grid, TextField } from "@mui/material";
+import { Grid, TextField, InputLabel } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import FestivalCard from "../FestivalCard/FestivalCard";
 import "./FestivalList.css";
 
 const searchParams = [
+  // TODO Add back to search params once solution is found for querying artist names from festivals
+  // {
+  //   value: 'artist',
+  //   label: 'Artist',
+  // },
   {
     value: 'location',
     label: 'Location',
@@ -14,11 +20,17 @@ const searchParams = [
   }
 ]
 
-// TODO Add back to search params once solution is found for querying artist names from festivals
-// {
-//   value: 'artist',
-//   label: 'Artist',
-// },
+
+const darkTheme = createTheme({
+  palette: {
+    type: "dark",
+  },
+  override: {
+    MuiInputLabel: {
+      color: "white",
+    }
+  }
+})
 
 const sortParams = [
   {
@@ -75,7 +87,6 @@ const FestivalList = ({ festivals }) => {
       //     // trying this for speed
       //     // return i.artists.toString().toLowerCase().includes(searchQuery.toLowerCase());
       //   });
-      console.log(type);
       if (type === "venue") {
         const filter = festivals.filter(function(i,n){
           return i.venue.toLowerCase().startsWith(searchQuery.toLowerCase());
@@ -94,29 +105,31 @@ const FestivalList = ({ festivals }) => {
   return (
     <>
       <div className="query-taskbar">
-        <Grid container direction={"row"} spacing={5} display="flex" className="grid-container">
-          <Grid item justifyContent="flex-start">
-            <TextField select label="Sort By" value={sortBy} onChange={(e) => setSortBy(e.target.value)} helperText="Please select your sort category" SelectProps={{native: true,}} focused color="secondary">
-              {sortParams.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
+        <ThemeProvider theme={darkTheme}>
+          <Grid container direction={"row"} spacing={5} display="flex" className="grid-container">
+            <Grid item justifyContent="flex-start">
+              <TextField select label="Sort By" value={sortBy} onChange={(e) => setSortBy(e.target.value)} helperText="Please select your sort category" SelectProps={{native: true,}} focused>
+                {sortParams.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item justifyContent="flex-end">
+              <TextField select label="Select" value={searchBy} onChange={(e) => setSearchBy(e.target.value)} helperText="Please select your search category" SelectProps={{native: true,}} focused>
+                {searchParams.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item justifyContent="flex-end">
+              <TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => setSearchQuery(e.target.value)} focused>Enter search parameter</TextField>
+            </Grid>
           </Grid>
-          <Grid item justifyContent="flex-end">
-            <TextField select label="Select" value={searchBy} onChange={(e) => setSearchBy(e.target.value)} helperText="Please select your search category" SelectProps={{native: true,}} focused color="secondary">
-              {searchParams.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item justifyContent="flex-end">
-            <TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => setSearchQuery(e.target.value)} focused color="secondary">Enter search parameter</TextField>
-          </Grid>
-        </Grid>
+        </ThemeProvider>
       </div>
       
       <div className="festival-results-container">
