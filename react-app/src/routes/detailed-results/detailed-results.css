@@ -71,9 +71,15 @@ body {
 }
 
 .lineup {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
-  margin: 1rem 0.5rem 0.5rem 1rem;
+  border: 3px;
+  border-style: solid;
+  width: inherit;
+  border-radius: 0.5rem;
+  border-color: #a251c4;
+  padding: 1rem;
+  background-color: #a251c4;
 }
 .artist-container {
   background-color: #69445f;

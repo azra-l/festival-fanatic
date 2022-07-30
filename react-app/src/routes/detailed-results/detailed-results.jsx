@@ -115,7 +115,7 @@ export default function DetailedResults() {
               </div>
             </div>
             <div className="artist-container">
-              <p className="lineup">Lineup</p>
+              <p className="lineup">Artist Lineup</p>
               <div className="artists">
                 {artistDetails.map((artist) => (
                <ArtistCard artist={artist} />
