@@ -48,7 +48,10 @@ const FestivalList = ({ festivals }) => {
     const searchArray = (type) => {
       if (type === "artist") {
         const filter = festivals.filter(function(i,n){
-          return i.artists.filter(s => s.toLowerCase().startsWith(searchQuery.toLowerCase()));
+          // slow af and doesn't work good
+          //return i.artists.filter(s => s.toLowerCase().startsWith(searchQuery.toLowerCase()));
+          // trying this for speed
+          return i.artists.toString().toLowerCase().includes(searchQuery.toLowerCase());
         });
         setResults(filter);
       } else {
@@ -76,7 +79,7 @@ const FestivalList = ({ festivals }) => {
             </div>
           </Grid>
           <Grid item justifyContent="flex-end">
-            <TextField className="search-param" select label="Select" value={searchBy} onChange={(e) => setSearchBy(e.target.value)} helperText="Please select your search category" SelectProps={{native: true,}} focused color="secondary">
+            <TextField select label="Select" value={searchBy} onChange={(e) => setSearchBy(e.target.value)} helperText="Please select your search category" SelectProps={{native: true,}} focused color="secondary">
               {searchParams.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -85,7 +88,7 @@ const FestivalList = ({ festivals }) => {
             </TextField>
           </Grid>
           <Grid item justifyContent="flex-end">
-            <TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => {if(e.target.value !== "") {setSearchQuery(e.target.value)}}} focused color="secondary">Enter search parameter</TextField>
+            <TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => setSearchQuery(e.target.value)} focused color="secondary">Enter search parameter</TextField>
           </Grid>
         </Grid>
       </div>
