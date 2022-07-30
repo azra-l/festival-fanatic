@@ -3,7 +3,6 @@
   }
 
 .sort-container {
-  width: 50%;
   float: left;
 }
 
@@ -17,17 +16,16 @@
 }
 
 .search-container {
-  display: block;
-  width: 50%;
+  display: table;
+  justify-content: space-between;
   float: right;
-  text-align: right;
-}
-
-.search-container label {
-  margin: 0 0.5rem 0 1rem;
+  text-align: justify;
+  padding: 10px;
+  margin: 0 auto;
 }
 
 .search-text-field {
+  float: right;
   padding: 5 5 5 5;
   margin: 0 0.5rem 0 1rem;
 }
