@@ -1,4 +1,6 @@
 # Festival Fanatic
+Find music festivals and events where your favourite artists will perform. Discover music festivals that you may never knew existed.
+
 
 Figma: ​​https://www.figma.com/file/jXiy6tmnOk2jeyhyI6hED0/CPSC-455---Design---Spontaneous-4?node-id=8%3A2
 
