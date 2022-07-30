@@ -5,14 +5,20 @@ import "./FestivalList.css";
 
 const searchParams = [
   {
-    value: 'artist',
-    label: 'Artist',
-  },
-  {
     value: 'location',
     label: 'Location',
+  },
+  {
+    value: 'venue',
+    label: 'Venue',
   }
 ]
+
+// TODO Add back to search params once solution is found for querying artist names from festivals
+// {
+//   value: 'artist',
+//   label: 'Artist',
+// },
 
 const sortParams = [
   {
@@ -32,7 +38,7 @@ const sortParams = [
 const FestivalList = ({ festivals }) => {
   const [results, setResults] = useState([]);
   const [sortBy, setSortBy] = useState("artists");
-  const [searchBy, setSearchBy] = useState("Artist");
+  const [searchBy, setSearchBy] = useState("location");
   const [searchQuery, setSearchQuery] = useState("");
 
 
@@ -61,15 +67,21 @@ const FestivalList = ({ festivals }) => {
 
   useEffect(() => {
     const searchArray = (type) => {
-      if (type === "artist") {
+      // TODO artists array contains ids and not names, find a way to query names?
+      // if (type === "Artist") {
+      //   const filter = festivals.filter(function(i,n){
+      //     // slow af and doesn't work good
+      //     return i.artists.filter(s => s.toLowerCase().startsWith(searchQuery.toLowerCase()));
+      //     // trying this for speed
+      //     // return i.artists.toString().toLowerCase().includes(searchQuery.toLowerCase());
+      //   });
+      console.log(type);
+      if (type === "venue") {
         const filter = festivals.filter(function(i,n){
-          // slow af and doesn't work good
-          //return i.artists.filter(s => s.toLowerCase().startsWith(searchQuery.toLowerCase()));
-          // trying this for speed
-          return i.artists.toString().toLowerCase().includes(searchQuery.toLowerCase());
+          return i.venue.toLowerCase().startsWith(searchQuery.toLowerCase());
         });
         setResults(filter);
-      } else {
+      } else if(type === "location") {
         const filter = festivals.filter(function(i,n){
           return i.city.toLowerCase().startsWith(searchQuery.toLowerCase());
         });
