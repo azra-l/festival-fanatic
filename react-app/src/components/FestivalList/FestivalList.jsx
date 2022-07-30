@@ -1,5 +1,5 @@
 import { Grid, TextField, InputLabel } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider, } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import FestivalCard from "../FestivalCard/FestivalCard";
 import "./FestivalList.css";
@@ -21,15 +21,21 @@ const searchParams = [
 ]
 
 
+const inputStyle = {
+  style: {
+    color: "white",
+  }
+}
+
+const helperTextStyles = { style: { color: "white" } }
+
 const darkTheme = createTheme({
   palette: {
     type: "dark",
-  },
-  override: {
-    MuiInputLabel: {
-      color: "white",
+    primary: {
+      main: '#FFFFFF'
     }
-  }
+  },
 })
 
 const sortParams = [
@@ -88,12 +94,12 @@ const FestivalList = ({ festivals }) => {
       //     // return i.artists.toString().toLowerCase().includes(searchQuery.toLowerCase());
       //   });
       if (type === "venue") {
-        const filter = festivals.filter(function(i,n){
+        const filter = festivals.filter(function (i, n) {
           return i.venue.toLowerCase().startsWith(searchQuery.toLowerCase());
         });
         setResults(filter);
-      } else if(type === "location") {
-        const filter = festivals.filter(function(i,n){
+      } else if (type === "location") {
+        const filter = festivals.filter(function (i, n) {
           return i.city.toLowerCase().startsWith(searchQuery.toLowerCase());
         });
         setResults(filter);
@@ -108,7 +114,9 @@ const FestivalList = ({ festivals }) => {
         <ThemeProvider theme={darkTheme}>
           <Grid container direction={"row"} spacing={5} display="flex" className="grid-container">
             <Grid item justifyContent="flex-start">
-              <TextField select label="Sort By" value={sortBy} onChange={(e) => setSortBy(e.target.value)} helperText="Please select your sort category" SelectProps={{native: true,}} focused>
+              <TextField select label="Sort By" value={sortBy} onChange={(e) => setSortBy(e.target.value)} helperText="Please select your sort category" SelectProps={{
+                native: true,
+              }} inputProps={inputStyle} FormHelperTextProps={helperTextStyles} focused>
                 {sortParams.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -117,7 +125,7 @@ const FestivalList = ({ festivals }) => {
               </TextField>
             </Grid>
             <Grid item justifyContent="flex-end">
-              <TextField select label="Select" value={searchBy} onChange={(e) => setSearchBy(e.target.value)} helperText="Please select your search category" SelectProps={{native: true,}} focused>
+              <TextField select label="Select" value={searchBy} onChange={(e) => setSearchBy(e.target.value)} helperText="Please select your search category" SelectProps={{ native: true }} inputProps={inputStyle} FormHelperTextProps={helperTextStyles} focused>
                 {searchParams.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -126,12 +134,12 @@ const FestivalList = ({ festivals }) => {
               </TextField>
             </Grid>
             <Grid item justifyContent="flex-end">
-              <TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => setSearchQuery(e.target.value)} focused>Enter search parameter</TextField>
+              <TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => setSearchQuery(e.target.value)} inputProps={inputStyle} FormHelperTextProps={helperTextStyles} focused>Enter search parameter</TextField>
             </Grid>
           </Grid>
         </ThemeProvider>
       </div>
-      
+
       <div className="festival-results-container">
         {results.map((result, i) => (
           <FestivalCard festival={result} key={result.id} position={i % 5} />
