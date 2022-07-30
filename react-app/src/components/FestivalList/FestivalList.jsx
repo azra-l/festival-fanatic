@@ -17,7 +17,7 @@ const searchParams = [
 const FestivalList = ({ festivals }) => {
   const [results, setResults] = useState([]);
   const [sortBy, setSortBy] = useState("artists");
-  const [searchBy, setSearchBy] = useState("artist");
+  const [searchBy, setSearchBy] = useState("Artist");
 
   const handleSearchChange = (event) => {
     setSearchBy(event.target.value);
@@ -48,7 +48,7 @@ const FestivalList = ({ festivals }) => {
 
   return (
     <>
-      <div className="query-container">
+      <div className="query-taskbar">
         <div className="sort-container">
           <label>Sort By</label>
           <select onChange={(e) => setSortBy(e.target.value)}>
@@ -59,7 +59,13 @@ const FestivalList = ({ festivals }) => {
         </div>
 
         <div className="search-container">
-          <TextField className="search-param" label="Select" value={searchBy} onChange={handleSearchChange}></TextField>
+          <TextField className="search-param" select label="Select" value={searchBy} onChange={handleSearchChange} helperText="Please select your search category" SelectProps={{native: true,}} focused color="secondary">
+            {searchParams.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </TextField>
           <TextField className="search-text-field" label="Search" variant="standard">Enter search parameter</TextField>
         </div>
       </div>

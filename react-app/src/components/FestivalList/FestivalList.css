@@ -11,12 +11,13 @@
   margin: 0 0.5rem 0 1rem;
 }
 
-.query-container {
+.query-taskbar {
   width: 100%;
   display: table;
 }
 
 .search-container {
+  display: block;
   width: 50%;
   float: right;
   text-align: right;
@@ -27,6 +28,10 @@
 }
 
 .search-text-field {
+  padding: 5 5 5 5;
   margin: 0 0.5rem 0 1rem;
-  background-color: aliceblue;
+}
+
+.search-param {
+  float: left;
 }
