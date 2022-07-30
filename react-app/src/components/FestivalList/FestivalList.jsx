@@ -14,6 +14,21 @@ const searchParams = [
   }
 ]
 
+const sortParams = [
+  {
+    value: 'artists',
+    label: 'Matched artists (high - low)',
+  },
+  {
+    value: 'name',
+    label: 'Festival name (A - Z)',
+  },
+  {
+    value: 'date',
+    label: 'Date (soonest - furthest)',
+  }
+]
+
 const FestivalList = ({ festivals }) => {
   const [results, setResults] = useState([]);
   const [sortBy, setSortBy] = useState("artists");
@@ -69,14 +84,13 @@ const FestivalList = ({ festivals }) => {
       <div className="query-taskbar">
         <Grid container direction={"row"} spacing={5} display="flex" className="grid-container">
           <Grid item justifyContent="flex-start">
-            <div className="sort-container">
-              <label>Sort By</label>
-              <select onChange={(e) => setSortBy(e.target.value)}>
-                <option value="artists">Matched artists (high - low)</option>
-                <option value="name">Festival name (A - Z)</option>
-                <option value="date">Date (newest - oldest)</option>
-              </select>
-            </div>
+            <TextField select label="Sort By" value={sortBy} onChange={(e) => setSortBy(e.target.value)} helperText="Please select your sort category" SelectProps={{native: true,}} focused color="secondary">
+              {sortParams.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
           </Grid>
           <Grid item justifyContent="flex-end">
             <TextField select label="Select" value={searchBy} onChange={(e) => setSearchBy(e.target.value)} helperText="Please select your search category" SelectProps={{native: true,}} focused color="secondary">
