@@ -2,6 +2,31 @@
     display: grid;
   }
 
+.sort-container {
+  width: 50%;
+  float: left;
+}
+
 .sort-container label {
-    margin: 0 0.5rem 0 1rem;
+  margin: 0 0.5rem 0 1rem;
+}
+
+.query-container {
+  width: 100%;
+  display: table;
+}
+
+.search-container {
+  width: 50%;
+  float: right;
+  text-align: right;
+}
+
+.search-container label {
+  margin: 0 0.5rem 0 1rem;
+}
+
+.search-text-field {
+  margin: 0 0.5rem 0 1rem;
+  background-color: aliceblue;
 }
