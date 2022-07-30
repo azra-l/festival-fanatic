@@ -19,9 +19,6 @@ const FestivalList = ({ festivals }) => {
   const [sortBy, setSortBy] = useState("artists");
   const [searchBy, setSearchBy] = useState("Artist");
 
-  const handleSearchChange = (event) => {
-    setSearchBy(event.target.value);
-  };
 
   useEffect(() => {
     const sortArray = (type) => {
@@ -46,11 +43,20 @@ const FestivalList = ({ festivals }) => {
     sortArray(sortBy);
   }, [festivals, sortBy]);
 
+  useEffect(() => {
+    const searchArray = (type) => {
+      if (type === "artist") {
+
+      } else {
+
+      }
+    }
+    searchArray(searchBy)
+  }, [festivals, searchBy]);
+
   return (
     <>
       <div className="query-taskbar">
-        
-
         <Grid container direction={"row"} spacing={5} display="flex" className="grid-container">
           <Grid item justifyContent="flex-start">
             <div className="sort-container">
@@ -63,7 +69,7 @@ const FestivalList = ({ festivals }) => {
             </div>
           </Grid>
           <Grid item justifyContent="flex-end">
-            <TextField className="search-param" select label="Select" value={searchBy} onChange={handleSearchChange} helperText="Please select your search category" SelectProps={{native: true,}} focused color="secondary">
+            <TextField className="search-param" select label="Select" value={searchBy} onChange={(e) => setSearchBy(e.target.value)} helperText="Please select your search category" SelectProps={{native: true,}} focused color="secondary">
               {searchParams.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
