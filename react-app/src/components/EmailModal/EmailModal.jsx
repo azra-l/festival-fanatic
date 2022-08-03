@@ -9,6 +9,8 @@ const EmailModal = ({ onClose, festival }) => {
     receiver: "",
     to: "",
   });
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleChange = (e) => {
     setMailForm((prevState) => ({
@@ -17,7 +19,19 @@ const EmailModal = ({ onClose, festival }) => {
     }));
   };
 
-  const handleShareClick = async(e) => {
+  const handleClose = (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setMailForm({
+      sender: "",
+      receiver: "",
+      to: "",
+    });
+    onClose(e);
+  };
+
+  const handleShareClick = async (e) => {
     e.preventDefault();
     const mail = {
       to: mailForm.to,
@@ -36,51 +50,57 @@ const EmailModal = ({ onClose, festival }) => {
           "Content-type": "application/json",
           "Access-Control-Allow-Origin": appBaseUrl,
         },
-        body: JSON.stringify(mail)
+        body: JSON.stringify(mail),
       });
-      alert('email sent');
+      setSuccess(true);
     } catch (e) {
-      alert('cannot send');
+      setError(true);
     }
   };
 
   return (
     <div className="email-modal">
-      <button className="close-btn" onClick={onClose}>
+      <button className="close-btn" onClick={handleClose}>
         <AiOutlineClose style={{ color: "white" }} />
       </button>
-      <form className="email-form">
-        <fieldset>
-          <legend>Email to a friend</legend>
-          <label>Your name:</label>
-          <input
-            placeholder="Enter your name"
-            onChange={handleChange}
-            name="sender"
-            value={mailForm.sender}
-          />
-          <br />
-          <label>Your friend's name:</label>
-          <input
-            placeholder="Enter your friend's name"
-            onChange={handleChange}
-            name="receiver"
-            value={mailForm.receiver}
-          />
-          <br />
-          <label>To:</label>
-          <input
-            placeholder=""
-            onChange={handleChange}
-            name="to"
-            value={mailForm.to}
-          />
-          <br />
-          <button type="button" onClick={handleShareClick}>
-            Share
-          </button>
-        </fieldset>
-      </form>
+      {error ? (
+        <div>Unable to send email, please try later</div>
+      ) : success ? (
+        <div>Your message is on its way!</div>
+      ) : (
+        <form className="email-form">
+          <fieldset>
+            <legend>Email to a friend</legend>
+            <label>Your name:</label>
+            <input
+              placeholder="Enter your name"
+              onChange={handleChange}
+              name="sender"
+              value={mailForm.sender}
+            />
+            <br />
+            <label>Your friend's name:</label>
+            <input
+              placeholder="Enter your friend's name"
+              onChange={handleChange}
+              name="receiver"
+              value={mailForm.receiver}
+            />
+            <br />
+            <label>To:</label>
+            <input
+              placeholder="Enter a valid email address"
+              onChange={handleChange}
+              name="to"
+              value={mailForm.to}
+            />
+            <br />
+            <button type="button" onClick={handleShareClick}>
+              Share
+            </button>
+          </fieldset>
+        </form>
+      )}
     </div>
   );
 };

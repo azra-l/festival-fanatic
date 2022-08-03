@@ -124,8 +124,8 @@ export default function DetailedResults() {
             <div className="artist-container">
               <p className="lineup">Artist Lineup</p>
               <div className="artists">
-                {artistDetails.map((artist) => (
-               <ArtistCard artist={artist} />
+                {artistDetails.map((artist, i) => (
+               <ArtistCard artist={artist} key={i}/>
              ))}
               </div>
             </div>
