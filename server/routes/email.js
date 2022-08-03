@@ -35,9 +35,10 @@ router.post("/", function (req, res) {
   transporter.sendMail(mailOptions, function (err, data) {
     if (err) {
       console.log("Error " + err);
-      res.json({status: "failure"});
+      res.status(500).send();
     } else {
-      res.json({ status: "success" });
+
+      res.status(200).send();
     }
   });
 });
