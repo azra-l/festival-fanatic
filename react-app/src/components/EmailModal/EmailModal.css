@@ -1,0 +1,34 @@
+.email-modal {
+  background-color: #120540;
+  width: 500px;
+  height: 250px;
+  border-radius: 0.5rem;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.email-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-btn {
+    float: right;
+    margin: 0.5rem 0.5rem 0 0;
+    background-color: #120540;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-color: #120540;
+  margin-top: 0.5rem;
+}

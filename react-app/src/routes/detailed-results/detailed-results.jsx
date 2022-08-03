@@ -9,6 +9,7 @@ import { GoLinkExternal } from "react-icons/go";
 import Map, { Marker } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import EmailModal from "../../components/EmailModal/EmailModal";
 
 import { apiBaseUrl, appBaseUrl } from "../../utilities/base-url";
 
@@ -23,6 +24,7 @@ export default function DetailedResults() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [artistDetails, setArtistDetails] = useState([]);
+  const [isSharing, setIsSharing] = useState(false);
 
   const {
     date,
@@ -76,6 +78,11 @@ export default function DetailedResults() {
   const long = parseFloat(longitude);
   const lat = parseFloat(latitude);
 
+  const onShareClick = (e) => {
+    e.preventDefault();
+    setIsSharing(!isSharing);
+  }
+
   return (
     <>
       {isLoading ? (
@@ -121,6 +128,10 @@ export default function DetailedResults() {
                <ArtistCard artist={artist} />
              ))}
               </div>
+            </div>
+            <div className="share-container">
+                  <button onClick={onShareClick}>Share with a friend</button>
+                  {isSharing && <EmailModal onClose={onShareClick} festival={festival}/>}
             </div>
             {latitude && longitude && (
               <div className="map">
