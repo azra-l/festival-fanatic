@@ -23,7 +23,7 @@ const getUpcomingArtistEvents = async () => {
 const updateFestival = async ({ _id, action }) => {
   let reqBody = {
     festivalId: _id,
-    listCategory: action === 'saved' || action === 'unsaved' ? 'saved' : 'archived'
+    listCategory: action === 'save' || action === 'unsaved' ? 'saved' : 'archived'
   };
 
   if (action === "save" || action === "archive") {
