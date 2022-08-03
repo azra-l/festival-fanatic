@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./EmailModal.css";
 import { AiOutlineClose } from "react-icons/ai";
+import {RiSendPlaneFill} from "react-icons/ri";
+import {TbFaceIdError} from "react-icons/tb";
 import { apiBaseUrl, appBaseUrl } from "../../utilities/base-url";
 
 const EmailModal = ({ onClose, festival }) => {
@@ -43,7 +45,7 @@ const EmailModal = ({ onClose, festival }) => {
     };
 
     try {
-      await fetch(`${apiBaseUrl}/email`, {
+      const res = await fetch(`${apiBaseUrl}/email`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -52,7 +54,11 @@ const EmailModal = ({ onClose, festival }) => {
         },
         body: JSON.stringify(mail),
       });
-      setSuccess(true);
+      if(res.ok){
+        setSuccess(true);
+      } else {
+        throw new Error('Cannot send email');
+      }
     } catch (e) {
       setError(true);
     }
@@ -61,12 +67,18 @@ const EmailModal = ({ onClose, festival }) => {
   return (
     <div className="email-modal">
       <button className="close-btn" onClick={handleClose}>
-        <AiOutlineClose style={{ color: "white" }} />
+        <AiOutlineClose color="white" size={26} />
       </button>
       {error ? (
-        <div>Unable to send email, please try later</div>
+        <div className="message-container">
+          <TbFaceIdError color="white" size={45}/>
+          <text>Unable to send email, please try later</text>
+          </div>
       ) : success ? (
-        <div>Your message is on its way!</div>
+        <div className="message-container">
+          <RiSendPlaneFill color="white" size={45}/>
+         <text>Your message is on its way!</text>
+          </div>
       ) : (
         <form className="email-form">
           <fieldset>
