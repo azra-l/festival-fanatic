@@ -36,6 +36,7 @@ export default function DetailedResults() {
     country,
     latitude,
     longitude,
+    description
   } = festival;
 
 
@@ -61,7 +62,7 @@ export default function DetailedResults() {
 
   useEffect(() => {
     getArtists();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // from: https://stackoverflow.com/questions/12246394/how-to-get-month-from-string-in-javascript
@@ -114,12 +115,20 @@ export default function DetailedResults() {
                 </a>
               </div>
             </div>
+
+            {description === "" ? 
+            <div></div> : 
+            <div className="description">
+              <p className="lineup">Description</p>
+              <p> {description}</p>
+            </div>}
+
             <div className="artist-container">
               <p className="lineup">Artist Lineup</p>
               <div className="artists">
                 {artistDetails.map((artist) => (
-               <ArtistCard artist={artist} />
-             ))}
+                  <ArtistCard artist={artist} />
+                ))}
               </div>
             </div>
             {latitude && longitude && (
