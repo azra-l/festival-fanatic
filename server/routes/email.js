@@ -1,22 +1,48 @@
 var express = require("express");
 var router = express.Router();
 var nodemailer = require("nodemailer");
+var { google } = require("googleapis");
 
-// Adapted from: https://dev.to/jlong4223/how-to-implement-email-functionality-with-node-js-react-js-nodemailer-and-oauth2-2h7m
+const OAuth2 = google.auth.OAuth2;
 
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    type: "OAuth2",
-    user: process.env.EMAIL,
-    pass: process.env.WORD,
-    clientId: process.env.OAUTH_CLIENTID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-  },
-});
+// Adapted from: https://dev.to/chandrapantachhetri/sending-emails-securely-using-node-js-nodemailer-smtp-gmail-and-oauth2-g3a
 
-router.post("/", function (req, res) {
+const createTransporter = async () => {
+  const oauth2Client = new OAuth2(
+    process.env.OAUTH_CLIENTID,
+    process.env.OAUTH_CLIENT_SECRET,
+    "https://developers.google.com/oauthplayground"
+  );
+
+  oauth2Client.setCredentials({
+    refresh_token: process.env.OAUTH_REFRESH_TOKEN
+  });
+
+  const accessToken = await new Promise((resolve, reject) => {
+    oauth2Client.getAccessToken((err, token) => {
+      if (err) {
+        reject();
+      }
+      resolve(token);
+    });
+  });
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      type: "OAuth2",
+      user: process.env.EMAIL,
+      accessToken,
+      clientId: process.env.OAUTH_CLIENTID,
+      clientSecret: process.env.OAUTH_CLIENT_SECRET,
+      refreshToken: process.env.OAUTH_REFRESH_TOKEN
+    }
+  });
+
+  return transporter;
+};
+
+router.post("/", async function (req, res) {
   const festivalName = req.body.name;
   const festivalLink = req.body.link;
   const festivalTickets = req.body.tickets;
@@ -32,6 +58,7 @@ router.post("/", function (req, res) {
     text: body,
   };
 
+  const transporter = await createTransporter();
   transporter.sendMail(mailOptions, function (err, data) {
     if (err) {
       console.log("Error " + err);
