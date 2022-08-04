@@ -389,7 +389,6 @@ router.get("/checkcookie", function (req, res, next) {
     return res.status(200).json({
       message: "Your token is valid",
       cookie: req.session,
-      processEnv: process.env
     });
     // Almost done
   } catch {
