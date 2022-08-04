@@ -72,12 +72,12 @@ const EmailModal = ({ onClose, festival }) => {
       {error ? (
         <div className="message-container">
           <TbFaceIdError color="white" size={45}/>
-          <text>Unable to send email, please try later</text>
+          <p>Unable to send email, please try later</p>
           </div>
       ) : success ? (
         <div className="message-container">
           <RiSendPlaneFill color="white" size={45}/>
-         <text>Your message is on its way!</text>
+         <p>Your message is on its way!</p>
           </div>
       ) : (
         <form className="email-form">
