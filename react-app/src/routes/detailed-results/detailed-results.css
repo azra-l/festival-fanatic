@@ -96,6 +96,13 @@ body {
   justify-items: center;
 }
 
+.description {
+  background-color: #69445f;
+  border-radius: 0.5rem;
+  text-align: center;
+  padding-bottom:  0.5rem;
+}
+
 @media (min-width: 0px) {
   .artists { grid-template-columns: repeat(1, 1fr); }
 }

@@ -39,6 +39,7 @@ export default function DetailedResults() {
     country,
     latitude,
     longitude,
+    description
   } = festival;
 
   const artistURLs = artists.map((artist) => `${apiBaseUrl}/artists/${artist}`);
@@ -125,6 +126,14 @@ export default function DetailedResults() {
                 </button>
               </div>
             </div>
+
+            {description === "" ? 
+            <div></div> : 
+            <div className="description">
+              <p className="lineup">Description</p>
+              <p> {description}</p>
+            </div>}
+
             <div className="artist-container">
               <p className="lineup">Artist Lineup</p>
               <div className="artists">
