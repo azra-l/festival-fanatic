@@ -1,6 +1,102 @@
 # Festival Fanatic
 
-Figma: ​​https://www.figma.com/file/jXiy6tmnOk2jeyhyI6hED0/CPSC-455---Design---Spontaneous-4?node-id=8%3A2
+# https://festival-fanatic.herokuapp.com/
+
+
+# Project Description
+
+Find music festivals and events where your favourite artists will perform based on the artists you listened to most on Spotify. Discover new music festivals that you never knew existed and supercharge your musical experience 
+
+---
+
+- [Project Overview](#project-description)
+- [Project Goals](#project-goals)
+  - [Minimal Requirements](#minimal)
+  - [Standard Requirements](#standard)
+  - [Stretch Requirements](#stretch)
+- [Project Tech Stack](#project-tech-stack)
+  - [Unit 1 - HTML CSS JS](#unit-1---html-css-js)
+  - [Unit 2 - React Redux](#unit-2---react-redux)
+  - [Unit 3 - MongoDB](#unit-3---mongodb)
+  - [Unit 4 - Node Express](#unit-4---node-express)
+  - [Unit 5 - Release Engineering](#unit-5---release-engineering)
+- [Above and Beyond](#above-and-beyond)
+- [Next Steps](#next-steps)
+- [List of Contributions](#list-of-contributions)
+
+# Project Goals
+
+## Minimal 
+
+- ✅ Home page
+- ✅ Login button
+- ✅ Results page showing festivals where a user's artists is shown
+- ✅ Detailed festivals page showing more details of the festival such as lineup, date, time, location 
+
+## Standard 
+
+- ✅ Set up Express and connect frontend to the backend, setup routes with React-router
+- ✅ Data persistence with MongoDB, as well as encrypting unique user data
+- ✅ User Authentication with sessions and authenticated routes
+- ✅ Deploy to Heroku, serve frontend and backend
+
+- ✅ Map showing the location of a festival
+
+## Stretch 
+
+- ✅ Live festival data from a curated source so that our team did not have to manually input date, time, location, and lineup of possible festivals and event
+- ✅ Implement Spotify OAuth to retrieve a user's running list of top artists rather than having to manually input artists (one click user experience)
+- ✅ Components were custom designed (basic components like buttons, etc. Material UI and Font Awesome icons were used) and matched colour scheme of the app
+- ❌ Implement Apple Music integration - limited API support to find a users top artists
+
+---
+
+# Project Tech Stack
+
+## Unit 1 - HTML CSS JS
+
+CSS was used to customize styling and design for all of our react components. The rest of the HTML and JS were transpiled from React JSX.
+
+
+## Unit 2 - React (Redux)
+Being able to render the front end using states and components based on conditionals was a huge help and made it a lot easier to reuse components for cleaner code. Additonally, authentication middle  
+
+## Unit 3 - MongoDB
+Data persistence for our user's festivals, their favorited or archived festivals. We used nosql archiecture (utilizing documents for new data and querying based on this) to create a centralized db containing artists and festivals so that our app can be scaled. 
+
+## Unit 4 - Node Express
+Node Express was used for authenicating API requests and being the trusted entity to transit data to and from the database so that others cannot just modify and delete data from the database. 
+
+## Unit 5 - Release Engineering
+Deployed onto Heroku with an automated pipeline to changes on the main branch for a seamless continuous deployment to our public facing app. Using free tier to save $$$
+
+# Above and Beyond
+
+
+## User Authentication
+
+## Live Spotify Data
+
+## Live Festival Data
+
+## Customized Components 
+
+
+# Next Steps
+
+# List of Contributions
+
+## Amman
+
+## Azra 
+
+## Stanford
+
+## Tristan
+
+---
+
+
 
 ## Who is it for?
 * Spotify Users that attend music festivals or concerts with multiple artists attending
