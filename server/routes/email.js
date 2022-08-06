@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
-var mailgun = require("mailgun-js");
+const sgMail = require("@sendgrid/mail");
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.post("/", async function (req, res) {
   const festivalName = req.body.name;
@@ -12,20 +14,24 @@ router.post("/", async function (req, res) {
   const subject = `${senderName} just shared an event with you!`;
   const text = `Hi ${receiverName}!\n\n ${senderName} shared an event with you, here are the details:\n Event: ${festivalName}\n Event Link: ${festivalLink}\n Get tickets here: ${festivalTickets}`;
 
-  const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN});
-  const data = {
-    from: process.env.MAILGUN_EMAIL,
-    to: req.body.to,
+  const msg = {
+    to: req.body.to, 
+    from: 'festivalfanatic@stanfordlin.com',
     subject: subject,
     text: text,
-  };
-  mg.messages().send(data, function (error, body) {
-    if(error){
-      res.status(500).send();
-    } else {
+  }
+
+  sgMail
+    .send(msg)
+    .then((response) => {
+      console.log(response[0].statusCode);
+      console.log(response[0].headers);
       res.status(200).send();
-    }
-  });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send();
+    });
 });
 
 module.exports = router;
