@@ -42,6 +42,7 @@ const EmailModal = ({ onClose, festival }) => {
       name: festival.name,
       link: festival.link,
       tickets: festival.tickets,
+      date: `${festival.day} ${festival.month} ${festival.year} at ${festival.hour}:00`
     };
 
     try {

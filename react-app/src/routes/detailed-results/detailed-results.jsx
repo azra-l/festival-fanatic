@@ -144,7 +144,7 @@ export default function DetailedResults() {
             </div>
             <div className="share-container">
               {isSharing && (
-                <EmailModal onClose={onShareClick} festival={festival} />
+                <EmailModal onClose={onShareClick} festival={{...festival, day, month, year, hour}} />
               )}
             </div>
             {latitude && longitude && (
