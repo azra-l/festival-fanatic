@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import { TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 import "./ArtistSearch.css";
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -19,9 +20,20 @@ const inputStyle = {
 }
 
 const ArtistSearch = ({ matchedArtists }) => {
+    const [selectedArtists, setSelectedArtists] = useState([]);
+
+
     function callSpotifySearch() {
         // TODO make api search call
     };
+
+    function addArtistToList(artist) {
+        setSelectedArtists([...selectedArtists, artist]);
+    };
+
+    function removeArtistFromList() {
+
+    }
 
 
     return (
