@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles';
 import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./ArtistSearch.css";
+import SearchBar from './SearchBar';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -39,11 +40,12 @@ const ArtistSearch = ({ matchedArtists }) => {
     return (
         <div class="search-div">
             <DrawerHeader>
-                "Artist Search Bar"
-                <TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => callSpotifySearch} inputProps={inputStyle} FormHelperTextProps={helperTextStyles} focused>Enter Spotify Artists</TextField>
+                <SearchBar/>
             </DrawerHeader>
         </div>
     )
 }
+
+//<TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => callSpotifySearch} inputProps={inputStyle} FormHelperTextProps={helperTextStyles} focused>Enter Spotify Artists</TextField>
 
 export default ArtistSearch;
