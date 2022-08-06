@@ -9,6 +9,7 @@ import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import FestivalList from "../../components/FestivalList/FestivalList";
+import ErrorDisplay from "../../components/ErrorDisplay/ErrorDisplay";
 
 export default function Results() {
   const dispatch = useDispatch();
@@ -38,10 +39,10 @@ export default function Results() {
     (festival) => festival.archived === undefined || festival.archived === false
   );
 
-  // TODO: Need make festival cards responsive for mobile
   return (
     <>
       <Navbar />
+      <ErrorDisplay/>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="basic tabs example">
@@ -51,7 +52,12 @@ export default function Results() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <FestivalList festivals={festivalsToDisplay} />
+        {festivalsToDisplay? (
+             <FestivalList festivals={festivalsToDisplay} />
+            ) : (
+              <p>Oops you currently have no results from Spotify!</p>
+            )}
+          
         </TabPanel>
         <TabPanel value="2">
           <div>
