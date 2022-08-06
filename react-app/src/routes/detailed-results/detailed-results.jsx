@@ -6,16 +6,18 @@ import "./detailed-results.css";
 import { BsCalendarFill } from "react-icons/bs";
 import { MdLocationPin } from "react-icons/md";
 import { GoLinkExternal } from "react-icons/go";
+import { FaShare } from "react-icons/fa";
 import Map, { Marker } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import EmailModal from "../../components/EmailModal/EmailModal";
 
 import { apiBaseUrl, appBaseUrl } from "../../utilities/base-url";
 
 // Temp bug fix: https://github.com/visgl/react-map-gl/issues/1266#issuecomment-753686953
-// eslint-disable-next-line import/no-webpack-loader-syntax
-mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
-
+mapboxgl.workerClass =
+  // eslint-disable-next-line import/no-webpack-loader-syntax
+  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export default function DetailedResults() {
   const location = useLocation();
@@ -23,6 +25,7 @@ export default function DetailedResults() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [artistDetails, setArtistDetails] = useState([]);
+  const [isSharing, setIsSharing] = useState(false);
 
   const {
     date,
@@ -36,8 +39,8 @@ export default function DetailedResults() {
     country,
     latitude,
     longitude,
+    description
   } = festival;
-
 
   const artistURLs = artists.map((artist) => `${apiBaseUrl}/artists/${artist}`);
 
@@ -61,7 +64,7 @@ export default function DetailedResults() {
 
   useEffect(() => {
     getArtists();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // from: https://stackoverflow.com/questions/12246394/how-to-get-month-from-string-in-javascript
@@ -75,6 +78,11 @@ export default function DetailedResults() {
 
   const long = parseFloat(longitude);
   const lat = parseFloat(latitude);
+
+  const onShareClick = (e) => {
+    e.preventDefault();
+    setIsSharing(!isSharing);
+  };
 
   return (
     <>
@@ -112,15 +120,32 @@ export default function DetailedResults() {
                   <GoLinkExternal />
                   Festival Webpage
                 </a>
+                <button onClick={onShareClick}>
+                  <FaShare />
+                  Share
+                </button>
               </div>
             </div>
+
+            {description === "" ? 
+            <div></div> : 
+            <div className="description">
+              <p className="lineup">Description</p>
+              <p> {description}</p>
+            </div>}
+
             <div className="artist-container">
               <p className="lineup">Artist Lineup</p>
               <div className="artists">
-                {artistDetails.map((artist) => (
-               <ArtistCard artist={artist} />
-             ))}
+                {artistDetails.map((artist, i) => (
+                  <ArtistCard artist={artist} key={i} />
+                ))}
               </div>
+            </div>
+            <div className="share-container">
+              {isSharing && (
+                <EmailModal onClose={onShareClick} festival={{...festival, day, month, year, hour}} />
+              )}
             </div>
             {latitude && longitude && (
               <div className="map">
@@ -128,7 +153,7 @@ export default function DetailedResults() {
                   initialViewState={{
                     longitude: long,
                     latitude: lat,
-                    zoom: 10
+                    zoom: 10,
                   }}
                   style={{
                     height: "50vh",
