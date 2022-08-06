@@ -57,13 +57,13 @@ export default function Results() {
             <Tab label="Festivals for you" value="1" sx={{ color: "white" }} />
             <Tab label="Saved Festivals" value="2" sx={{ color: "white" }} />
             <Tab label="Archived Festivals" value="3" sx={{ color: "white" }} />
-            <Button onClick={toggleDrawer} edge="end"><FaSistrix/></Button>
+            <Button onClick={toggleDrawer}><FaSistrix/></Button>
           </TabList>
           <Drawer
             anchor='right'
             open={openDrawer}
             onClose={toggleDrawer}>
-            <ArtistSearch></ArtistSearch>
+            <ArtistSearch/>
           </Drawer>
         </Box>
         <TabPanel value="1">
