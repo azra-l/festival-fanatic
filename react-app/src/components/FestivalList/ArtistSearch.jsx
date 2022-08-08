@@ -1,6 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./ArtistSearch.css";
 import SearchBar from './SearchBar';
 
@@ -12,33 +11,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-start',
 }));
 
-const helperTextStyles = { style: { color: "white" } }
-
-const inputStyle = {
-    style: {
-        color: "white",
-    }
-}
-
 const ArtistSearch = ({ matchedArtists }) => {
     const [selectedArtists, setSelectedArtists] = useState([]);
 
-
-    function callSpotifySearch() {
-        // TODO make api search call
-    };
-
-    function addArtistToList(artist) {
-        setSelectedArtists([...selectedArtists, artist]);
-    };
-
-    function removeArtistFromList() {
-
-    }
-
-
     return (
-        <div class="search-div">
+        <div className="search-div">
             <DrawerHeader>
                 <SearchBar/>
             </DrawerHeader>
