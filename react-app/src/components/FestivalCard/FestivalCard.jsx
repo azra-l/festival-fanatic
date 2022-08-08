@@ -43,7 +43,6 @@ export default function FestivalCard({ festival, position }) {
 
             {/* React icon stacking https://github.com/react-icons/react-icons/issues/79 */}
             {saved ? (
-              // <FaBookmark color="white" size={25} />
               <span className="animated" style={{ display: 'inline-block', position: 'relative' }}>
                 <BsCircle textAnchor="middle" alignmentBaseline="middle" style={{ fontSize: '3em', color: 'white' }} />
                 <FaHeart
@@ -61,7 +60,6 @@ export default function FestivalCard({ festival, position }) {
                   style={{ fontSize: '1.5em', position: 'absolute', right: '.5em', top: '.5em', color: 'white' }}
                 />
               </span>
-              // <FaRegBookmark size={25} color="white" />
             )}
           </button>
         </div>
@@ -93,7 +91,6 @@ export default function FestivalCard({ festival, position }) {
           <button className="delete-btn" onClick={handleArchiveButtonClick}>
 
             {archived ? (
-              // <FaBookmark color="white" size={25} />
               <span className="animated" style={{ display: 'inline-block', position: 'relative' }}>
                 <BsCircle textAnchor="middle" alignmentBaseline="middle" style={{ fontSize: '3em', color: 'white' }} />
                 <BsArchiveFill
