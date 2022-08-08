@@ -1,155 +1,94 @@
-import * as React from 'react';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import Box from '@mui/material/Box';
+import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import throttle from 'lodash/throttle';
-import parse from 'autosuggest-highlight/parse';
+import CircularProgress from '@mui/material/CircularProgress';
+import axios from 'axios';
 
 
 /*
 Based off this design for an autocomplete MUI component
 https://mui.com/material-ui/react-autocomplete/#search-as-you-type
 */
-function loadScript(src, position, id) {
-    if (!position) {
-      return;
-    }
-  
-    const script = document.createElement('script');
-    script.setAttribute('async', '');
-    script.setAttribute('id', id);
-    script.src = src;
-    position.appendChild(script);
+function sleep(delay = 0) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
 }
 
-const autocompleteService = { current: null };
-
 export default function SearchBar() {
-    const [value, setValue] = useState(null);
-    const [inputValue, setInputValue] = useState('');
-    const [options, setOptions] = useState([]);
-    const loaded = useRef(false);
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState([]);
+  const loading = open && options.length === 0;
+  const inputValue = "Skrillex";
+  const authToken = "";
 
-    if (typeof window !== 'undefined' && !loaded.current) {
-        if (!document.querySelector('#spotify-search')) {
-          loadScript(
-            `https://api.spotify.com/v1/search?q=${inputValue}&type=artist`,
-            document.querySelector('head'),
-            'spotify-search',
-          );
-        }
-    
-        loaded.current = true;
+  useEffect(() => {
+    let active = true;
+
+    if (!loading) {
+      return undefined;
     }
 
-    const fetch = useMemo(
-        () =>
-          throttle((request, callback) => {
-            autocompleteService.current.getPlacePredictions(request, callback);
-          }, 200),
-        [],
-    );
-
-    useEffect(() => {
-        let active = true;
-    
-        if (!autocompleteService.current && window.google) {
-          autocompleteService.current =
-            new window.google.maps.places.AutocompleteService();
+    (async () => {
+      const rawSpotifyArtistsResults = await axios.get(
+        `https://api.spotify.com/v1/search?q=${inputValue}&type=artist`, {
+            params: { limit: 50, offset: 0 },
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${authToken}`,
+                'Content-Type': 'application/json',
+            },
         }
-        if (!autocompleteService.current) {
-          return undefined;
-        }
-    
-        if (inputValue === '') {
-          setOptions(value ? [value] : []);
-          return undefined;
-        }
-    
-        fetch({ input: inputValue }, (results) => {
-          if (active) {
-            let newOptions = [];
-    
-            if (value) {
-              newOptions = [value];
-            }
-    
-            if (results) {
-              newOptions = [...newOptions, ...results];
-            }
-    
-            setOptions(newOptions);
-          }
-        });
-    
-        return () => {
-          active = false;
-        };
-    }, [value, inputValue, fetch]);
+      )
+      console.log(rawSpotifyArtistsResults.data);
 
-    return (
-        <Autocomplete
-            id="spotify-search"
-            sx={{ width: 300 }}
-            getOptionLabel={(option) =>
-                typeof option === 'string' ? option : option.description
-            }
-            filterOptions={(x) => x}
-            options={options}
-            autoComplete
-            includeInputInList
-            filterSelectedOptions
-            value={value}
-            onChange={(event, newValue) => {
-                setOptions(newValue ? [newValue, ...options] : options);
-                setValue(newValue);
-            }}
-            onInputChange={(event, newInputValue) => {
-                setInputValue(newInputValue);
-            }}
-            renderInput={(params) => (
-                <TextField {...params} label="Search a Spotify Artist" fullWidth />
-            )}
-            renderOption={(props, option) => {
-                const matches = option.structured_formatting.main_text_matched_substrings;
-                const parts = parse(
-                option.structured_formatting.main_text,
-                matches.map((match) => [match.offset, match.offset + match.length]),
-                );
+      if (active) {
+        setOptions([...rawSpotifyArtistsResults.data.artists.items]);
+      }
+    })();
 
-                return (
-                <li {...props}>
-                    <Grid container alignItems="center">
-                    <Grid item>
-                        <Box
-                        component={LocationOnIcon}
-                        sx={{ color: 'text.secondary', mr: 2 }}
-                        />
-                    </Grid>
-                    <Grid item xs>
-                        {parts.map((part, index) => (
-                        <span
-                            key={index}
-                            style={{
-                            fontWeight: part.highlight ? 700 : 400,
-                            }}
-                        >
-                            {part.text}
-                        </span>
-                        ))}
+    return () => {
+      active = false;
+    };
+  }, [loading]);
 
-                        <Typography variant="body2" color="text.secondary">
-                        {option.structured_formatting.secondary_text}
-                        </Typography>
-                    </Grid>
-                    </Grid>
-                </li>
-                );
-            }}
+  useEffect(() => {
+    if (!open) {
+      setOptions([]);
+    }
+  }, [open]);
+
+  return (
+    <Autocomplete
+      id="asynchronous-demo"
+      sx={{ width: 300 }}
+      open={open}
+      onOpen={() => {
+        setOpen(true);
+      }}
+      onClose={() => {
+        setOpen(false);
+      }}
+      isOptionEqualToValue={(option, value) => option.title === value.title}
+      getOptionLabel={(option) => option.name}
+      options={options}
+      loading={loading}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Search Artists on Spotify"
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <React.Fragment>
+                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                {params.InputProps.endAdornment}
+              </React.Fragment>
+            ),
+          }}
         />
-    );
+      )}
+    />
+  );
 }
