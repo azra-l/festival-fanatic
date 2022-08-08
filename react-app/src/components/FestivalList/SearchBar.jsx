@@ -5,6 +5,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+const appBaseUrl = process.env.REACT_APP_BASE_URL;
 
 /*
 Based off this design for an autocomplete MUI component
@@ -15,12 +17,27 @@ export default function SearchBar() {
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
   const [selectedArtists, setSelectedArtists] =  useState([]);
-  const authToken = "";
+  const [authToken, setAuthToken] = useState("");
 
   function handleAddSearchResult(value) {
     setSelectedArtists([...selectedArtists, value]);
-    console.log(selectedArtists);
   }
+
+  useEffect(() => {
+    async function fetchToken() {
+      const authToken = await axios.get(
+        `${apiBaseUrl}/checkcookie`, {
+            withCredentials: true,
+            headers: {
+                Accept: 'application/json',
+                "Access-Control-Allow-Origin": appBaseUrl
+            },
+        }
+      )
+      setAuthToken(authToken.data.cookie.user.access_token);
+    }
+    fetchToken();
+  });
 
   async function handleSpotifySearch(value) {
     if (value === "") {
