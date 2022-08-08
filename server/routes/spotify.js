@@ -27,7 +27,7 @@ router.get('/search-artist', async function (req, res, next) {
 
     }
     catch (err) {
-        console.error("GG", err);
+        console.error("Server search-artist endpoint error", err);
     }
 
 });
