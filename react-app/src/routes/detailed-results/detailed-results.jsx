@@ -127,8 +127,7 @@ export default function DetailedResults() {
               </div>
             </div>
 
-            {description === "" ? 
-            <div></div> : 
+            {description &&
             <div className="description">
               <p className="lineup">Description</p>
               <p> {description}</p>
@@ -144,7 +143,9 @@ export default function DetailedResults() {
             </div>
             <div className="share-container">
               {isSharing && (
-                <EmailModal onClose={onShareClick} festival={{...festival, day, month, year, hour}} />
+                <div className="email-container">
+                  <EmailModal onClose={onShareClick} festival={{...festival, day, month, year, hour}} />
+                </div>
               )}
             </div>
             {latitude && longitude && (
