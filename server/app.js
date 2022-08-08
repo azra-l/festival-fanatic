@@ -16,6 +16,7 @@ var festivalsRouter = require("./routes/festivals");
 var bandsInTownRouter = require("./routes/bandsintown");
 var artistRouter = require("./routes/artists");
 var emailRouter = require("./routes/email");
+var spotifyRouter = require('./routes/spotify');
 
 if (!isProd) {
   var livereload = require("livereload");
@@ -74,5 +75,6 @@ app.use("/bandsintown", restricted, bandsInTownRouter);
 app.use("/festivals", restricted, festivalsRouter);
 app.use("/artists", restricted, artistRouter);
 app.use("/email", restricted, emailRouter);
+app.use('/spotify', restricted, spotifyRouter);
 
 module.exports = app;
