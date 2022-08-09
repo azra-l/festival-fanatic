@@ -75,9 +75,12 @@ Deployed onto Heroku with an automated pipeline to changes on the main branch fo
 
 ## User Authentication
 
-## Live Spotify Data
+We set up user authentication using express session. Once a user logs in it uses Spotify OAuth so we don't store user sensitive information. A unique userID is hashed (if it's a new user) from the Spotify user's id so that even if the db is compromised, there is no way to link user data to their userId. Afterwards, their Sotify access token are written into an token which is then encrypted and stored as a cookie. This token is then decrypted in the backend and then the backend makes external requests to the BandsInTown API, Spotify, and MongoDB. The token also has a expiration time of 1 hour to prevent malicious acts on the cookie. With this approach, the network requests won't have sensitive data such as API keys and user credentials (access tokens) exposed to prevent abuse to APIs. Additionally, nobody but the user with their respective userID can make changes to the database because all modifications to the db are made on the backend. We tried to make the user experience simple as possible so all of this happens with 1 click upon logging into Spotify. 
 
-## Live Festival Data
+## Top Artists Spotify Data + Festival Matching 
+
+Our entire idea for this project revolved around the concept of helping someone discover an event or music festival where a user's most listened to artists will be performing so they can see as many people over the course of the event. This way, people can see many of their favourite artists in one sitting saving time and money compared to going to individual events one a time. We get a user's top artists from Spotify and then do another search using the BandsInTown API to find festivals where an artist is present. If another artist is present at the same event, it will be added to the event's lineup. Moreover, with each new event or artist, a new document will be added to their respective collections on a shared centralized noSQL database for all users to retrieve from. This allows for us to rely a little less on third party APIs and helps overcome rate limiting issues. Utilizing noSQL allows our database to be scaled rapidly in the event of an influx of new users and it also allows us to perform any query logic using indexed databases which is already built in on MongoDB's noSQL which makes it easier to write future query logic on. 
+
 
 ## Customized Components 
 
@@ -91,12 +94,15 @@ Deployed onto Heroku with an automated pipeline to changes on the main branch fo
 ## Azra 
 
 ## Stanford
+- Implemented Spotify OAuth, user authentication/persistance using sessions, redux, secured backend API and frontend assets
+- Researched and implemented Spotify APIs, BandsInTown API and other third party APIs 
+- Designed architecture of the frontend and backend, helped teammates with frontend and backend additions and trouble shooted 
 
 ## Tristan
 
 ---
 
-
+## TODO: Will delete in the future
 
 ## Who is it for?
 * Spotify Users that attend music festivals or concerts with multiple artists attending
