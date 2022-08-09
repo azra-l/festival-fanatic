@@ -8,6 +8,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList } from 'react-window';
+import IconButton from '@mui/material/IconButton';
+import { FaTrashAlt } from "react-icons/fa";
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -20,6 +22,7 @@ export default function SearchBar() {
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
   const [selectedArtists, setSelectedArtists] = useState([]);
+  const [listUpdated, setListUpdated] = useState(false);
 
     function renderRow(props) {
         const { index, style } = props;
@@ -28,9 +31,19 @@ export default function SearchBar() {
             <ListItem style={style} key={index} component="div" disablePadding>
                 <ListItemButton>
                     <ListItemText primary={`${selectedArtists[index].name}`} />
+                    <IconButton edge="end" aria-label="delete" onClick={e => handleDeleteSearchResult(e, index)}>
+                        <FaTrashAlt/>
+                    </IconButton>
                 </ListItemButton>
             </ListItem>
         );
+    }
+
+    function handleDeleteSearchResult(event, index) {
+        var newList = selectedArtists;
+        newList.splice(index, 1);
+        setSelectedArtists(newList);
+        setListUpdated(!listUpdated);
     }
 
     function handleAddSearchResult(value) {
