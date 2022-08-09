@@ -66,8 +66,26 @@ export default function SearchBar() {
     if (value === null) {
       return undefined;
     }
+
+    await fetch(
+      `${apiBaseUrl}/new-selected-artists`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        listOfArtists: [value]
+      })
+    }
+    ).then((response) => response.json())
+      .then((data) => {
+        console.log("The response from new-selected-artists", data)
+        return data
+      }).catch(e => console.log(e))
+
     await getLatestSelectedArtists()
-    console.log("selectedArtists is HEREEEE", selectedArtists)
 
   }
 
