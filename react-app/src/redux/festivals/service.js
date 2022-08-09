@@ -1,14 +1,11 @@
-import { apiBaseUrl, appBaseUrl } from '../../utilities/base-url';
+import { apiBaseUrl, appBaseUrl } from "../../utilities/base-url";
 
 const getUpcomingArtistEvents = async () => {
   const response = await fetch(`${apiBaseUrl}/festivals`, {
-    // TODO: Investigate best way to store JWT token for security
-    // https://stackoverflow.com/questions/27067251/where-to-store-jwt-in-browser-how-to-protect-against-csrf?rq=1
     method: "GET",
-    // Need credentials to pass cookie data into request
     credentials: "include",
     headers: {
-        "Access-Control-Allow-Origin": appBaseUrl,
+      "Access-Control-Allow-Origin": appBaseUrl,
     },
   });
 
@@ -23,7 +20,8 @@ const getUpcomingArtistEvents = async () => {
 const updateFestival = async ({ _id, action }) => {
   let reqBody = {
     festivalId: _id,
-    listCategory: action === 'save' || action === 'unsaved' ? 'saved' : 'archived'
+    listCategory:
+      action === "save" || action === "unsaved" ? "saved" : "archived",
   };
 
   if (action === "save" || action === "archive") {
@@ -40,7 +38,6 @@ const updateFestival = async ({ _id, action }) => {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": appBaseUrl,
     },
-
   });
 
   const data = await response.json();
@@ -50,12 +47,107 @@ const updateFestival = async ({ _id, action }) => {
     throw new Error(errorMsg);
   }
 
-  return {_id, userAction: action};
+  return { _id, userAction: action };
+};
+
+const getSelectedArtists = async () => {
+  const response = await fetch(`${apiBaseUrl}/artists/my-selected-artists`, {
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const errorMsg = data?.message;
+    throw new Error(errorMsg);
+  }
+
+  return data;
+};
+
+const addSelectedArtist = async (value) => {
+  const result = await fetch(`${apiBaseUrl}/new-selected-artists`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      listOfArtists: [value],
+    }),
+  });
+
+  const res = await result.json();
+  if (!result.ok) {
+    const errorMsg = res?.message;
+    throw new Error(errorMsg);
+  }
+
+  const response = await fetch(`${apiBaseUrl}/artists/my-selected-artists`, {
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const errorMsg = data?.message;
+    throw new Error(errorMsg);
+  }
+
+  return data;
+};
+
+const deleteSelectedArtistAsync = async (id) => {
+  const result = await fetch(
+    `${apiBaseUrl}/users/remove-selected-artist?artistObjectId=${id}`,
+    {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const res = await result.json();
+  if (!result.ok) {
+    const errorMsg = res?.message;
+    throw new Error(errorMsg);
+  }
+
+  const response = await fetch(`${apiBaseUrl}/artists/my-selected-artists`, {
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const errorMsg = data?.message;
+    throw new Error(errorMsg);
+  }
+
+  return data;
 };
 
 const festivalService = {
   getUpcomingArtistEvents,
   updateFestival,
+  getSelectedArtists,
+  addSelectedArtist,
+  deleteSelectedArtistAsync,
 };
 
 export default festivalService;
