@@ -22,7 +22,7 @@ export default function Results() {
 
   useEffect(() => {
     dispatch(getUpcomingArtistEventsAsync());
-  }, [dispatch]);
+  }, [dispatch, openDrawer]);
 
   const festivals = useSelector((state) => state.festivals.festivals);
 
