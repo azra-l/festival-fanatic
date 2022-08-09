@@ -10,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList } from 'react-window';
 import IconButton from '@mui/material/IconButton';
 import { FaTrashAlt } from "react-icons/fa";
+import { Stack } from '@mui/material';
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -82,7 +83,7 @@ export default function SearchBar() {
   
 
   return (
-    <>
+    <Stack>
         <Autocomplete
         id="asynchronous-demo"
         sx={{ width: 300 }}
@@ -124,7 +125,7 @@ export default function SearchBar() {
         >
         <FixedSizeList
             height={400}
-            width={360}
+            width={300}
             itemSize={46}
             itemCount={selectedArtists.length}
             overscanCount={5}
@@ -132,6 +133,6 @@ export default function SearchBar() {
             {renderRow}
         </FixedSizeList>
         </Box>
-    </>
+    </Stack>
   );
 }
