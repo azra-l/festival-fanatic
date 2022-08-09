@@ -3,6 +3,11 @@ import {Fragment} from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import { FixedSizeList } from 'react-window';
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -16,15 +21,29 @@ export default function SearchBar() {
   const loading = open && options.length === 0;
   const [selectedArtists, setSelectedArtists] = useState([]);
 
-  function handleAddSearchResult(value) {
-    setSelectedArtists([...selectedArtists, value]);
-  }
+    function renderRow(props) {
+        const { index, style } = props;
 
-
-  async function handleSpotifySearch(value) {
-    if (value === "") {
-      return undefined;
+        return (
+            <ListItem style={style} key={index} component="div" disablePadding>
+                <ListItemButton>
+                    <ListItemText primary={`${selectedArtists[index].name}`} />
+                </ListItemButton>
+            </ListItem>
+        );
     }
+
+    function handleAddSearchResult(value) {
+        if (value === null) {
+            return undefined;
+        }
+        setSelectedArtists([...selectedArtists, value]);
+    }
+
+    async function handleSpotifySearch(value) {
+        if (value === "") {
+        return undefined;
+        }
 
     const rawSpotifyArtistsResults = await fetch(
       `${apiBaseUrl}/spotify/search-artist?input=${value}`, {
@@ -47,43 +66,59 @@ export default function SearchBar() {
     }
   }, [open]);
 
+  
+
   return (
-    <Autocomplete
-      id="asynchronous-demo"
-      sx={{ width: 300 }}
-      open={open}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
-      onInputChange={(event, newInputValue) => {
-        handleSpotifySearch(newInputValue);
-      }}
-      onChange={(event, newValue) => {
-        handleAddSearchResult(newValue);
-        
-      }}
-      isOptionEqualToValue={(option, value) => option.title === value.title}
-      getOptionLabel={(option) => option.name}
-      options={options}
-      loading={loading}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Search Artists on Spotify"
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </Fragment>
-            ),
-          }}
+    <>
+        <Autocomplete
+        id="asynchronous-demo"
+        sx={{ width: 300 }}
+        open={open}
+        onOpen={() => {
+            setOpen(true);
+        }}
+        onClose={() => {
+            setOpen(false);
+        }}
+        onInputChange={(event, newInputValue) => {
+            handleSpotifySearch(newInputValue);
+        }}
+        onChange={(event, newValue) => {
+            handleAddSearchResult(newValue);
+        }}
+        isOptionEqualToValue={(option, value) => option.title === value.title}
+        getOptionLabel={(option) => option.name}
+        options={options}
+        loading={loading}
+        renderInput={(params) => (
+            <TextField
+            {...params}
+            label="Search Artists on Spotify"
+            InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                <Fragment>
+                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                    {params.InputProps.endAdornment}
+                </Fragment>
+                ),
+            }}
+            />
+        )}
         />
-      )}
-    />
+        <Box
+            sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper' }}
+        >
+        <FixedSizeList
+            height={400}
+            width={360}
+            itemSize={46}
+            itemCount={selectedArtists.length}
+            overscanCount={5}
+        >
+            {renderRow}
+        </FixedSizeList>
+        </Box>
+    </>
   );
 }
