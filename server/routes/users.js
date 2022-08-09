@@ -40,7 +40,7 @@ router.get("/self", async function (req, res, next) {
  *    action: 'add' | 'remove'
  * }
  **/
- router.patch("/userlist", async function (req, res, next) {
+router.patch("/userlist", async function (req, res, next) {
   try {
     const userId = req.session.user.userId
     const festivalId = req.body.festivalId;
@@ -49,16 +49,16 @@ router.get("/self", async function (req, res, next) {
     let user;
     switch (action) {
       case 'remove':
-        user = await User.findOneAndUpdate({ userId: userId }, { 
-            $pull: { [listCategory]: festivalId }
+        user = await User.findOneAndUpdate({ userId: userId }, {
+          $pull: { [listCategory]: festivalId }
         }, {
           new: true
         });
         break;
       case 'add':
       default:
-        user = await User.findOneAndUpdate({ userId: userId }, { 
-            $addToSet: { [listCategory]: festivalId }
+        user = await User.findOneAndUpdate({ userId: userId }, {
+          $addToSet: { [listCategory]: festivalId }
         }, {
           new: true
         });
@@ -67,7 +67,33 @@ router.get("/self", async function (req, res, next) {
     res.send(user);
   } catch (error) {
     res.statusCode = 500;
-    res.send({ error: `unable to perform update: ${error}`})
+    res.send({ error: `unable to perform update: ${error}` })
+  }
+});
+
+router.patch("/remove-selected-artist", async function (req, res, next) {
+  try {
+    const userId = req.session.user.userId;
+    // const userId = req.query.userId;
+    const artistObjectId = req.query.artistObjectId
+    console.log("The artistObjectId", artistObjectId)
+    const removedSelectedArtistResponse = await User.updateOne({ userId: userId }, {
+      $pull: {
+        selectedArtists: artistObjectId
+      }
+    });
+
+
+    // console.log("removedSelectedArtistResponse", removedSelectedArtistResponse)
+    // const selectedArtists = user.selectedArtists;
+    // const artistData = await Artist.find({ _id: { $in: selectedArtists } });
+    res.status(200).send({
+      "artistObjectId Deleted": artistObjectId,
+      "removedSelectedArtistResponse": removedSelectedArtistResponse
+    });
+  } catch (error) {
+    res.statusCode = 500;
+    res.send({ error: `unable to remove artists from user selectedArtist: ${error}` });
   }
 });
 
