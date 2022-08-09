@@ -5,6 +5,7 @@ body {
 .detailed-results-container {
   width: 75%;
   margin: 0 auto;
+  background: transparent;
 }
 
 .logistics-container {
@@ -60,14 +61,17 @@ body {
   align-items: center;
 }
 
-.links a {
+.links a, .links button {
   margin: 0 1rem;
   color: white;
   text-decoration: none;
-  background-color: #a32ab0;
+  background-color: #6206BF;
   padding: 0.5rem;
   border-radius: 0.5rem;
   font-weight: bold;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
 
 .lineup {
@@ -85,11 +89,19 @@ body {
   background-color: #69445f;
   border-radius: 0.5rem;
   text-align: center;
+  padding-bottom: 2rem;
 }
 
 .artists {
   display: grid;
   justify-items: center;
+}
+
+.description {
+  background-color: #69445f;
+  border-radius: 0.5rem;
+  text-align: center;
+  padding-bottom:  0.5rem;
 }
 
 @media (min-width: 0px) {
@@ -107,4 +119,13 @@ body {
 
 .map {
     margin: 3rem 15%;
+}
+
+.email-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
 }

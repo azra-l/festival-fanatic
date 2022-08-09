@@ -56,7 +56,7 @@ const sortParams = [
 const FestivalList = ({ festivals }) => {
   const [results, setResults] = useState([]);
   const [sortBy, setSortBy] = useState("artists");
-  const [searchBy, setSearchBy] = useState("location");
+  const [searchBy, setSearchBy] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
 

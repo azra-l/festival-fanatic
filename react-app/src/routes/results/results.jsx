@@ -5,14 +5,20 @@ import { getUpcomingArtistEventsAsync } from "../../redux/festivals/thunks";
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TabList from "@mui/lab/TabList";
+import Button from "@mui/material/Button";
+import Drawer from "@mui/material/Drawer";
+import { FaSistrix } from "react-icons/fa";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import FestivalList from "../../components/FestivalList/FestivalList";
+import ErrorDisplay from "../../components/ErrorDisplay/ErrorDisplay";
+import ArtistSearch from "../../components/FestivalList/ArtistSearch";
 
 export default function Results() {
   const dispatch = useDispatch();
   const [value, setValue] = useState("1");
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   useEffect(() => {
     dispatch(getUpcomingArtistEventsAsync());
@@ -22,6 +28,10 @@ export default function Results() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const toggleDrawer =  () => {
+    setOpenDrawer(!openDrawer);
   };
 
   const savedFestivals = festivals.filter(
@@ -38,20 +48,32 @@ export default function Results() {
     (festival) => festival.archived === undefined || festival.archived === false
   );
 
-  // TODO: Need make festival cards responsive for mobile
   return (
     <>
       <Navbar />
+      <ErrorDisplay/>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Festivals for you" value="1" sx={{ color: "white" }} />
             <Tab label="Saved Festivals" value="2" sx={{ color: "white" }} />
             <Tab label="Archived Festivals" value="3" sx={{ color: "white" }} />
+            <Button onClick={toggleDrawer}><FaSistrix/></Button>
           </TabList>
+          <Drawer
+            anchor='right'
+            open={openDrawer}
+            onClose={toggleDrawer}>
+            <ArtistSearch/>
+          </Drawer>
         </Box>
         <TabPanel value="1">
-          <FestivalList festivals={festivalsToDisplay} />
+        {festivalsToDisplay? (
+             <FestivalList festivals={festivalsToDisplay} />
+            ) : (
+              <p>Oops you currently have no results from Spotify!</p>
+            )}
+          
         </TabPanel>
         <TabPanel value="2">
           <div>
