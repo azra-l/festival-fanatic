@@ -334,6 +334,7 @@ const parseFestivalResults = (results) => {
       tickets: result.offers[0] ? result.offers[0].url : "",
       link: result.url,
       $addToSet: { artists: { $each: artists } },
+      description: result.description
     };
     return festival;
   });
