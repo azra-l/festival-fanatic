@@ -427,23 +427,21 @@ async function addOrUpdateArtistsFromSpotify(listOfArtists, user) {
 }
 
 
-router.post("/matchFestivalsWithListOfSpotifyArtists", async function (req, res, next) {
+router.post("/new-selected-artists", async function (req, res, next) {
 
-  // TODO: Uncomment to add authentication to request
-  // if (req.session && req.session.user) {
-  //   console.log("session is successfully being used")
-  // } else {
-  //   console.log("session FAILED, please login")
-  //   res.status(401).json({ message: "You are unauthorized, please login" })
-  // }
+  if (req.session && req.session.user) {
+    console.log("session is successfully being used")
+  } else {
+    console.log("session FAILED, please login")
+    res.status(401).json({ message: "You are unauthorized, please login" })
+  }
 
   try {
 
     const user = await User.findOneAndUpdate(
-      // FOR TESTING: For testing, replace req.session.user.userId with userId in ur db e.g. "278cd2ba61d2537d95a86a666d6f13c3"
-      { userId: "278cd2ba61d2537d95a86a666d6f13c3" },
+      { userId: req.session.user.userId },
       {
-        userId: "278cd2ba61d2537d95a86a666d6f13c3",
+        userId: req.session.user.userId,
       },
       {
         new: true,
@@ -451,24 +449,28 @@ router.post("/matchFestivalsWithListOfSpotifyArtists", async function (req, res,
       }
     );
 
-    // Uncomment for production once this is implemented on front-end
-
-    // const user = await User.findOneAndUpdate(
-    //   { userId: req.session.user.userId },
-    //   {
-    //     userId: req.session.user.userId,
-    //   },
-    //   {
-    //     new: true,
-    //     upsert: true,
-    //   }
-    // );
+    console.log("req.body.listOfArtists", req.body.listOfArtists)
 
 
     const artists = await addOrUpdateArtistsFromSpotify(req.body.listOfArtists, user);
 
-    user.selectedArtists = artists.map((e) => e._id);
-    await user.save();
+
+
+    for (const artist of artists) {
+      await User.updateOne(
+        {
+          userId: req.session.user.userId
+        },
+        {
+          $push: {
+            selectedArtists: artist._id
+          }
+        },
+        {
+          upsert: true,
+        }
+      );
+    }
 
     const festivalResults = await getBandsInTownEvents(artists);
 
