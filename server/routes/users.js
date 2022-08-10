@@ -82,11 +82,6 @@ router.patch("/remove-selected-artist", async function (req, res, next) {
         selectedArtists: artistObjectId
       }
     });
-
-
-    // console.log("removedSelectedArtistResponse", removedSelectedArtistResponse)
-    // const selectedArtists = user.selectedArtists;
-    // const artistData = await Artist.find({ _id: { $in: selectedArtists } });
     res.status(200).send({
       "artistObjectId Deleted": artistObjectId,
       "removedSelectedArtistResponse": removedSelectedArtistResponse
