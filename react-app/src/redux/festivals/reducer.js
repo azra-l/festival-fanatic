@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { REQUEST_STATE } from "../utils";
-import { getUpcomingArtistEventsAsync, updateFestivalAsync } from "./thunks";
+import { getUpcomingArtistEventsAsync, updateFestivalAsync, getSelectedArtistsAsync, addSelectedArtistAsync, deleteSelectedArtistAsync } from "./thunks";
 
 const INITIAL_STATE = {
   festivals: [],
-  savedFestivals: [],
-  archivedFestivals: [],
+  selectedArtists: [],
   getEventsStatus: null,
   updateFestival: REQUEST_STATE.IDLE,
   error: null,
@@ -61,7 +60,43 @@ const festivalsSlice = createSlice({
       .addCase(updateFestivalAsync.rejected, (state, action) => {
         state.updateFestival = REQUEST_STATE.REJECTED;
         state.error = action.error;
-      });
+      })
+      .addCase(getSelectedArtistsAsync.pending, (state) => {
+        state.getEventsStatus = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(getSelectedArtistsAsync.fulfilled, (state, action) => {
+        state.getEventsStatus = REQUEST_STATE.FULFILLED;
+        state.selectedArtists= action.payload;
+      })
+      .addCase(getSelectedArtistsAsync.rejected, (state, action) => {
+        state.getEventsStatus = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(addSelectedArtistAsync.pending, (state) => {
+        state.getEventsStatus = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(addSelectedArtistAsync.fulfilled, (state, action) => {
+        state.getEventsStatus = REQUEST_STATE.FULFILLED;
+        state.selectedArtists= action.payload;
+      })
+      .addCase(addSelectedArtistAsync.rejected, (state, action) => {
+        state.getEventsStatus = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(deleteSelectedArtistAsync.pending, (state) => {
+        state.getEventsStatus = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(deleteSelectedArtistAsync.fulfilled, (state, action) => {
+        state.getEventsStatus = REQUEST_STATE.FULFILLED;
+        state.selectedArtists= action.payload;
+      })
+      .addCase(deleteSelectedArtistAsync.rejected, (state, action) => {
+        state.getEventsStatus = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
   },
 });
 

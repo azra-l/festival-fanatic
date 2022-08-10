@@ -17,3 +17,8 @@ h2 {
   .festival-results-container { grid-template-columns: repeat(3, 1fr); }
 }
 
+.main-results {
+  display: flexbox;
+  flex-direction: row;
+}
+

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./EmailModal.css";
 import { AiOutlineClose } from "react-icons/ai";
-import {RiSendPlaneFill} from "react-icons/ri";
-import {TbFaceIdError} from "react-icons/tb";
+import { RiSendPlaneFill } from "react-icons/ri";
+import { TbFaceIdError } from "react-icons/tb";
 import { apiBaseUrl, appBaseUrl } from "../../utilities/base-url";
 
 const EmailModal = ({ onClose, festival }) => {
@@ -42,7 +42,7 @@ const EmailModal = ({ onClose, festival }) => {
       name: festival.name,
       link: festival.link,
       tickets: festival.tickets,
-      date: `${festival.day} ${festival.month} ${festival.year} at ${festival.hour}:00`
+      date: `${festival.day} ${festival.month} ${festival.year} at ${festival.hour}:00`,
     };
 
     try {
@@ -55,10 +55,10 @@ const EmailModal = ({ onClose, festival }) => {
         },
         body: JSON.stringify(mail),
       });
-      if(res.ok){
+      if (res.ok) {
         setSuccess(true);
       } else {
-        throw new Error('Cannot send email');
+        throw new Error("Cannot send email");
       }
     } catch (e) {
       setError(true);
@@ -72,46 +72,53 @@ const EmailModal = ({ onClose, festival }) => {
       </button>
       {error ? (
         <div className="message-container">
-          <TbFaceIdError color="white" size={45}/>
+          <TbFaceIdError color="white" size={45} />
           <p>Unable to send email, please try later</p>
-          </div>
+        </div>
       ) : success ? (
         <div className="message-container">
-          <RiSendPlaneFill color="white" size={45}/>
-         <p>Your message is on its way!</p>
-          </div>
+          <RiSendPlaneFill color="white" size={45} />
+          <p>Your message is on its way!</p>
+        </div>
       ) : (
         <form className="email-form">
+          <h3>Email to a friend</h3>
           <fieldset>
-            <legend>Email to a friend</legend>
-            <label>Your name:</label>
-            <input
-              placeholder="Enter your name"
-              onChange={handleChange}
-              name="sender"
-              value={mailForm.sender}
-            />
-            <br />
-            <label>Your friend's name:</label>
-            <input
-              placeholder="Enter your friend's name"
-              onChange={handleChange}
-              name="receiver"
-              value={mailForm.receiver}
-            />
-            <br />
-            <label>To:</label>
-            <input
-              placeholder="Enter a valid email address"
-              onChange={handleChange}
-              name="to"
-              value={mailForm.to}
-            />
-            <br />
-            <button type="button" onClick={handleShareClick}>
-              Share
-            </button>
+            <div className="email-input">
+              <label>Your name:</label>
+              <input
+                placeholder="Enter your name"
+                onChange={handleChange}
+                name="sender"
+                value={mailForm.sender}
+              />
+            </div>
+            <div className="email-input">
+              <label>Your friend's name:</label>
+              <input
+                placeholder="Enter your friend's name"
+                onChange={handleChange}
+                name="receiver"
+                value={mailForm.receiver}
+              />
+            </div>
+            <div className="email-input">
+              <label>To:</label>
+              <input
+                placeholder="Enter a valid email address"
+                onChange={handleChange}
+                name="to"
+                value={mailForm.to}
+              />
+            </div>
           </fieldset>
+          <button
+            type="button"
+            onClick={handleShareClick}
+            className="share-btn"
+          >
+            Share
+          </button>
         </form>
       )}
     </div>

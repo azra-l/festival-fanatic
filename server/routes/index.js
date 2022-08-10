@@ -161,41 +161,7 @@ router.get("/callback", async function (req, res, next) {
             topArtists = await getSpotifyTopArtists(access_token);
             const listOfArtists = topArtists;
 
-            const artistPromises = [];
-            for (const artist of listOfArtists) {
-              // console.log(artist);
-              artistPromises.push(
-                Artist.findOneAndUpdate(
-                  {
-                    spotify_id: artist.id,
-                  },
-                  {
-                    spotify_id: artist.id,
-                    name: artist.name,
-                    href: artist.external_urls.spotify,
-                    image: artist.images ? artist.images[0].url : null,
-                  },
-                  {
-                    upsert: true,
-                    new: true,
-                  }
-                )
-              );
-            }
-
-            const artists = await Promise.all(artistPromises);
-
-            const newSpotifyImports = new SpotifyImports({
-              userId: user.userId,
-              timeOfImport: new Date(),
-              spotifyImports: listOfArtists.map((e) => ({
-                artistRef: artists.find((artist) => artist.spotify_id === e.id)
-                  ?._id,
-                ...e,
-              })),
-            });
-
-            await newSpotifyImports.save();
+            const artists = await addOrUpdateArtistsFromSpotify(listOfArtists, user);
 
             user.selectedArtists = artists.map((e) => e._id);
             await user.save();
@@ -207,7 +173,8 @@ router.get("/callback", async function (req, res, next) {
             for (const festival of festivals) {
               await Festival.findOneAndUpdate(
                 {
-                  id: festival.id,
+                  name: festival.name,
+                  date: festival.date
                 },
                 festival,
                 {
@@ -420,3 +387,119 @@ router.get("/logout", function (req, res, next) {
 });
 
 module.exports = router;
+
+async function addOrUpdateArtistsFromSpotify(listOfArtists, user) {
+  const artistPromises = [];
+  for (const artist of listOfArtists) {
+    // console.log(artist);
+    artistPromises.push(
+      Artist.findOneAndUpdate(
+        {
+          spotify_id: artist.id,
+        },
+        {
+          spotify_id: artist.id,
+          name: artist.name,
+          href: artist.external_urls.spotify,
+          image: artist.images ? artist.images[0].url : null,
+        },
+        {
+          upsert: true,
+          new: true,
+        }
+      )
+    );
+  }
+
+  const artists = await Promise.all(artistPromises);
+
+  const newSpotifyImports = new SpotifyImports({
+    userId: user.userId,
+    timeOfImport: new Date(),
+    spotifyImports: listOfArtists.map((e) => ({
+      artistRef: artists.find((artist) => artist.spotify_id === e.id)
+        ?._id,
+      ...e,
+    })),
+  });
+
+  await newSpotifyImports.save();
+  return artists;
+}
+
+
+router.post("/new-selected-artists", async function (req, res, next) {
+
+  if (req.session && req.session.user) {
+    console.log("session is successfully being used")
+  } else {
+    console.log("session FAILED, please login")
+    res.status(401).json({ message: "You are unauthorized, please login" })
+  }
+
+  try {
+
+    const user = await User.findOneAndUpdate(
+      { userId: req.session.user.userId },
+      {
+        userId: req.session.user.userId,
+      },
+      {
+        new: true,
+        upsert: true,
+      }
+    );
+
+    console.log("req.body.listOfArtists", req.body.listOfArtists)
+
+
+    const artists = await addOrUpdateArtistsFromSpotify(req.body.listOfArtists, user);
+
+
+
+    for (const artist of artists) {
+      await User.updateOne(
+        {
+          userId: req.session.user.userId
+        },
+        {
+          $push: {
+            selectedArtists: artist._id
+          }
+        },
+        {
+          upsert: true,
+        }
+      );
+    }
+
+    const festivalResults = await getBandsInTownEvents(artists);
+
+    const festivals = parseFestivalResults(festivalResults.eventsList);
+
+    for (const festival of festivals) {
+      await Festival.findOneAndUpdate(
+        {
+          name: festival.name,
+          date: festival.date
+        },
+        festival,
+        {
+          upsert: true,
+        }
+      );
+    }
+    console.log( `Successfully added ${req.body.listOfArtists.length} new artists and ${festivals.length} new festivals`)
+
+    res.status(200).json({ message: `Successfully added ${req.body.listOfArtists.length} new artists and ${festivals.length} new festivals` })
+
+
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ message: e })
+  }
+
+
+
+
+})
