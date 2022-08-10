@@ -173,7 +173,8 @@ router.get("/callback", async function (req, res, next) {
             for (const festival of festivals) {
               await Festival.findOneAndUpdate(
                 {
-                  id: festival.id,
+                  name: festival.name,
+                  date: festival.date
                 },
                 festival,
                 {
@@ -479,7 +480,8 @@ router.post("/new-selected-artists", async function (req, res, next) {
     for (const festival of festivals) {
       await Festival.findOneAndUpdate(
         {
-          id: festival.id,
+          name: festival.name,
+          date: festival.date
         },
         festival,
         {
@@ -487,6 +489,7 @@ router.post("/new-selected-artists", async function (req, res, next) {
         }
       );
     }
+    console.log( `Successfully added ${req.body.listOfArtists.length} new artists and ${festivals.length} new festivals`)
 
     res.status(200).json({ message: `Successfully added ${req.body.listOfArtists.length} new artists and ${festivals.length} new festivals` })
 
