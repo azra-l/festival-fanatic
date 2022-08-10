@@ -9,7 +9,7 @@ import { updateFestivalAsync } from "../../redux/festivals/thunks";
 export default function FestivalCard({ festival, position }) {
   const dispatch = useDispatch();
 
-  const { date, name, city, region, saved, archived, artists, _id } = festival;
+  const { date, name, city, region, saved, archived, artists, _id, personalizedLineup } = festival;
   const dateParsed = new Date(date);
 
   // from: https://stackoverflow.com/questions/12246394/how-to-get-month-from-string-in-javascript
@@ -79,9 +79,9 @@ export default function FestivalCard({ festival, position }) {
         </div>
         <div className="wrapper">
           <div className="matched-artists">
-            <div className="num">{artists.length}</div>
+            <div className="num">{personalizedLineup.length}</div>
             <div className="text">
-              {artists.length > 1 ? "ARTISTS" : "ARTIST"}
+              {personalizedLineup.length > 1 ? "ARTISTS" : "ARTIST"}
 
             </div>
 
