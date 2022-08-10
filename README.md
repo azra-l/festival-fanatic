@@ -120,7 +120,7 @@ We would ideally like to integrate our app with other music streaming platforms 
 
 ## Stanford
 - Implemented Spotify OAuth, user authentication/persistance using sessions, redux, secured backend API and frontend assets
-- Researched and implemented Spotify APIs, BandsInTown API and other third party APIs 
+- Researched and implemented Spotify APIs (OAuth, Top Artists), BandsInTown API (matching, selective matching) and other third party APIs 
 - Designed architecture of the frontend and backend, helped teammates with frontend and backend additions and trouble shooted 
 
 ## Tristan
