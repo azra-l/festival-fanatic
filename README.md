@@ -39,7 +39,6 @@ Find music festivals and events where your favourite artists will perform based 
 - ✅ Data persistence with MongoDB, as well as encrypting unique user data
 - ✅ User Authentication with sessions and authenticated routes
 - ✅ Deploy to Heroku, serve frontend and backend
-
 - ✅ Map showing the location of a festival
 
 ## Stretch 
@@ -84,14 +83,21 @@ Our entire idea for this project revolved around the concept of helping someone 
 
 ## Customized Components 
 
+We set up custom react components for our Artist cards, Event cards and detailed results that were styled with CSS instead of using prebuilt components to acheive the UI we had envisioned.
+
 
 # Next Steps
+
+We would ideally like to integrate our app with other music streaming platforms like Apple music and Amazon music so our app would be useful to a wider audience. Additionally, we plan to make our app responsive for a better m-web experience.
 
 # List of Contributions
 
 ## Amman
 
 ## Azra 
+- Created basis for front end including building and styling the event cards, artist cards, event results and detailed results pages
+- Implemented state management of the festivals and selected artists with redux
+- Implemented the sharing event with a friend feature with the Sendgrid API
 
 ## Stanford
 - Implemented Spotify OAuth, user authentication/persistance using sessions, redux, secured backend API and frontend assets
