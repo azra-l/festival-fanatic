@@ -5,27 +5,6 @@ const User = require("../models/User");
 const Artist = require("../models/Artist");
 
 
-/**
- * TODO need to include computed value of the length of intersection between artists and selectedArtists
- * This will allow sorting to happen on the database side, and also allow pagination for query optimization
- *
- * GET festivals that star artists in user's selectedArtist lineup
- **/
-router.get("/matched", async function (req, res, next) {
-  try {
-    const userId = req.session.user.userId;
-    const user = await User.findOne({ userId: userId });
-    const selectedArtists = user.selectedArtists;
-    const matchingFestivals = await Festival.find({
-      artists: { $in: selectedArtists },
-    });
-    res.send(matchingFestivals);
-  } catch (error) {
-    res.statusCode = 500;
-    res.send({ error: `unable to fetch matching festivals: ${error}` });
-  }
-});
-
 router.get("/detailed/:id", async function (req, res, next) {
   const festival = await Festival.findOne({ _id: req.params.id }, {}, { lean: true });
 
@@ -70,7 +49,6 @@ router.get("/detailed/", async function (req, res, next) {
   }
 });
 
-
 /** GET all the user's festivals including new matches, saved and archived festivals */
 router.get("/", async function (req, res, next) {
   try {
@@ -79,7 +57,8 @@ router.get("/", async function (req, res, next) {
     const selectedArtists = user.selectedArtists;
     const matchingFestivals = await Festival.find({
       artists: { $in: selectedArtists },
-    }, {}, { lean: true });
+      date: { $gt: new Date() }
+    },{}, {lean: true});
     const userSavedList = user.saved;
     let savedFestivals = await Festival.find({ _id: { $in: userSavedList } }, {}, { lean: true });
     const archivedList = user.archived;
