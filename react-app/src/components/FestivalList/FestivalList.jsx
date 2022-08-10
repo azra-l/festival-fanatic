@@ -1,4 +1,4 @@
-import { Grid, TextField, InputLabel } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import { createTheme, ThemeProvider, } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import FestivalCard from "../FestivalCard/FestivalCard";

@@ -42,7 +42,7 @@ export default function DetailedResults() {
     description
   } = festival;
 
-  const artistURLs = artists.map((artist) => `${apiBaseUrl}/artists/${artist}`);
+  const artistURLs = artists.map((artist) => `${apiBaseUrl}/artists/info/${artist}`);
 
   const getArtists = useCallback(async () => {
     setIsLoading(true);

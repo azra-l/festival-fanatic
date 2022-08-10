@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles';
-import { useState } from "react";
 import "./ArtistSearch.css";
 import SearchBar from './SearchBar';
 
@@ -12,8 +11,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 const ArtistSearch = ({ matchedArtists }) => {
-    const [selectedArtists, setSelectedArtists] = useState([]);
-
     return (
         <div className="search-div">
             <DrawerHeader>
