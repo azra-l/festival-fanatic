@@ -3,7 +3,6 @@ import { apiBaseUrl, appBaseUrl } from '../../utilities/base-url';
 const checkAuth = async () => {
     const response = await fetch(`${apiBaseUrl}/users/check-auth`, {
         method: "GET",
-        // Need credentials to pass cookie data into request
         credentials: "include",
         headers: {
             "Access-Control-Allow-Origin": appBaseUrl,

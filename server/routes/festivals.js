@@ -4,9 +4,6 @@ var router = express.Router();
 const User = require("../models/User");
 
 /**
- * TODO need to include computed value of the length of intersection between artists and selectedArtists
- * This will allow sorting to happen on the database side, and also allow pagination for query optimization
- *
  * GET festivals that star artists in user's selectedArtist lineup
  **/
 router.get("/matched", async function (req, res, next) {
