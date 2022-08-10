@@ -4,7 +4,6 @@ var router = express.Router();
 const User = require("../models/User");
 const Artist = require("../models/Artist");
 
-
 router.get("/detailed/:id", async function (req, res, next) {
   const festival = await Festival.findOne({ _id: req.params.id }, {}, { lean: true });
 
@@ -32,7 +31,7 @@ router.get("/detailed/:id", async function (req, res, next) {
   })
 
 
-})
+});
 
 router.get("/detailed/", async function (req, res, next) {
   try {

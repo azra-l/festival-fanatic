@@ -5,11 +5,6 @@ import FestivalCard from "../FestivalCard/FestivalCard";
 import "./FestivalList.css";
 
 const searchParams = [
-  // TODO Add back to search params once solution is found for querying artist names from festivals
-  // {
-  //   value: 'artist',
-  //   label: 'Artist',
-  // },
   {
     value: 'location',
     label: 'Location',
