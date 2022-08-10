@@ -328,24 +328,6 @@ const parseFestivalResults = (results) => {
   return festivals;
 };
 
-router.get("/checkcookie", function (req, res, next) {
-  try {
-    // const data = jwt.verify(token, "YOUR_SECRET_KEY");
-
-    const token = req.session.user;
-    console.log("The req session", req.session.user);
-    if (!token) {
-      return res.sendStatus(403);
-    }
-    console.log("The session is ", req.session);
-    return res.status(200).json({
-      message: "Your token is valid",
-      cookie: req.session,
-    });
-  } catch {
-    return res.sendStatus(403);
-  }
-});
 
 router.get("/logout", function (req, res, next) {
   if (req.session) {
