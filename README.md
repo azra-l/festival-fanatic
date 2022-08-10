@@ -109,7 +109,9 @@ We would ideally like to integrate our app with other music streaming platforms 
 - Designed architecture of the frontend and backend, helped teammates with frontend and backend additions and trouble shooted 
 
 ## Tristan
-
+- Implemented redux actions to maintain state management for artist festivals
+- Improved on the front end design with updates to the UI using Material UI components, adding useful details to festival cards, as well as querying and sorting of festivals by venue/location
+- Implemented the front end artist search feature for adding and removing user selected Spotify artists to a custom festival query
 ---
 
 ## TODO: Will delete in the future
