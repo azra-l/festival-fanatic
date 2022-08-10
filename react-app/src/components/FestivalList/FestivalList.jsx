@@ -73,7 +73,7 @@ const FestivalList = ({ festivals }) => {
           setResults(sorted);
         } else {
           const sorted = [...filteredList].sort(
-            (a, b) => b.artists.length - a.artists.length
+            (a, b) => b.personalizedLineup.length - a.personalizedLineup.length
           );
           setResults(sorted);
         }
