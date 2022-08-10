@@ -89,6 +89,7 @@ body {
   background-color: #69445f;
   border-radius: 0.5rem;
   text-align: center;
+  padding-bottom: 2rem;
 }
 
 .artists {
@@ -118,4 +119,13 @@ body {
 
 .map {
     margin: 3rem 15%;
+}
+
+.email-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
 }

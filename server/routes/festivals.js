@@ -61,18 +61,6 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-router.get("/saved", async function (req, res, next) {
-  try {
-    const userId = req.session.user.userId;
-    const user = await User.findOne({ userId: userId });
-    const userSavedList = user.saved;
-    const savedFestivals = await Festival.find({ _id: { $in: userSavedList } });
-    res.send(savedFestivals);
-  } catch (error) {
-    res.statusCode = 500;
-    res.send({ error: `unable to fetch matching festivals: ${error}` });
-  }
-});
 
 router.delete("/", async function (req, res, next) {
   await Festival.collection.drop();
