@@ -93,6 +93,10 @@ We would ideally like to integrate our app with other music streaming platforms 
 # List of Contributions
 
 ## Amman
+- Configured a vs-code dev container setup that installs all dependencies, and runs a local mongodb instance
+- Made the css grids used in the UI responsive
+- Refactored the database schema to make it store less redundant data, then refactored the endpoints to work with new schema
+- Implemented a spotify import flow which saves the user's top artists from Spotify at a minimum of every 24 hours
 
 ## Azra 
 - Created basis for front end including building and styling the event cards, artist cards, event results and detailed results pages
