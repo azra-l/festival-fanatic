@@ -51,57 +51,55 @@ const sortParams = [
 const FestivalList = ({ festivals }) => {
   const [results, setResults] = useState([]);
   const [sortBy, setSortBy] = useState("artists");
-  const [searchBy, setSearchBy] = useState("");
+  const [searchBy, setSearchBy] = useState("location");
   const [searchQuery, setSearchQuery] = useState("");
 
 
-  useEffect(() => {
-    const sortArray = (type) => {
-      const types = {
-        name: "name",
-        date: "date",
-        artists: "artists",
-      };
-      const sortProperty = types[type];
-      if (sortProperty !== "artists") {
-        const sorted = [...festivals].sort((a, b) =>
-          a[sortProperty].localeCompare(b[sortProperty])
-        );
-        setResults(sorted);
-      } else {
-        const sorted = [...festivals].sort(
-          (a, b) => b.artists.length - a.artists.length
-        );
-        setResults(sorted);
-      }
-    };
-    sortArray(sortBy);
-  }, [festivals, sortBy]);
+  
 
   useEffect(() => {
+    function sortArray(filteredList) {
+      const sortArray = (type) => {
+        const types = {
+          name: "name",
+          date: "date",
+          artists: "artists",
+        };
+        const sortProperty = types[type];
+        if (sortProperty !== "artists") {
+          const sorted = [...filteredList].sort((a, b) =>
+            a[sortProperty].localeCompare(b[sortProperty])
+          );
+          setResults(sorted);
+        } else {
+          const sorted = [...filteredList].sort(
+            (a, b) => b.artists.length - a.artists.length
+          );
+          setResults(sorted);
+        }
+      };
+      sortArray(sortBy);
+    };
+
     const searchArray = (type) => {
-      // TODO artists array contains ids and not names, find a way to query names?
-      // if (type === "Artist") {
-      //   const filter = festivals.filter(function(i,n){
-      //     // slow af and doesn't work good
-      //     return i.artists.filter(s => s.toLowerCase().startsWith(searchQuery.toLowerCase()));
-      //     // trying this for speed
-      //     // return i.artists.toString().toLowerCase().includes(searchQuery.toLowerCase());
-      //   });
       if (type === "venue") {
         const filter = festivals.filter(function (i, n) {
           return i.venue.toLowerCase().startsWith(searchQuery.toLowerCase());
         });
-        setResults(filter);
+        sortArray(filter);
       } else if (type === "location") {
         const filter = festivals.filter(function (i, n) {
           return i.city.toLowerCase().startsWith(searchQuery.toLowerCase());
         });
-        setResults(filter);
+        sortArray(filter);
       }
     }
-    searchArray(searchBy)
-  }, [festivals, searchBy, searchQuery]);
+    if(searchQuery === "") {
+      sortArray(festivals);
+    } else {
+      searchArray(searchBy);
+    }
+  }, [festivals, searchBy, searchQuery, sortBy]);
 
   return (
     <>
