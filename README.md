@@ -30,7 +30,7 @@ Find music festivals and events where your favourite artists will perform based 
 
 - ✅ Home page
 - ✅ Login button
-- ✅ Results page showing festivals where a user's artists is shown
+- ✅ Results page showing festivals where a user's artists are shown
 - ✅ Detailed festivals page showing more details of the festival such as lineup, date, time, location 
 
 ## Standard 
@@ -46,7 +46,7 @@ Find music festivals and events where your favourite artists will perform based 
 - ✅ Live festival data from a curated source so that our team did not have to manually input date, time, location, and lineup of possible festivals and event
 - ✅ Implement Spotify OAuth to retrieve a user's running list of top artists rather than having to manually input artists (one click user experience)
 - ✅ Components were custom designed (basic components like buttons, etc. Material UI and Font Awesome icons were used) and matched colour scheme of the app
-- ❌ Implement Apple Music integration - limited API support to find a users top artists
+- ❌ Implement Apple Music integration - limited API support to find a user's top artists
 
 ---
 
@@ -54,17 +54,16 @@ Find music festivals and events where your favourite artists will perform based 
 
 ## Unit 1 - HTML CSS JS
 
-CSS was used to customize styling and design for all of our react components. The rest of the HTML and JS were transpiled from React JSX.
-
+CSS was used to customize styling and design for all of our React components. The rest of the HTML and JS were transpiled from React JSX.
 
 ## Unit 2 - React (Redux)
-Being able to render the front end using states and components based on conditionals was a huge help and made it a lot easier to reuse components for cleaner code. Additonally, authentication middle  
+Being able to render the front end using states and components based on conditionals was a huge help and made it a lot easier to reuse components for cleaner code. Additionally, authentication middle 
 
 ## Unit 3 - MongoDB
-Data persistence for our user's festivals, their favorited or archived festivals. We used nosql archiecture (utilizing documents for new data and querying based on this) to create a centralized db containing artists and festivals so that our app can be scaled. 
+Data persistence for our user's matched festivals, as well as their favourited or archived festivals. We used NoSQL architecture (utilizing documents for new data and querying based on this) to create a centralized db containing artists and festivals so that our app can be scaled. 
 
 ## Unit 4 - Node Express
-Node Express was used for authenicating API requests and being the trusted entity to transit data to and from the database so that others cannot just modify and delete data from the database. 
+Node Express was used for authenticating API requests and being the trusted entity to transit data to and from the database to prevent unauthorized access to modify and delete data from the database. 
 
 ## Unit 5 - Release Engineering
 Deployed onto Heroku with an automated pipeline to changes on the main branch for a seamless continuous deployment to our public facing app. Using free tier to save $$$
@@ -74,21 +73,21 @@ Deployed onto Heroku with an automated pipeline to changes on the main branch fo
 
 ## User Authentication
 
-We set up user authentication using express session. Once a user logs in it uses Spotify OAuth so we don't store user sensitive information. A unique userID is hashed (if it's a new user) from the Spotify user's id so that even if the db is compromised, there is no way to link user data to their userId. Afterwards, their Sotify access token are written into an token which is then encrypted and stored as a cookie. This token is then decrypted in the backend and then the backend makes external requests to the BandsInTown API, Spotify, and MongoDB. The token also has a expiration time of 1 hour to prevent malicious acts on the cookie. With this approach, the network requests won't have sensitive data such as API keys and user credentials (access tokens) exposed to prevent abuse to APIs. Additionally, nobody but the user with their respective userID can make changes to the database because all modifications to the db are made on the backend. We tried to make the user experience simple as possible so all of this happens with 1 click upon logging into Spotify. 
+We set up user authentication using express session. Once a user logins, it uses Spotify OAuth to avoid managing user sensitive information from our application. A unique userID is hashed (if it's a new user) from the Spotify user's ID so that even if the database is compromised, there is no way to link user data to their userID. Their Spotify access token is written into a token, which is then encrypted and stored as a cookie. This token is then decrypted in the backend and then the backend makes external requests to the BandsInTown API, Spotify, and MongoDB. The token also has an expiration time of 1 hour to prevent malicious attempts using the cookie. With this approach, the network requests won't have sensitive data such as API keys and user credentials (access tokens) exposed to prevent abuse to APIs. Additionally, nobody but the user with their respective userID can make changes to the database because all modifications to the db are made on the backend. We tried to make the user experience simple as possible, so all of this happens with 1 click upon logging into Spotify. 
 
 ## Top Artists Spotify Data + Festival Matching 
 
-Our entire idea for this project revolved around the concept of helping someone discover an event or music festival where a user's most listened to artists will be performing so they can see as many people over the course of the event. This way, people can see many of their favourite artists in one sitting saving time and money compared to going to individual events one a time. We get a user's top artists from Spotify and then do another search using the BandsInTown API to find festivals where an artist is present. If another artist is present at the same event, it will be added to the event's lineup. Moreover, with each new event or artist, a new document will be added to their respective collections on a shared centralized noSQL database for all users to retrieve from. This allows for us to rely a little less on third party APIs and helps overcome rate limiting issues. Utilizing noSQL allows our database to be scaled rapidly in the event of an influx of new users and it also allows us to perform any query logic using indexed databases which is already built in on MongoDB's noSQL which makes it easier to write future query logic on. 
+Our entire idea for this project revolved around the concept of helping someone discover an event or music festival where a user's most listened to artists will be performing, so they can see as many people over the course of the event. This way, people can see many of their favourite artists in one sitting, saving time and money compared to going to several individual events. We get a user's top artists from Spotify and then do another search using the BandsInTown API to find festivals where an artist is present. If another artist is present at the same event, it will be added to the event's lineup. Moreover, with each new event or artist, a new document will be added to their respective collections on a shared centralized NoSQL database for all users to retrieve from. This allows for us to rely a little less on third party APIs and helps overcome rate limiting issues. Utilizing NoSQL allows our database to be scaled rapidly in the event of an influx of new users, and it also allows us to perform any query logic using indexed databases which is already built in to MongoDB's NoSQL, which makes it easier to write future query logic on. 
 
 
 ## Customized Components 
 
-We set up custom react components for our Artist cards, Event cards and detailed results that were styled with CSS instead of using prebuilt components to acheive the UI we had envisioned.
+We set up custom React components for our Artist cards, Event cards and detailed results that were styled with CSS instead of using prebuilt components to achieve the UI we had envisioned.
 
 
 # Next Steps
 
-We would ideally like to integrate our app with other music streaming platforms like Apple music and Amazon music so our app would be useful to a wider audience. Additionally, we plan to make our app responsive for a better m-web experience.
+We would ideally like to integrate our app with other music streaming platforms like Apple Music and Amazon Music, so our app would be useful to a wider audience. Additionally, we plan to make our app responsive for a better m-web experience.
 
 # List of Contributions
 
@@ -109,7 +108,7 @@ We would ideally like to integrate our app with other music streaming platforms 
 - Designed architecture of the frontend and backend, helped teammates with frontend and backend additions and trouble shooted 
 
 ## Tristan
-- Implemented redux actions to maintain state management for artist festivals
+- Implemented Redux actions to maintain state management for artist festivals
 - Improved on the front end design with updates to the UI using Material UI components, adding useful details to festival cards, as well as querying and sorting of festivals by venue/location
 - Implemented the front end artist search feature for adding and removing user selected Spotify artists to a custom festival query
 ---
