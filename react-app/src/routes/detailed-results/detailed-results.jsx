@@ -25,14 +25,16 @@ export default function DetailedResults() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [artistDetails, setArtistDetails] = useState([]);
+  const [otherArtistDetails, setOtherArtistDetails] = useState([]);
   const [isSharing, setIsSharing] = useState(false);
+  const [showOther, setShowOther] = useState(false);
 
   const {
     date,
     name,
     city,
     region,
-    artists,
+    _id,
     link,
     venue,
     tickets,
@@ -42,25 +44,25 @@ export default function DetailedResults() {
     description
   } = festival;
 
-  const artistURLs = artists.map((artist) => `${apiBaseUrl}/artists/info/${artist}`);
+  const festivalURL = `${apiBaseUrl}/festivals/detailed/${_id}`;
 
   const getArtists = useCallback(async () => {
     setIsLoading(true);
-    const results = await Promise.all(
-      artistURLs.map((url) =>
-        fetch(url, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Access-Control-Allow-Origin": appBaseUrl,
-          },
-        }).then((res) => res.json())
-      )
-    );
+    const results = await fetch(festivalURL, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Access-Control-Allow-Origin": appBaseUrl,
+        },
+      }).then((res) => res.json()
+      ).then((data) => {
+        return data;
+      }).catch((e) => console.log(e));
     setIsLoading(false);
-    setArtistDetails(results);
-    console.log(results);
-  }, [artistURLs]);
+    setArtistDetails(results.personalizedLineup);
+    setOtherArtistDetails(results.restOfLineup);
+    setShowOther(results.restOfLineup.length !== 0);
+  }, [festivalURL]);
 
   useEffect(() => {
     getArtists();
@@ -134,13 +136,23 @@ export default function DetailedResults() {
             </div>}
 
             <div className="artist-container">
-              <p className="lineup">Artist Lineup</p>
+              <p className="lineup">Matched Artist Lineup</p>
               <div className="artists">
                 {artistDetails.map((artist, i) => (
                   <ArtistCard artist={artist} key={i} />
                 ))}
               </div>
             </div>
+            {showOther &&
+              <div className="artist-container">
+                <p className="lineup">Other Artists Performing</p>
+                  <div className="artists">
+                    {otherArtistDetails.map((artist, i) => (
+                      <ArtistCard artist={artist} key={i} />
+                    ))}
+                  </div>
+              </div>
+            }
             <div className="share-container">
               {isSharing && (
                 <div className="email-container">
