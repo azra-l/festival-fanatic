@@ -30,7 +30,7 @@ export default function Results() {
     setValue(newValue);
   };
 
-  const toggleDrawer =  () => {
+  const toggleDrawer = () => {
     setOpenDrawer(!openDrawer);
   };
 
@@ -51,29 +51,29 @@ export default function Results() {
   return (
     <>
       <Navbar />
-      <ErrorDisplay/>
+      <ErrorDisplay />
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Festivals for you" value="1" sx={{ color: "white" }} />
             <Tab label="Saved Festivals" value="2" sx={{ color: "white" }} />
             <Tab label="Archived Festivals" value="3" sx={{ color: "white" }} />
-            <Button onClick={toggleDrawer}><FaSistrix/></Button>
+            <Button onClick={toggleDrawer}><FaSistrix size={24} style={{ color: 'white' }} /></Button>
           </TabList>
           <Drawer
             anchor='right'
             open={openDrawer}
             onClose={toggleDrawer}>
-            <ArtistSearch/>
+            <ArtistSearch />
           </Drawer>
         </Box>
         <TabPanel value="1">
-        {festivalsToDisplay? (
-             <FestivalList festivals={festivalsToDisplay} />
-            ) : (
-              <p>Oops you currently have no results from Spotify!</p>
-            )}
-          
+          {festivalsToDisplay ? (
+            <FestivalList festivals={festivalsToDisplay} />
+          ) : (
+            <p>Oops you currently have no results from Spotify!</p>
+          )}
+
         </TabPanel>
         <TabPanel value="2">
           <div>
