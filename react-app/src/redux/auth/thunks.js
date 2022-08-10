@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import AuthService from "./service";
 
 export const actionTypes = {
-  // LOGIN: "auth/login",
   CHECK_AUTH: "auth/check_auth",
 };
 

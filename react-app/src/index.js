@@ -16,8 +16,6 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        {/* <Route path="login" element={<LogIn />} /> */}
-        {/* <Route path="results" element={<Results />} /> */}
         <Route path="top-artists" element={<TopArtists />} />
         <Route
           path="results/detailed-results"
@@ -26,11 +24,6 @@ root.render(
         <Route exact path="/results" element={<ProtectedRoute />} >
           <Route exact path="/results" element={<Results />} />
         </Route>
-
-
-        {/* <ProtectedRoute exact path="results">
-          <Results />
-        </ProtectedRoute> */}
 
       </Routes>
     </BrowserRouter>
