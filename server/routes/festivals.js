@@ -57,7 +57,7 @@ router.get("/", async function (req, res, next) {
     const matchingFestivals = await Festival.find({
       artists: { $in: selectedArtists },
       date: { $gt: new Date() }
-    },{}, {lean: true});
+    }, {}, { lean: true });
     const userSavedList = user.saved;
     let savedFestivals = await Festival.find({ _id: { $in: userSavedList } }, {}, { lean: true });
     const archivedList = user.archived;
@@ -78,6 +78,11 @@ router.get("/", async function (req, res, next) {
       if (!festival.archived) {
         festival.archived = false;
       }
+
+      let personalizedLineup = festival.artists.filter(function (value) {
+        return selectedArtists.indexOf(value._id) > -1
+      });
+      festival.personalizedLineup = personalizedLineup
     })
     res.send(mergedArr);
   } catch (error) {
