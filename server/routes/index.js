@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var request = require("request"); // "Request" library
+var request = require("request");
 var md5 = require("md5");
 var axios = require("axios");
 
@@ -42,24 +42,20 @@ router.get("/login", function (req, res, next) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
 
-  // your application requests authorization
   var scope = "user-read-private user-top-read";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
-    new URLSearchParams({
-      response_type: "code",
-      client_id: client_id,
-      scope: scope,
-      redirect_uri: redirect_uri,
-      state: state,
-    }).toString()
+      new URLSearchParams({
+        response_type: "code",
+        client_id: client_id,
+        scope: scope,
+        redirect_uri: redirect_uri,
+        state: state,
+      }).toString()
   );
 });
 
 router.get("/callback", async function (req, res, next) {
-  // your application requests refresh and access tokens
-  // after checking the state parameter
-
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
@@ -67,9 +63,9 @@ router.get("/callback", async function (req, res, next) {
   if (state === null || state !== storedState) {
     res.redirect(
       "/#" +
-      new URLSearchParams({
-        error: "state_mismatch",
-      }).toString()
+        new URLSearchParams({
+          error: "state_mismatch",
+        }).toString()
     );
   } else {
     res.clearCookie(stateKey);
@@ -98,13 +94,10 @@ router.get("/callback", async function (req, res, next) {
           headers: { Authorization: "Bearer " + access_token },
           json: true,
         };
-        // https://blog.logrocket.com/how-to-secure-react-app-login-authentication/
-        // https://dev.to/franciscomendes10866/using-cookies-with-jwt-in-node-js-8fn
+        // adapted from: https://blog.logrocket.com/how-to-secure-react-app-login-authentication/
+        // and https://dev.to/franciscomendes10866/using-cookies-with-jwt-in-node-js-8fn
 
         let hashedId;
-        // use the access token to access the Spotify Web API
-
-        // get user's top artists
 
         let topArtists;
 
@@ -119,10 +112,7 @@ router.get("/callback", async function (req, res, next) {
           );
 
           if (userDetailsResponse.status === 200) {
-            // Successfully logged in
             hashedId = md5(userDetailsResponse.data.id);
-
-            // Set user's session
             req.session.user = {
               access_token: access_token,
               refresh_token: refresh_token,
@@ -149,10 +139,9 @@ router.get("/callback", async function (req, res, next) {
             if (
               currentSpotifyImports.length > 0 &&
               new Date().getTime() -
-              currentSpotifyImports[0].timeOfImport.getTime() <
-              24 * 60 * 60 * 1000
+                currentSpotifyImports[0].timeOfImport.getTime() <
+                24 * 60 * 60 * 1000
             ) {
-              //console.log("no need to update imports, last import was done less than a day ago")
               throw new Error(
                 "no need to update imports, last import was done less than a day ago"
               );
@@ -161,7 +150,10 @@ router.get("/callback", async function (req, res, next) {
             topArtists = await getSpotifyTopArtists(access_token);
             const listOfArtists = topArtists;
 
-            const artists = await addOrUpdateArtistsFromSpotify(listOfArtists, user);
+            const artists = await addOrUpdateArtistsFromSpotify(
+              listOfArtists,
+              user
+            );
 
             user.selectedArtists = artists.map((e) => e._id);
             await user.save();
@@ -174,7 +166,7 @@ router.get("/callback", async function (req, res, next) {
               await Festival.findOneAndUpdate(
                 {
                   name: festival.name,
-                  date: festival.date
+                  date: festival.date,
                 },
                 festival,
                 {
@@ -186,15 +178,13 @@ router.get("/callback", async function (req, res, next) {
         } catch (e) {
           console.log(e);
         }
-
-        // we can also pass the token to the browser to make requests from there
         res.redirect(`${clientUrl}/results`);
       } else {
         res.redirect(
           "/#" +
-          new URLSearchParams({
-            error: "invalid_token",
-          }).toString()
+            new URLSearchParams({
+              error: "invalid_token",
+            }).toString()
         );
       }
     });
@@ -208,8 +198,6 @@ const getSpotifyTopArtists = async (access_token) => {
 
   try {
     const spotifyResponse = await axios.get(
-      // TODO: STANFORD LIMIT TO 50 BABYY
-      //       "https://api.spotify.com/v1/me/top/artists?limit=50",
       "https://api.spotify.com/v1/me/top/artists",
       {
         headers: {
@@ -256,37 +244,34 @@ const getBandsInTownEvents = async (listOfArtists) => {
         failedToFindArtistList.push(listOfArtists[index]);
       } else if (promise.status == "fulfilled") {
         promise.value.forEach((bandsInTownEvent, index2) => {
-
           // Find any events that are already present based on the event name and datetime
           // If it exists, the artist to it's lineup, otherwise create a new event
           // Some event "title"'s are blank, so need to error handle for that and replace with "venue.name"
-          const existingEvent = eventsList.find(
-            (eventInCurrentList) => {
+          const existingEvent = eventsList.find((eventInCurrentList) => {
+            const eventInCurrentListTitle =
+              eventInCurrentList.title === ""
+                ? eventInCurrentList.venue.name
+                : eventInCurrentList.title;
 
-              const eventInCurrentListTitle = eventInCurrentList.title === "" ? eventInCurrentList.venue.name : eventInCurrentList.title
+            const queryEventTitle =
+              bandsInTownEvent.title === ""
+                ? bandsInTownEvent.venue.name
+                : bandsInTownEvent.title;
 
-              const queryEventTitle = bandsInTownEvent.title === "" ? bandsInTownEvent.venue.name : bandsInTownEvent.title
-
-              return eventInCurrentListTitle === queryEventTitle && eventInCurrentList.datetime === bandsInTownEvent.datetime
-
-            });
+            return (
+              eventInCurrentListTitle === queryEventTitle &&
+              eventInCurrentList.datetime === bandsInTownEvent.datetime
+            );
+          });
 
           if (typeof existingEvent !== "undefined") {
-            // For debugging
-            // console.log("The index is", index)
-            // console.log("The running total index2", index2)
-            // console.log("The listOfArtists[index].name", listOfArtists[index].name)
-            // console.log("The existingEvent.title is", existingEvent.title)
-            // console.log("The bandsInTownEvent.title", bandsInTownEvent.title)
-
-            // Event that's found has same name and datetime, just add artist to lineup
 
             const existingLineup = existingEvent.lineup.find((element) => {
               return (
                 element.name.toLowerCase() ===
                 listOfArtists[index].name.toLowerCase()
               );
-            })
+            });
 
             if (typeof existingLineup === "undefined")
               existingEvent.lineup.push(listOfArtists[index]);
@@ -335,7 +320,7 @@ const parseFestivalResults = (results) => {
       tickets: result.offers[0] ? result.offers[0].url : "",
       link: result.url,
       $addToSet: { artists: { $each: artists } },
-      description: result.description
+      description: result.description,
     };
     return festival;
   });
@@ -357,7 +342,6 @@ router.get("/checkcookie", function (req, res, next) {
       message: "Your token is valid",
       cookie: req.session,
     });
-    // Almost done
   } catch {
     return res.sendStatus(403);
   }
@@ -367,21 +351,15 @@ router.get("/logout", function (req, res, next) {
   if (req.session) {
     req.session.destroy((error) => {
       if (error) {
-        res
-          .status(500)
-          .json({
-            message:
-              "You can check out anytime you like but you can never leave",
-          });
+        res.status(500).json({
+          message: "You can check out anytime you like but you can never leave",
+        });
       } else {
-        // res.status(200).json({ message: "Successfully logged out" })
         res.redirect(clientUrl);
       }
     });
   } else {
     res.status(200).json({ message: "Not logged in, no session to DESTROYY" });
-
-    // const token = req.cookies.access_token;
     res.redirect(clientUrl);
   }
 });
@@ -391,7 +369,6 @@ module.exports = router;
 async function addOrUpdateArtistsFromSpotify(listOfArtists, user) {
   const artistPromises = [];
   for (const artist of listOfArtists) {
-    // console.log(artist);
     artistPromises.push(
       Artist.findOneAndUpdate(
         {
@@ -417,8 +394,7 @@ async function addOrUpdateArtistsFromSpotify(listOfArtists, user) {
     userId: user.userId,
     timeOfImport: new Date(),
     spotifyImports: listOfArtists.map((e) => ({
-      artistRef: artists.find((artist) => artist.spotify_id === e.id)
-        ?._id,
+      artistRef: artists.find((artist) => artist.spotify_id === e.id)?._id,
       ...e,
     })),
   });
@@ -427,18 +403,15 @@ async function addOrUpdateArtistsFromSpotify(listOfArtists, user) {
   return artists;
 }
 
-
 router.post("/new-selected-artists", async function (req, res, next) {
-
   if (req.session && req.session.user) {
-    console.log("session is successfully being used")
+    console.log("session is successfully being used");
   } else {
-    console.log("session FAILED, please login")
-    res.status(401).json({ message: "You are unauthorized, please login" })
+    console.log("session FAILED, please login");
+    res.status(401).json({ message: "You are unauthorized, please login" });
   }
 
   try {
-
     const user = await User.findOneAndUpdate(
       { userId: req.session.user.userId },
       {
@@ -450,22 +423,22 @@ router.post("/new-selected-artists", async function (req, res, next) {
       }
     );
 
-    console.log("req.body.listOfArtists", req.body.listOfArtists)
+    console.log("req.body.listOfArtists", req.body.listOfArtists);
 
-
-    const artists = await addOrUpdateArtistsFromSpotify(req.body.listOfArtists, user);
-
-
+    const artists = await addOrUpdateArtistsFromSpotify(
+      req.body.listOfArtists,
+      user
+    );
 
     for (const artist of artists) {
       await User.updateOne(
         {
-          userId: req.session.user.userId
+          userId: req.session.user.userId,
         },
         {
           $push: {
-            selectedArtists: artist._id
-          }
+            selectedArtists: artist._id,
+          },
         },
         {
           upsert: true,
@@ -481,7 +454,7 @@ router.post("/new-selected-artists", async function (req, res, next) {
       await Festival.findOneAndUpdate(
         {
           name: festival.name,
-          date: festival.date
+          date: festival.date,
         },
         festival,
         {
@@ -489,17 +462,17 @@ router.post("/new-selected-artists", async function (req, res, next) {
         }
       );
     }
-    console.log( `Successfully added ${req.body.listOfArtists.length} new artists and ${festivals.length} new festivals`)
+    console.log(
+      `Successfully added ${req.body.listOfArtists.length} new artists and ${festivals.length} new festivals`
+    );
 
-    res.status(200).json({ message: `Successfully added ${req.body.listOfArtists.length} new artists and ${festivals.length} new festivals` })
-
-
+    res
+      .status(200)
+      .json({
+        message: `Successfully added ${req.body.listOfArtists.length} new artists and ${festivals.length} new festivals`,
+      });
   } catch (e) {
     console.log(e);
-    res.status(400).json({ message: e })
+    res.status(400).json({ message: e });
   }
-
-
-
-
-})
+});

@@ -16,7 +16,7 @@ export default function Navbar() {
       {isAuth ? <Link to="/results" className="nav-link">
         Results
       </Link> : <div></div>}
-      {/* Logout of spotify AKA invalidate the tokens: https://stackoverflow.com/questions/24408444/how-to-logout-user-from-spotify-after-authorization-and-web-api-call-is-over */}
+      {/* Adapted from: https://stackoverflow.com/questions/24408444/how-to-logout-user-from-spotify-after-authorization-and-web-api-call-is-over */}
       {isAuth ? <a href={logoutURL} className="nav-link" rel="noreferrer">
         Log out
       </a> : <div></div>}

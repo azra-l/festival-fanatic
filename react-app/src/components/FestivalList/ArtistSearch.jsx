@@ -20,6 +20,4 @@ const ArtistSearch = ({ matchedArtists }) => {
     )
 }
 
-//<TextField className="search-text-field" label="Search" variant="standard" onChange={(e) => callSpotifySearch} inputProps={inputStyle} FormHelperTextProps={helperTextStyles} focused>Enter Spotify Artists</TextField>
-
 export default ArtistSearch;
