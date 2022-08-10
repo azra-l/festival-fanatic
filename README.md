@@ -22,6 +22,7 @@ Find music festivals and events where your favourite artists will perform based 
   - [Unit 5 - Release Engineering](#unit-5---release-engineering)
 - [Above and Beyond](#above-and-beyond)
 - [Next Steps](#next-steps)
+- [Challenges](#challenges)
 - [List of Contributions](#list-of-contributions)
 
 # Project Goals
@@ -85,9 +86,21 @@ Our entire idea for this project revolved around the concept of helping someone 
 We set up custom React components for our Artist cards, Event cards and detailed results that were styled with CSS instead of using prebuilt components to achieve the UI we had envisioned.
 
 
+# Challenges
+
+## Not having enough data on Spotify accounts
+
+## BandsInTown API
+The documentation and results from the Bands In Town API was very limited and really just had to work around it because it gave us so much data.
+1. The API sometimes showed an entire lineup and sometimes it didn't. To solve this, we would save the festival with existing artists and append artists to our centralized database.
+2. When querying artists, the name has to be an exact match. So if an artist had a space in their name like "Justin Bieber" we would have to query "JustinBieber". Beyoncé with the accent would have to be Beyonce without an accent. We solved this by having a manual switch statement that would normalize the queries.
+3. Same events may have a different unique ID. This means that finding a single source of truth was sometimes difficult. This made matching events challenging because you couldn't just match an event ID, otherwise it may mismatch. Our solution isn't perfect but it matches the name of the festival and the date and time of the event to find "similar" festivals.
+4. Empty data from the API. Not all the events had complete information and we ran into a few duplication and mismatching bugs because the data was not complete.
+
+
 # Next Steps
 
-We would ideally like to integrate our app with other music streaming platforms like Apple Music and Amazon Music, so our app would be useful to a wider audience. Additionally, we plan to make our app responsive for a better m-web experience.
+We would ideally like to integrate our app with other music streaming platforms like Apple Music and Amazon Music, so our app would be useful to a wider audience. Additionally, we plan to make our app responsive for a better m-web experience. Moreover, adding a loading screen and error modals would be the next steps to improving the overall user experience.
 
 # List of Contributions
 
